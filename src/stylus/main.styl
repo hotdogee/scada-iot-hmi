@@ -1,0 +1,45 @@
+@require '../../node_modules/vuetify/src/stylus/settings/_colors'
+
+$theme := {
+  primary: $green.darken-2
+  accent: $green.accent-2
+  secondary: $grey.lighten-1
+  info: $green.lighten-1
+  warning: $amber.darken-2
+  error: $red.accent-4
+  success: $green.lighten-2
+}
+
+@require '../../node_modules/vuetify/src/stylus/main'
+
+
+
+.application
+  -webkit-backface-visibility: hidden
+  min-height: 100vh
+
+  > main > .container
+    min-height: 100vh
+
+  &--toolbar
+    > main > .container
+      min-height: 'calc(100vh - %s)' % 136px
+
+    &.application--footer
+      > main > .container
+        min-height: 'calc(100vh - %s - %s)' % (136px $footer-height)
+
+  &--footer
+    > main > .container
+      min-height: 'calc(100vh - %s)' % $footer-height
+
+  &--footer-fixed
+    > aside.navigation-drawer
+      max-height: 'calc(100vh - %s)' % $footer-height
+
+    > main
+      padding-bottom: $footer-height
+
+    &.application--toolbar
+      > aside.navigation-drawer.navigation-drawer--clipped
+        max-height: 'calc(100vh - %s - %s)' % (136px $footer-height)
