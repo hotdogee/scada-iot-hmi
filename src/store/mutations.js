@@ -35,14 +35,14 @@ function addLog (state, log) {
   state.logs.pop()
   _.forEach(log.reads, (rtu) => {
     _.forEach(rtu.reads, (reg) => {
-      if (!regList[rtu.name]) {
-        regList[rtu.name] = {}
+      if (!state.regList[rtu.name]) {
+        state.regList[rtu.name] = {}
       }
-      if (!regList[rtu.name][reg.name]) {
-        regList[rtu.name][reg.name] = []
+      if (!state.regList[rtu.name][reg.name]) {
+        state.regList[rtu.name][reg.name] = []
       }
-      regList[rtu.name][reg.name].unshift(reg)
-      regList[rtu.name][reg.name].pop()
+      state.regList[rtu.name][reg.name].push(reg)
+      state.regList[rtu.name][reg.name].shift()
     })
   })
 }

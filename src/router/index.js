@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import PlcText from '@/components/PlcText'
 import PlcCard from '@/components/PlcCard'
 import PlcChart from '@/components/PlcChart'
+import Construction from '@/components/Construction'
 
 Vue.use(Router)
 
@@ -27,7 +28,7 @@ export default new Router({
     {
       path: '/plc/chart',
       name: 'PlcChart',
-      component: PlcChart
+      component: Construction
     }
   ]
 })
