@@ -14,7 +14,7 @@
         </v-card-text>
         <v-container fluid grid-list-md>
           <v-layout row wrap>
-            <v-flex xs6 class="top-12" v-for="reg in rtu.reads" :key="rtu.name + reg.name">
+            <v-flex xs6 class="top-12" v-for="reg in rtu.reads" v-if="reg.name != '三相功因'" :key="rtu.name + reg.name">
               <v-card light>
                 <v-card-text class="absolute">
                   <span class="caption top-6 grey--text">{{ reg.name }}</span><br>
