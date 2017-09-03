@@ -1,5 +1,6 @@
 <template>
   <v-layout row wrap>
+    <v-flex xs12 sm6 md4 lg3 xl2 class="grid-sizer"></v-flex>
     <v-flex xs12>
       <v-card light>
         <v-card-text>
@@ -7,46 +8,65 @@
         </v-card-text>
       </v-card>
     </v-flex>
-    <v-flex xs12 sm6 md4 lg3 xl2 v-for="rtu in currentLog.reads" :key="rtu.name">
-      <v-card light class="grey lighten-3">
-        <v-card-text>
-          <div class="title">M{{ rtu.addr }}-{{ rtu.name }}</div>
-        </v-card-text>
-        <v-container fluid grid-list-md>
-          <v-layout row wrap>
-            <v-flex xs6 class="top-12" v-for="reg in rtu.reads" v-if="reg.name != '三相功因'" :key="rtu.name + reg.name">
-              <v-card light>
-                <v-card-text class="absolute">
-                  <span class="caption top-6 grey--text">{{ reg.name }}</span><br>
-                  <span class="headline top-12"><strong>{{ reg.value.toFixed(2) }} </strong></span>
-                  <span class="subheading top-12">{{ reg.unit }}</span>
-                </v-card-text>
-                <br><br><br>
-                <trend
-                  :data="regList(rtu.name, reg.name)"
-                  :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
-                >
-                </trend>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
-      </v-card>
+    <v-flex xs12>
+      <isotope :list="currentLog.reads" class="grid" itemSelector="grid-item" :options='option' >
+        <div v-for="rtu in currentLog.reads" :key="rtu.name" class="xs12 sm6 md4 lg3 xl2">
+          <v-card light class="grey lighten-3">
+            <v-card-text>
+              <div class="title">M{{ rtu.addr }}-{{ rtu.name }}</div>
+            </v-card-text>
+            <v-container fluid grid-list-md>
+              <v-layout row wrap>
+                <v-flex xs6 class="top-12" v-for="reg in rtu.reads" v-if="reg.name != '三相功因'" :key="rtu.name + reg.name">
+                  <v-card light>
+                    <v-card-text class="absolute">
+                      <span class="caption top-6 grey--text">{{ reg.name }}</span><br>
+                      <span class="headline top-12"><strong>{{ reg.value.toFixed(2) }} </strong></span>
+                      <span class="subheading top-12">{{ reg.unit }}</span>
+                    </v-card-text>
+                    <br><br><br>
+                    <trend
+                      :data="regList(rtu.name, reg.name)"
+                      :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
+                    >
+                    </trend>
+                  </v-card>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card>
+        </div>
+      </isotope>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
+import isotope from 'vueisotope'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'plc-card',
+  data: function () {
+    return {
+      option: {
+        itemSelector: '.grid-item',
+        percentPosition: true,
+        masonry: {
+          gutter: 0
+        }
+      }
+    }
+  },
   computed: mapGetters([
     // map this.logs to store.state.logs
     'currentLog',
     'regList',
     'currentLogTime'
-  ])
+  ]),
+  components: {
+    isotope,
+  }
 }
 </script>
 
@@ -63,6 +83,19 @@ export default {
 .absolute {
   position: absolute;
 }
+.grid-item {
+  padding: 4px;
+}
+</style>
+<style lang="stylus" scoped>
+@require '../../node_modules/vuetify/src/stylus/settings/_variables'
+
+.grid
+  for size, width in $grid-breakpoints
+    @media all and (min-width: width)
+      for n in (1..$grid-columns)
+        .grid-item.{size}{n}
+          width: (n / $grid-columns * 100)%
 </style>
 
 // currentLog =
