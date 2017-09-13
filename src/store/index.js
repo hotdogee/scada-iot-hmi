@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as actions from './actions'
 import mutations from './mutations'
+import chart from './modules/chart'
 
 Vue.use(Vuex)
 
@@ -29,7 +30,8 @@ const state = {
     }
     */
   ],
-  regList: {}
+  regList: {},
+  chartData: {}
 }
 
 // const options = {
@@ -56,7 +58,7 @@ const getters = {
   },
   currentLog: (state, getters) => {
     if (!state.logs.length) return {reads: []}
-    // console.log(state.logs[0].reads.map((x) => x.addr)) 
+    // console.log(state.logs[0].reads.map((x) => x.addr))
     let defaultOrder = [63, 64, 62, 60, 61, 22, 1, 2, 10, 11, 13, 14, 14, 21]
     state.logs[0].reads = _.sortBy(state.logs[0].reads, [function(o) { return defaultOrder.indexOf(o.addr); }]);
     return state.logs[0]
@@ -71,8 +73,104 @@ const getters = {
     let min = _.minBy(rl, (reg) => reg.value).value
     let max = _.maxBy(rl, (reg) => reg.value).value
     return _.map(state.regList[rtuName][regName], (reg) => {
-      return Math.round((reg.value - min) / (max - min) * 10000) / 100
+      return Math.round(reg.value * 10000) / 100
     })
+  },
+  chartData: (state, getters) => (rtuName, regName) => {
+    if (_.isEmpty(state.regList)) return []
+    let rl = state.regList[rtuName][regName]
+    let min = _.minBy(rl, (reg) => reg.value).value
+    let max = _.maxBy(rl, (reg) => reg.value).value
+    return _.map(state.regList[rtuName][regName], (reg) => {
+      return [ reg.time,  Math.round(reg.value * 10000) / 100 ]
+    })
+  },
+  chartInit: (state, getters) => {
+    let option = {
+      title: {
+        text: '歷史數據'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 10,
+        top: 30,
+        bottom: 20,
+        data: []
+      },
+      grid: {
+          left: 250,
+          right: '4%',
+          bottom: 50,
+          containLabel: true
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross'
+        }
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: 'none'
+          },
+          restore: {},
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'time',
+        name: '時間'
+      },
+      yAxis: {
+        type: 'value'
+      },
+      dataZoom: [
+        {
+          type: 'inside',
+          xAxisIndex: [0]
+        },
+        {
+          type: 'slider',
+          xAxisIndex: [0]
+        }
+      ],
+      series: [
+      ],
+      animationDuration: 1000
+    }
+    if (_.isEmpty(state.chartData)) return option
+    option.legend.data = Object.keys(state.chartData)
+    option.series = option.legend.data.map(k => {
+      return {
+        name: k,
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        // lineStyle: {
+        //     normal: {
+        //         width: 1,
+        //     }
+        // },
+        data: []
+      }
+    })
+    //console.log(option)
+    return option
+  },
+  chartUpdate: (state, getters) => {
+    let option = {
+      series: []
+    }
+    if (_.isEmpty(getters.chartInit.series)) return {}
+    option.series = Object.keys(state.chartData).map(k => {
+      return {
+        name: k,
+        data: state.chartData[k].map(reg => [reg.time, reg.value])
+      }
+    })
+    //console.log(option)
+    return option
   }
 }
 
@@ -80,7 +178,10 @@ export default new Vuex.Store({
   state,
   getters,
   actions,
-  mutations
+  mutations,
+  modules: {
+    chart
+  }
 })
 
 function flattenMessage (message) {

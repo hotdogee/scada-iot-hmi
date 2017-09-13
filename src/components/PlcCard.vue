@@ -43,7 +43,7 @@
 
 <script>
 import isotope from 'vueisotope'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'plc-card',

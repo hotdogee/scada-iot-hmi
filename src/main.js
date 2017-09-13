@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
 import Trend from 'vuetrend'
 import App from './App'
 import { socket } from './api'
@@ -16,6 +18,7 @@ socket.on('disconnect', function(){
 
 Vue.use(Vuetify)
 Vue.use(Trend)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 

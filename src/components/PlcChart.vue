@@ -2,67 +2,286 @@
   <v-layout row wrap>
     <v-flex xs12>
       <v-card light>
-        <v-card-text>
-          <div class="title text-xs-center">{{ currentLogTime }}</div>
+        <v-card-title primary-title>
+          <div class="headline">{{ this.$store.state.logs.length }}筆資料</div>
+        </v-card-title>
+        <v-card-text class="pt-0">
+          <v-layout row wrap>
+            <v-flex xs12 sm6>
+              <v-layout row wrap>
+                <v-flex xs6>
+                  <v-menu
+                    lazy
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    :nudge-left="40"
+                    max-width="290px"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      label="起始日期"
+                      v-model="startDate"
+                      prepend-icon="event"
+                      readonly light
+                    ></v-text-field>
+                    <v-date-picker v-model="startDate" locale="zh-TW" dark>
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs6>
+                  <v-menu
+                    lazy
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    :nudge-left="40"
+                    max-width="290px"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      label="起始時間"
+                      v-model="startTime"
+                      prepend-icon="access_time"
+                      readonly light
+                    ></v-text-field>
+                    <v-time-picker v-model="startTime" locale="zh-TW" dark>
+                    </v-time-picker>
+                  </v-menu>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+            <v-flex xs12 sm6>
+              <v-layout row wrap>
+                <v-flex xs6>
+                  <v-menu
+                    lazy
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    :nudge-left="40"
+                    max-width="290px"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      label="結束日期"
+                      v-model="endDate"
+                      prepend-icon="event"
+                      readonly light
+                    ></v-text-field>
+                    <v-date-picker v-model="endDate" locale="zh-TW" dark>
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs6>
+                  <v-menu
+                    lazy
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    :nudge-left="40"
+                    max-width="290px"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      label="結束時間"
+                      v-model="endTime"
+                      prepend-icon="access_time"
+                      readonly light
+                    ></v-text-field>
+                    <v-time-picker v-model="endTime" locale="zh-TW" dark>
+                    </v-time-picker>
+                  </v-menu>
+                </v-flex>
+              </v-layout>
+            </v-flex>
+            <v-flex xs12>
+              <v-btn block primary dark @click.native="getChartData()">確定</v-btn>
+            </v-flex>
+            <v-flex xs12>
+              <el-date-picker
+                v-model="value3"
+                type="datetimerange"
+                size="mini"
+                placeholder="Select time range">
+              </el-date-picker>
+            </v-flex>
+          </v-layout>
         </v-card-text>
       </v-card>
     </v-flex>
-    <v-flex xs12 sm6 md4 lg3 xl2 v-for="rtu in currentLog.reads" :key="rtu.name">
-      <v-card light class="grey lighten-3">
+    <v-flex xs12>
+      <v-card light>
         <v-card-text>
-          <div class="title">M{{ rtu.addr }}-{{ rtu.name }}</div>
+          <chart :options="chartInit" ref="chart"></chart>
         </v-card-text>
-        <v-container fluid grid-list-md>
-          <v-layout row wrap>
-            <v-flex xs6 class="top-12" v-for="reg in rtu.reads" :key="rtu.name + reg.name">
-              <v-card light>
-                <v-card-text class="absolute">
-                  <span class="caption top-6 grey--text">{{ reg.name }}</span><br>
-                  <span class="headline top-12"><strong>{{ reg.value.toFixed(2) }} </strong></span>
-                  <span class="subheading top-12">{{ reg.unit }}</span>
-                </v-card-text>
-                <br><br><br>
-                <trend
-                  :data="regList(rtu.name, reg.name)"
-                  :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
-                >
-                </trend>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
       </v-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import _ from 'lodash'
+import ECharts from 'vue-echarts/components/ECharts.vue'
+import 'echarts/lib/chart/line';
+// import 'echarts/lib/chart/bar';
+// import 'echarts/lib/chart/pie';
+// import 'echarts/lib/chart/scatter';
+// import 'echarts/lib/chart/radar';
+
+// import 'echarts/lib/chart/map';
+// import 'echarts/lib/chart/treemap';
+// import 'echarts/lib/chart/graph';
+// import 'echarts/lib/chart/gauge';
+// import 'echarts/lib/chart/funnel';
+// import 'echarts/lib/chart/parallel';
+// import 'echarts/lib/chart/sankey';
+// import 'echarts/lib/chart/boxplot';
+// import 'echarts/lib/chart/candlestick';
+// import 'echarts/lib/chart/effectScatter';
+// import 'echarts/lib/chart/lines';
+// import 'echarts/lib/chart/heatmap';
+
+import 'echarts/lib/component/graphic';
+import 'echarts/lib/component/grid';
+import 'echarts/lib/component/legend';
+import 'echarts/lib/component/tooltip';
+import 'echarts/lib/component/polar';
+import 'echarts/lib/component/geo';
+import 'echarts/lib/component/parallel';
+import 'echarts/lib/component/singleAxis';
+import 'echarts/lib/component/brush';
+
+import 'echarts/lib/component/title';
+
+import 'echarts/lib/component/dataZoom';
+import 'echarts/lib/component/visualMap';
+
+import 'echarts/lib/component/markPoint';
+import 'echarts/lib/component/markLine';
+import 'echarts/lib/component/markArea';
+
+import 'echarts/lib/component/timeline';
+import 'echarts/lib/component/toolbox';
+
+import 'zrender/lib/vml/vml';
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'plc-card',
-  computed: mapGetters([
-    // map this.logs to store.state.logs
-    'currentLog',
-    'regList',
-    'currentLogTime'
-  ])
+  data: function () {
+    let data = []
+
+    for (let i = 0; i <= 360; i++) {
+        let t = i / 180 * Math.PI
+        let r = Math.sin(2 * t) * Math.cos(2 * t)
+        data.push([r, i])
+    }
+
+    return {
+      startDate: new Date(Date.now() - 1000*60*60*24).toISOString().substr(0, 10),
+      startTime: null,
+      endDate: new Date().toISOString().substr(0, 10),
+      endTime: null,
+      menu: false,
+      modal: false,
+      value3: [],
+      option: {
+        title: {
+          text: '歷史數據'
+        },
+        legend: {
+          data: []
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          }
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'time',
+          name: '時間'
+        },
+        yAxis: {
+          type: 'value'
+        },
+        dataZoom: [
+          {
+            type: 'inside',
+            xAxisIndex: [0]
+          },
+          {
+            type: 'slider',
+            xAxisIndex: [0]
+          }
+        ],
+        series: [
+        ],
+        animationDuration: 1000
+      }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      // map this.logs to store.state.logs
+      'chartInit',
+      'chartUpdate'
+    ]),
+    start: function () {
+      return new Date().getTime() - 60*60*1000
+    },
+    end: function () {
+      return new Date().getTime()
+    }
+  },
+  methods: {
+    ...mapActions([
+      'getLogs' // map `this.getChartData(payloads)` to `this.$store.dispatch('getChartData', payloads)`
+    ]),
+    getChartData: function () {
+      console.log(this.startDate, this.startTime, this.endDate, this.endTime)
+    }
+  },
+  watch: {
+    chartUpdate: function (val, oldVal) {
+      //console.log(this.$refs.chart.computedOptions.legend[0].data)
+      if (_.isEmpty(this.$refs.chart.computedOptions.legend[0].data)) return
+      this.$refs.chart.mergeOptions(val)
+      //console.log(this.$refs.chart)
+    }
+  },
+  components: {
+    chart: ECharts
+  },
+  mounted: function () {
+    this.endDate = new Date('2017-08-08')
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.top-6 {
-  top: -6px;
-  position: relative;
+.echarts {
+  width: 100%;
+  height: 700px;
 }
-.top-12 {
-  top: -12px;
-  position: relative;
-}
-.absolute {
-  position: absolute;
-}
+</style>
+
+<style lang="stylus" scoped>
 </style>
 
 // currentLog =

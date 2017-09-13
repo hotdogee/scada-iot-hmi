@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import util from 'util'
 import * as types from './mutation-types'
 
 export default {
@@ -14,6 +15,7 @@ export default {
 function setLogs (state, logs) {
   state.logs = logs
   let regList = {}
+  let chartData = {}
   _.forEachRight(logs, (log) => { // oldest log first
     _.forEach(log.reads, (rtu) => {
       _.forEach(rtu.reads, (reg) => {
@@ -24,10 +26,17 @@ function setLogs (state, logs) {
           regList[rtu.name][reg.name] = []
         }
         regList[rtu.name][reg.name].push(reg)
+        // 'M1-九號井口-溫度(°C)'
+        let header = util.format('M%s-%s-%s(%s)', rtu.addr, rtu.name, reg.name, reg.unit)
+        if (!chartData[header]) {
+          chartData[header] = []
+        }
+        chartData[header].push(reg)
       })
     })
   })
   state.regList = regList
+  state.chartData = chartData
 }
 
 function addLog (state, log) {
@@ -43,6 +52,13 @@ function addLog (state, log) {
       }
       state.regList[rtu.name][reg.name].push(reg)
       state.regList[rtu.name][reg.name].shift()
+      // 'M1-九號井口-溫度(°C)'
+      let header = util.format('M%s-%s-%s(%s)', rtu.addr, rtu.name, reg.name, reg.unit)
+      if (!state.chartData[header]) {
+        state.chartData[header] = []
+      }
+      state.chartData[header].push(reg)
+      state.chartData[header].shift()
     })
   })
 }

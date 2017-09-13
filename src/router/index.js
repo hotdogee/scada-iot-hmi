@@ -28,7 +28,7 @@ export default new Router({
     {
       path: '/plc/chart',
       name: 'PlcChart',
-      component: Construction
+      component: PlcChart
     }
   ]
 })
