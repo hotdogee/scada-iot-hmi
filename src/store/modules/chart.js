@@ -11,16 +11,16 @@ const state = {
 
 // Leave logs out of state, the browser crashes if state.logs has over 20k items,
 // and starts to feel slow when it has over 1k items
-let logs = []
+// let logs = []
 let rtuRegs = {}
 
 // getters
 const getters = {
-  chartLogs (state, getters, rootState, rootGetters) {
-    // clear computed cache when logsLength changes
-    state.logsLength // eslint-disable-line no-unused-expressions
-    return logs
-  },
+  // chartLogs (state, getters, rootState, rootGetters) {
+  //   // clear computed cache when logsLength changes
+  //   state.logsLength // eslint-disable-line no-unused-expressions
+  //   return logs
+  // },
   chartRtuRegs (state, getters, rootState, rootGetters) {
     // clear computed cache when logsLength changes
     state.logsLength // eslint-disable-line no-unused-expressions
@@ -104,19 +104,19 @@ const actions = {
     commit(types.SET_CHART_LOGS_LENGTH, {
       logsLength: 0
     })
-    logs = new Array(total)
+    // logs = new Array(total)
     rtuRegs = {}
     let i = 0
+    let x = new Float64Array(total)
     for (let results of logPromises) {
       const newLogs = (await results).data
       // console.log('logs.find results:', newLogs)
       // logs = logs.concat(newLogs)
       // build rtuRegs = ['rtuRegTitle': {x: [], y: [], rtuName, regName, addr, unit}, ...]
       _.forEach(newLogs, (log) => { // oldest log first
-        // logs.push(log)
-        logs[i] = log
+        // logs[i] = log
         let addrs = new Set()
-        let logTime = new Date(log.logTime).getTime()
+        x[i] = new Date(log.logTime).getTime()
         _.forEach(log.reads, (rtu) => {
           if (!addrs.has(rtu.addr)) {
             addrs.add(rtu.addr)
@@ -125,7 +125,7 @@ const actions = {
               const header = `M${rtu.addr}-${rtu.name}-${reg.name}${reg.unit ? '(' + reg.unit + ')' : ''}`
               if (!rtuRegs[header]) {
                 rtuRegs[header] = {
-                  x: new Array(total),
+                  x: x,
                   y: new Array(total),
                   rtu: rtu.name,
                   addr: rtu.addr,
@@ -134,9 +134,7 @@ const actions = {
                   header: header
                 }
               }
-              // rtuRegs[header].x.push(logTime)
-              // rtuRegs[header].y.push(reg.value)
-              rtuRegs[header].x[i] = logTime
+              // rtuRegs[header].x[i] = logTime
               rtuRegs[header].y[i] = reg.value
             })
           }

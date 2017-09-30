@@ -435,7 +435,7 @@ export default {
       'getLogsInRange'
     ]),
     ...mapGetters([
-      'chartLogs',
+      // 'chartLogs',
       'chartRtuRegs'
     ]),
     getChartData (event, done) {
