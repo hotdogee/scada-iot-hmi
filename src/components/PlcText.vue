@@ -1,16 +1,20 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12>
-      <v-card light>
-        <v-card-text>
-          <pre class="text-xs-center">{{ logText }}</pre>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <div class="row wrap container">
+    <div class="col-xs-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+      <q-card class="bg-white">
+        <q-card-main>
+          <pre class="text-center">{{ logText }}</pre>
+        </q-card-main>
+      </q-card>
+    </div>
+  </div>
 </template>
 
 <script>
+import {
+  QCard,
+  QCardMain
+} from 'quasar'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -18,7 +22,11 @@ export default {
   computed: mapGetters([
     // map this.logs to store.state.logs
     'logText'
-  ])
+  ]),
+  components: {
+    QCard,
+    QCardMain
+  }
 }
 </script>
 

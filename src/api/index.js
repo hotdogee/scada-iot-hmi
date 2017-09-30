@@ -1,11 +1,15 @@
-import feathers from 'feathers/client'
-import socketio from 'feathers-socketio/client'
 import io from 'socket.io-client'
+import socketio from 'feathers-socketio/client'
+import feathers from 'feathers/client'
 
-export const socket = io('http://api.scada.hanl.in')
+export const url = 'http://api.scada.hanl.in'
 
-export const supervisor = feathers().configure(socketio(socket))
+export const socket = io(url)
 
-export const logs = supervisor.service('logs')
+const api = feathers().configure(socketio(socket))
+
+export default api
+
+export const logs = api.service('logs')
 
 global.socket = socket

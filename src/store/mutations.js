@@ -6,9 +6,20 @@ export default {
   [types.SET_LOGS] (state, { logs }) {
     setLogs(state, logs)
   },
-
   [types.ADD_LOG] (state, { log }) {
     addLog(state, log)
+  },
+  [types.SET_LOGS_TOTAL] (state, { total }) {
+    state.logsTotal = total
+  },
+  [types.ADD_LOGS_TOTAL] (state, { total }) {
+    state.logsTotal += total
+  },
+  [types.SET_LOGS_START] (state, { start }) {
+    state.logsStart = start
+  },
+  [types.SET_LOGS_END] (state, { end }) {
+    state.logsEnd = end
   }
 }
 

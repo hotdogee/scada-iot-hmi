@@ -1,49 +1,51 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12 sm6 md4 lg3 xl2 class="grid-sizer"></v-flex>
-    <v-flex xs12>
-      <v-card light>
-        <v-card-text>
-          <div class="title text-xs-center">{{ currentLogTime }}</div>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-    <v-flex xs12>
+  <div class="row wrap container">
+    <div class="col-xs-12">
+      <q-card class="bg-white">
+        <q-card-title>
+          <div class="title text-center">{{ currentLogTime }}</div>
+        </q-card-title>
+      </q-card>
+    </div>
+    <div class="col-xs-12">
       <isotope :list="currentLog.reads" class="grid" itemSelector="grid-item" :options='option' >
-        <div v-for="rtu in currentLog.reads" :key="rtu.name" class="xs12 sm6 md4 lg3 xl2">
-          <v-card light class="grey lighten-3">
-            <v-card-text>
+        <div v-for="rtu in currentLog.reads" :key="rtu.name" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+          <q-card class="bg-white">
+            <q-card-title>
               <div class="title">M{{ rtu.addr }}-{{ rtu.name }}</div>
-            </v-card-text>
-            <v-container fluid grid-list-md>
-              <v-layout row wrap>
-                <v-flex xs6 class="top-12" v-for="reg in rtu.reads" v-if="reg.name != '三相功因'" :key="rtu.name + reg.name">
-                  <v-card light>
-                    <v-card-text class="absolute">
-                      <span class="caption top-6 grey--text">{{ reg.name }}</span><br>
-                      <span class="headline top-12"><strong>{{ reg.value.toFixed(2) }} </strong></span>
-                      <span class="subheading top-12">{{ reg.unit }}</span>
-                    </v-card-text>
-                    <br><br><br>
-                    <trend
-                      :data="regList(rtu.name, reg.name)"
-                      :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
-                    >
-                    </trend>
-                  </v-card>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card>
+            </q-card-title>
+            <div class="row wrap">
+              <div class="col-xs-6 top-12" v-for="reg in rtu.reads" v-if="reg.name != '三相功因'" :key="rtu.name + reg.name">
+                <q-card light>
+                  <q-card-main class="absolute">
+                    <span class="caption top-6 text-grey">{{ reg.name }}</span><br>
+                    <span class="headline top-12"><strong>{{ reg.value.toFixed(2) }} </strong></span>
+                    <span class="subheading top-12">{{ reg.unit }}</span>
+                  </q-card-main>
+                  <br><br><br>
+                  <trend
+                    :data="regList(rtu.name, reg.name)"
+                    :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
+                  >
+                  </trend>
+                </q-card>
+              </div>
+            </div>
+          </q-card>
         </div>
       </isotope>
-    </v-flex>
-  </v-layout>
+    </div>
+  </div>
 </template>
 
 <script>
+import {
+  QCard,
+  QCardMain,
+  QCardTitle
+} from 'quasar'
 import isotope from 'vueisotope'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'plc-card',
@@ -66,6 +68,9 @@ export default {
   ]),
   components: {
     isotope,
+    QCard,
+    QCardMain,
+    QCardTitle
   }
 }
 </script>
@@ -83,19 +88,42 @@ export default {
 .absolute {
   position: absolute;
 }
-.grid-item {
+/* .grid-item {
   padding: 4px;
+} */
+.q-card {
+  margin: 4px;
+}
+div.row.wrap.container {
+  padding: 4px;
+}
+div.title {
+  font-size: 20px;
+}
+span.caption {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+span.headline {
+  font-size: 24px !important;
+  font-weight: 400 !important;
+  line-height: 32px !important;
+  letter-spacing: normal !important;
+}
+span.subheading {
+  font-size: 16px !important;
+  font-weight: 400 !important;
 }
 </style>
 <style lang="stylus" scoped>
-@require '../../node_modules/vuetify/src/stylus/settings/_variables'
+@import '~variables'
 
 .grid
-  for size, width in $grid-breakpoints
+  for size, width in $sizes
     @media all and (min-width: width)
-      for n in (1..$grid-columns)
-        .grid-item.{size}{n}
-          width: (n / $grid-columns * 100)%
+      for n in (1..$flex-cols)
+        .grid-item.col-{size}-{n}
+          width: (n / $flex-cols * 100)%
 </style>
 
 // currentLog =

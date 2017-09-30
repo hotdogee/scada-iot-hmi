@@ -1,34 +1,53 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import PlcText from '@/components/PlcText'
-import PlcCard from '@/components/PlcCard'
-import PlcChart from '@/components/PlcChart'
-import Construction from '@/components/Construction'
+import VueRouter from 'vue-router'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+function load (component) {
+  // '@' is aliased to src/components
+  return () => import(`@/${component}.vue`)
+}
+
+export default new VueRouter({
+  /*
+   * NOTE! VueRouter "history" mode DOESN'T works for Cordova builds,
+   * it is only to be used only for websites.
+   *
+   * If you decide to go with "history" mode, please also open /config/index.js
+   * and set "build.publicPath" to something other than an empty string.
+   * Example: '/' instead of current ''
+   *
+   * If switching back to default "hash" mode, don't forget to set the
+   * build publicPath back to '' so Cordova builds work again.
+   */
   mode: 'history',
   routes: [
     {
       path: '/',
       name: 'Index',
-      redirect: { name: 'PlcCard' }
+      redirect: { name: 'PlcCard' },
+      component: load('Index'),
+      children: [
+        {
+          path: 'text',
+          name: 'PlcText',
+          component: load('PlcText')
+        },
+        {
+          path: 'card',
+          name: 'PlcCard',
+          component: load('PlcCard')
+        },
+        {
+          path: 'chart',
+          name: 'PlcChart',
+          component: load('PlcChart')
+        }
+      ]
     },
     {
-      path: '/plc/text',
-      name: 'PlcText',
-      component: PlcText
-    },
-    {
-      path: '/plc/card',
-      name: 'PlcCard',
-      component: PlcCard
-    },
-    {
-      path: '/plc/chart',
-      name: 'PlcChart',
-      component: PlcChart
-    }
+      path: '*',
+      component: load('Error404')
+    } // Not found
   ]
 })

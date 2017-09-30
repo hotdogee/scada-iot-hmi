@@ -30,6 +30,9 @@ const state = {
     }
     */
   ],
+  logsTotal: -1,
+  logsStart: -1,
+  logsEnd: -1,
   regList: {},
   chartData: {}
 }
@@ -59,8 +62,8 @@ const getters = {
   currentLog: (state, getters) => {
     if (!state.logs.length) return {reads: []}
     // console.log(state.logs[0].reads.map((x) => x.addr))
-    let defaultOrder = [63, 64, 60, 61, 22, 1, 2, 10, 11, 13, 14, 14, 21, 62, 9]
-    state.logs[0].reads = _.sortBy(state.logs[0].reads, [function(o) { return defaultOrder.indexOf(o.addr); }]);
+    let defaultOrder = [63, 64, 62, 60, 61, 22, 1, 2, 10, 11, 13, 14, 21, 9]
+    state.logs[0].reads = _.sortBy(state.logs[0].reads, [function (o) { return defaultOrder.indexOf(o.addr) }])
     return state.logs[0]
   },
   currentLogTime: (state, getters) => {
@@ -69,20 +72,20 @@ const getters = {
   },
   regList: (state, getters) => (rtuName, regName) => {
     if (_.isEmpty(state.regList)) return []
-    let rl = state.regList[rtuName][regName]
-    let min = _.minBy(rl, (reg) => reg.value).value
-    let max = _.maxBy(rl, (reg) => reg.value).value
+    // let rl = state.regList[rtuName][regName]
+    // let min = _.minBy(rl, (reg) => reg.value).value
+    // let max = _.maxBy(rl, (reg) => reg.value).value
     return _.map(state.regList[rtuName][regName], (reg) => {
       return Math.round(reg.value * 10000) / 100
     })
   },
   chartData: (state, getters) => (rtuName, regName) => {
     if (_.isEmpty(state.regList)) return []
-    let rl = state.regList[rtuName][regName]
-    let min = _.minBy(rl, (reg) => reg.value).value
-    let max = _.maxBy(rl, (reg) => reg.value).value
+    // let rl = state.regList[rtuName][regName]
+    // let min = _.minBy(rl, (reg) => reg.value).value
+    // let max = _.maxBy(rl, (reg) => reg.value).value
     return _.map(state.regList[rtuName][regName], (reg) => {
-      return [ reg.time,  Math.round(reg.value * 10000) / 100 ]
+      return [ reg.time, Math.round(reg.value * 10000) / 100 ]
     })
   },
   chartInit: (state, getters) => {
@@ -98,10 +101,10 @@ const getters = {
         data: []
       },
       grid: {
-          left: 250,
-          right: '4%',
-          bottom: 50,
-          containLabel: true
+        left: 250,
+        right: '4%',
+        bottom: 50,
+        containLabel: true
       },
       tooltip: {
         trigger: 'axis',
@@ -155,7 +158,7 @@ const getters = {
         data: []
       }
     })
-    //console.log(option)
+    // console.log(option)
     return option
   },
   chartUpdate: (state, getters) => {
@@ -169,7 +172,7 @@ const getters = {
         data: state.chartData[k].map(reg => [reg.time, reg.value])
       }
     })
-    //console.log(option)
+    // console.log(option)
     return option
   }
 }
