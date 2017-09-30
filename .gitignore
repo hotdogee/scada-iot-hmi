@@ -69,3 +69,7 @@ selenium-debug.log
 *.ntvs*
 *.njsproj
 *.sln
+
+# cordova
+cordova/platforms
+cordova/plugins
