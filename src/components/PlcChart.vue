@@ -90,6 +90,9 @@ getSeriesData -> chartUpdate
 */
 import _ from 'lodash'
 import TWEEN from '@tweenjs/tween.js'
+
+// import Highcharts from 'highcharts/highstock'
+
 import Plotly from 'plotly.js/lib/core'
 // Load in the trace types for scattergl
 Plotly.register([
@@ -222,6 +225,14 @@ export default {
           name: '',
           x: [],
           y: []
+        },
+        timeSeriesTrace2: {
+          type: 'line',
+          name: '',
+          data: [],
+          dataGrouping: {
+            enabled: true
+          }
         }
       },
       figTemplates: {
@@ -319,11 +330,96 @@ export default {
           config: {},
           frames: []
         },
+        timeSeriesFig2: {
+          series: [],
+          chart: {
+            type: 'line',
+            zoomType: 'x'
+          },
+          navigator: {
+            adaptToUpdatedData: true,
+            series: {
+              data: []
+            }
+          },
+          scrollbar: {
+            liveRedraw: false
+          },
+          title: {
+            text: ''
+          },
+          rangeSelector: {
+            buttons: [
+              {
+                count: 5,
+                type: 'minute',
+                text: '5m'
+              },
+              {
+                count: 1,
+                type: 'hour',
+                text: '1h'
+              },
+              {
+                count: 6,
+                type: 'hour',
+                text: '6d'
+              },
+              {
+                count: 1,
+                type: 'day',
+                text: '1d'
+              },
+              {
+                count: 3,
+                type: 'day',
+                text: '3d'
+              },
+              // {
+              //   count: 7,
+              //   step: 'day',
+              //   label: '7d',
+              //   stepmode: 'backward'
+              // },
+              // {
+              //   count: 14,
+              //   step: 'day',
+              //   label: '14d',
+              //   stepmode: 'backward'
+              // },
+              // {
+              //   count: 1,
+              //   step: 'month',
+              //   label: '1m',
+              //   stepmode: 'backward'
+              // },
+              // {
+              //   count: 3,
+              //   step: 'month',
+              //   label: '3m',
+              //   stepmode: 'backward'
+              // },
+              // {
+              //   count: 6,
+              //   step: 'month',
+              //   label: '6m',
+              //   stepmode: 'backward'
+              // },
+              // {
+              //   count: 1,
+              //   step: 'year',
+              //   label: '6y',
+              //   stepmode: 'backward'
+              // },
+              {type: 'all'}
+            ]
+          },
+          xAxis: {
+          },
+          yAxis: {
+          }
+        },
         emptyFig: {
-          data: [],
-          layout: {},
-          config: {},
-          frames: []
         }
       },
       figs: [
@@ -443,10 +539,10 @@ export default {
       // this.getLogsCountInRange(this.chartRange)
       this.showChart = false
       // clear charts
-      this.figs.forEach((fig, i) => {
-        // console.log(i, fig)
-        Plotly.newPlot(this.$refs.gd[i], [])
-      })
+      // this.figs.forEach((fig, i) => {
+      //   // console.log(i, fig)
+      //   Plotly.newPlot(this.$refs.gd[i], [])
+      // })
       const newDone = () => {
         this.showChart = true
         this.$nextTick(function () {
@@ -598,7 +694,33 @@ export default {
     // window.gd = this.$refs.gd
     this.figs.forEach((fig, i) => {
       // console.log(i, fig)
-      Plotly.newPlot(this.$refs.gd[i], [])
+      // Plotly.newPlot(this.$refs.gd[i], [])
+      // Highcharts.chart(this.$refs.gd[i], {
+      //   chart: {
+      //     type: 'bar'
+      //   },
+      //   credits: {
+      //     enabled: false
+      //   },
+      //   title: {
+      //     text: 'Fruit Consumption'
+      //   },
+      //   xAxis: {
+      //     categories: ['Apples', 'Bananas', 'Oranges']
+      //   },
+      //   yAxis: {
+      //     title: {
+      //       text: 'Fruit eaten'
+      //     }
+      //   },
+      //   series: [{
+      //     name: 'Jane',
+      //     data: [1, 0, 4]
+      //   }, {
+      //     name: 'John',
+      //     data: [5, 7, 3]
+      //   }]
+      // })
     })
   }
 }

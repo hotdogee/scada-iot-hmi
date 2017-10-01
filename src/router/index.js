@@ -42,6 +42,11 @@ export default new VueRouter({
           path: 'chart',
           name: 'PlcChart',
           component: load('PlcChart')
+        },
+        {
+          path: 'cam',
+          name: 'PlcCam',
+          component: load('PlcCam')
         }
       ]
     },
