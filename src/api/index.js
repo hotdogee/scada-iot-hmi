@@ -6,7 +6,7 @@ export const url = 'http://api.scada.hanl.in'
 
 export const socket = io(url)
 
-const api = feathers().configure(socketio(socket))
+const api = feathers().configure(socketio(socket, { timeout: 10000 }))
 
 export default api
 
