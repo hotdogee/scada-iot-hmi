@@ -74,9 +74,6 @@ export default {
 .cards-enter-active, .cards-leave-active {
   transition: opacity .8s ease;
 }
-/* .cards-move {
-  transition: opacity 1.8s ease;
-} */
 .cards-enter, .cards-leave-to {
   opacity: 0;
 }
