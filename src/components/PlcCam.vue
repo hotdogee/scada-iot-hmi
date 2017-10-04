@@ -1,34 +1,13 @@
 <template>
-  <div class="row wrap container">
-    <div class="col-xs-12 col-sm-6">
+  <transition-group name="cards" tag="div" class="row wrap container">
+    <div class="col-xs-12 col-sm-6 cards-item" v-for="(cam, index) in cameras" :key="index" v-show="cam.show">
       <q-card class="bg-white">
         <q-card-main>
-          <canvas id="camera-canvas1" class="camera-canvas"></canvas>
+          <canvas ref="camera-canvas" class="camera-canvas"></canvas>
         </q-card-main>
       </q-card>
     </div>
-    <div class="col-xs-12 col-sm-6">
-      <q-card class="bg-white">
-        <q-card-main>
-          <canvas id="camera-canvas2" class="camera-canvas"></canvas>
-        </q-card-main>
-      </q-card>
-    </div>
-    <div class="col-xs-12 col-sm-6">
-      <q-card class="bg-white">
-        <q-card-main>
-          <canvas id="camera-canvas3" class="camera-canvas"></canvas>
-        </q-card-main>
-      </q-card>
-    </div>
-    <div class="col-xs-12 col-sm-6">
-      <q-card class="bg-white">
-        <q-card-main>
-          <canvas id="camera-canvas4" class="camera-canvas"></canvas>
-        </q-card-main>
-      </q-card>
-    </div>
-  </div>
+  </transition-group>
 </template>
 
 <script>
@@ -40,20 +19,45 @@ import {
 
 export default {
   name: 'plc-cam',
+  data: function () {
+    return {
+      cameras: [
+        {
+          url: 'ws://cam.scada.hanl.in/cam1',
+          show: false
+        },
+        {
+          url: 'ws://cam.scada.hanl.in/cam2',
+          show: false
+        },
+        {
+          url: 'ws://cam.scada.hanl.in/cam3',
+          show: false
+        },
+        {
+          url: 'ws://cam.scada.hanl.in/cam4',
+          show: false
+        }
+      ]
+    }
+  },
   mounted () {
     // setup live view
-    const canvas1 = document.getElementById('camera-canvas1')
-    const url1 = 'ws://cam.scada.hanl.in/cam1'
-    const player1 = new JSMpeg.Player(url1, {canvas: canvas1, preserveDrawingBuffer: true})
-    const canvas2 = document.getElementById('camera-canvas2')
-    const url2 = 'ws://cam.scada.hanl.in/cam2'
-    const player2 = new JSMpeg.Player(url2, {canvas: canvas2, preserveDrawingBuffer: true})
-    const canvas3 = document.getElementById('camera-canvas3')
-    const url3 = 'ws://cam.scada.hanl.in/cam3'
-    const player3 = new JSMpeg.Player(url3, {canvas: canvas3, preserveDrawingBuffer: true})
-    const canvas4 = document.getElementById('camera-canvas4')
-    const url4 = 'ws://cam.scada.hanl.in/cam4'
-    const player4 = new JSMpeg.Player(url4, {canvas: canvas4, preserveDrawingBuffer: true})
+    console.log(this.$refs)
+    this.cameras.forEach((cam, index) => {
+      cam.player = new JSMpeg.Player(cam.url, {canvas: this.$refs['camera-canvas'][index], preserveDrawingBuffer: true})
+      // cam.show = true
+      setTimeout(()=>{
+        cam.show = true
+      }, 2000 + index * 500)
+    })
+  },
+  beforeDestroy () {
+    // console.log('plc-cam beforeDestroy called!')
+    this.cameras.forEach((cam, index) => {
+      cam.player.destroy()
+      cam.show = false
+    })
   },
   components: {
     QCard,
@@ -66,5 +70,11 @@ export default {
 <style scoped>
 .camera-canvas {
   width: 100%;
+}
+.cards-move {
+  transition: all .8s ease;
+}
+.cards-enter, .cards-leave-to {
+  opacity: 0;
 }
 </style>
