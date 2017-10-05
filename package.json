@@ -8,7 +8,8 @@
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
     "build": "node build/script.build.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "start": "http-server ./dist --push-state -c 60 -p 8083"
   },
   "dependencies": {
     "@tweenjs/tween.js": "^17.1.1",
@@ -22,6 +23,7 @@
     "plotly.js": "^1.30.1",
     "quasar-extras": "0.x",
     "quasar-framework": "^0.14.1",
+    "spa-http-server": "^0.9.0",
     "vue": "^2.4.4",
     "vue-echarts": "^2.4.0",
     "vue-router": "^2.7.0",
