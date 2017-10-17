@@ -2,12 +2,12 @@
   <div class="row wrap container">
     <div class="col-xs-12">
       <q-card class="bg-white">
-        <q-card-title>
+        <q-card-title class="pad-b-8">
           <div class="title">目前顯示{{ animatedLogsLength | totalFormat }}資料</div>
         </q-card-title>
-        <q-card-main>
+        <q-card-main class="pad-b-0">
           <q-list>
-            <q-list-header>資料庫</q-list-header>
+            <q-list-header class="lh-normal pad-t-8">資料庫</q-list-header>
             <div class="pad-8 row wrap">
               <q-item class="col-xs-12 col-sm-6 col-md-3">
                 <q-item-side icon="timeline" />
@@ -39,7 +39,7 @@
               </q-item>
             </div>
             <q-item-separator />
-            <q-list-header>修改圖表時間範圍</q-list-header>
+            <q-list-header class="lh-normal pad-t-16">修改圖表時間範圍</q-list-header>
             <q-item>
               <q-item-main>
                 <q-field
@@ -57,7 +57,7 @@
         </q-card-main>
         <q-card-actions>
           <q-field
-            :error="total > 100000" class="full-width"
+            :error="total > 100000" class="full-width margin-0 pad-8"
             error-label="注意：繪製超過 100,000 筆資料可能會很慢"
           >
             <q-btn color="primary" class="full-width"
@@ -739,6 +739,28 @@ export default {
 }
 .pad-8 {
   padding: 8px;
+}
+.pad-v-8 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.pad-b-8 {
+  padding-bottom: 8px;
+}
+.pad-b-0 {
+  padding-bottom: 0px;
+}
+.margin-0 {
+  margin: 0px;
+}
+.lh-normal {
+  line-height: normal;
+}
+.pad-t-8 {
+  padding-top: 8px;
+}
+.pad-t-16 {
+  padding-top: 16px;
 }
 </style>
 
