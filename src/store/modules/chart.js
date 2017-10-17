@@ -107,7 +107,7 @@ const actions = {
     // logs = new Array(total)
     rtuRegs = {}
     let i = 0
-    let x = new Float64Array(total)
+    let x = new Array(total)
     for (let results of logPromises) {
       const newLogs = (await results).data
       // console.log('logs.find results:', newLogs)
