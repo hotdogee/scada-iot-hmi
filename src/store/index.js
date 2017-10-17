@@ -62,7 +62,7 @@ const getters = {
   currentLog: (state, getters) => {
     if (!state.logs.length) return {reads: []}
     // console.log(state.logs[0].reads.map((x) => x.addr))
-    let defaultOrder = [63, 64, 62, 60, 61, 22, 1, 2, 10, 11, 13, 14, 21, 9]
+    let defaultOrder = [63, 64, 62, 9, 60, 61, 22, 1, 2, 10, 11, 13, 14, 21]
     state.logs[0].reads = _.sortBy(state.logs[0].reads, [function (o) { return defaultOrder.indexOf(o.addr) }])
     return state.logs[0]
   },
