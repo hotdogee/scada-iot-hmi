@@ -8,34 +8,36 @@
         <q-card-main>
           <q-list>
             <q-list-header>資料庫</q-list-header>
-            <q-item>
-              <q-item-side icon="timeline" />
-              <q-item-main>
-                <q-item-tile label>總資料時間點數</q-item-tile>
-                <q-item-tile sublabel>{{ logsTotal | totalFormat }}</q-item-tile>
-              </q-item-main>
-            </q-item>
-            <q-item>
-              <q-item-side icon="bubble_chart" />
-              <q-item-main>
-                <q-item-tile label>總資料點數</q-item-tile>
-                <q-item-tile sublabel>{{ logsTotal * 26 | totalFormat }}</q-item-tile>
-              </q-item-main>
-            </q-item>
-            <q-item>
-              <q-item-side icon="skip_previous" />
-              <q-item-main>
-                <q-item-tile label>總資料起始時間</q-item-tile>
-                <q-item-tile sublabel>{{ logsStart | dateFormat }}</q-item-tile>
-              </q-item-main>
-            </q-item>
-            <q-item>
-              <q-item-side icon="skip_next" />
-              <q-item-main>
-                <q-item-tile label>總資料最後時間</q-item-tile>
-                <q-item-tile sublabel>{{ logsEnd | dateFormat }}</q-item-tile>
-              </q-item-main>
-            </q-item>
+            <div class="pad-8 row wrap">
+              <q-item class="col-xs-12 col-sm-6 col-md-3">
+                <q-item-side icon="timeline" />
+                <q-item-main>
+                  <q-item-tile label>總資料時間點數</q-item-tile>
+                  <q-item-tile sublabel>{{ logsTotal | totalFormat }}</q-item-tile>
+                </q-item-main>
+              </q-item>
+              <q-item class="col-xs-12 col-sm-6 col-md-3">
+                <q-item-side icon="bubble_chart" />
+                <q-item-main>
+                  <q-item-tile label>總資料點數</q-item-tile>
+                  <q-item-tile sublabel>{{ logsTotal * 26 | totalFormat }}</q-item-tile>
+                </q-item-main>
+              </q-item>
+              <q-item class="col-xs-12 col-sm-6 col-md-3">
+                <q-item-side icon="skip_previous" />
+                <q-item-main>
+                  <q-item-tile label>總資料起始時間</q-item-tile>
+                  <q-item-tile sublabel>{{ logsStart | dateFormat }}</q-item-tile>
+                </q-item-main>
+              </q-item>
+              <q-item class="col-xs-12 col-sm-6 col-md-3">
+                <q-item-side icon="skip_next" />
+                <q-item-main>
+                  <q-item-tile label>總資料最後時間</q-item-tile>
+                  <q-item-tile sublabel>{{ logsEnd | dateFormat }}</q-item-tile>
+                </q-item-main>
+              </q-item>
+            </div>
             <q-item-separator />
             <q-list-header>修改圖表時間範圍</q-list-header>
             <q-item>
@@ -63,7 +65,7 @@
               :percentage="getChartDataProgress" loader
               :disabled="chartRangeHasError">
               <span v-if="loadingLogsTotal" class="row flex-center"><q-spinner class="on-left"/>取得資料筆數</span>
-              <span v-else class="row flex-center"><q-icon name="update" class="on-left"/>繪製{{ total | totalFormat }}資料</span>
+              <span v-else class="row flex-center"><q-icon name="insert_chart" class="on-left"/>繪製{{ total | totalFormat }}資料</span>
               <div slot="loading" class="row flex-center">
                 <q-spinner-audio class="on-left" />
                 正在準備{{ total | totalFormat }}資料，已獲得{{ animatedLogsLength | totalFormat }}
@@ -731,6 +733,12 @@ export default {
 .echarts {
   width: 100%;
   height: 700px;
+}
+.q-item {
+  padding: 8px;
+}
+.pad-8 {
+  padding: 8px;
 }
 </style>
 
