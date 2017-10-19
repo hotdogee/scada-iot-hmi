@@ -1,4 +1,5 @@
 <template>
+  <div>
   <transition-group name="cards" tag="div" class="row wrap container">
     <div class="col-xs-12 col-sm-6 cards-item" v-for="(cam, index) in cameras" :key="index" v-show="cam.show">
       <q-card class="bg-white">
@@ -8,19 +9,26 @@
       </q-card>
     </div>
   </transition-group>
+  <q-inner-loading :visible="!cameras[0].show">
+    <q-spinner-radio size="50px" color="white"></q-spinner-radio>
+  </q-inner-loading>
+  </div>
 </template>
 
 <script>
 import JSMpeg from '../statics/jsmpeg.min.js'
 import {
   QCard,
-  QCardMain
+  QCardMain,
+  QInnerLoading,
+  QSpinnerRadio
 } from 'quasar'
 
 export default {
   name: 'plc-cam',
   data: function () {
     return {
+      loading: true,
       cameras: [
         {
           url: 'ws://cam.scada.hanl.in/cam1',
@@ -47,7 +55,7 @@ export default {
     this.cameras.forEach((cam, index) => {
       cam.player = new JSMpeg.Player(cam.url, {canvas: this.$refs['camera-canvas'][index], preserveDrawingBuffer: true})
       // cam.show = true
-      setTimeout(()=>{
+      setTimeout(() => {
         cam.show = true
       }, 2000 + index * 500)
     })
@@ -61,7 +69,9 @@ export default {
   },
   components: {
     QCard,
-    QCardMain
+    QCardMain,
+    QInnerLoading,
+    QSpinnerRadio
   }
 }
 </script>
