@@ -3,7 +3,7 @@
     <div class="col-xs-12">
       <q-card class="bg-white">
         <q-card-title class="pad-b-8">
-          <div class="title">目前顯示{{ animatedLogsLength | totalFormat }}資料</div>
+          <div class="title">已繪製{{ animatedLogsLength | totalFormat }}資料</div>
         </q-card-title>
         <q-card-main class="pad-b-0">
           <q-list>
@@ -39,7 +39,7 @@
               </q-item>
             </div>
             <q-item-separator />
-            <q-list-header class="lh-normal pad-t-16">修改圖表時間範圍</q-list-header>
+            <q-list-header class="lh-normal pad-t-16">自訂圖表</q-list-header>
             <q-item>
               <q-item-main>
                 <q-field
