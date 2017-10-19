@@ -497,6 +497,13 @@ export default {
           regs: ['A相電流', 'B相電流', 'C相電流'],
           plotTitle: '三相電流',
           yaxisTitle: '三相電流(A)'
+        },
+        {
+          fig: 'timeSeriesFig',
+          trace: 'timeSeriesTrace',
+          regs: ['入水測溫度', '發電機測溫度'],
+          plotTitle: '軸心溫度',
+          yaxisTitle: '溫度(℃)'
         }
       ],
       option: {
