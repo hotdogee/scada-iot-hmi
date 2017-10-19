@@ -220,8 +220,8 @@ export default {
       showChart: false,
       animatedLogsLength: 0,
       traceTemplates: {
-        timeSeriesTrace: {
-          type: 'scattergl',
+        timeSeriesTrace: { // Plotly
+          type: 'scatter',
           mode: 'lines',
           // connectgaps: true,
           name: '',
@@ -238,7 +238,7 @@ export default {
         }
       },
       figTemplates: {
-        timeSeriesFig: {
+        timeSeriesFig: { // Plotly
           data: [],
           layout: {
             title: '',
@@ -261,15 +261,39 @@ export default {
                     stepmode: 'backward'
                   },
                   {
+                    count: 10,
+                    step: 'minute',
+                    label: '10m',
+                    stepmode: 'backward'
+                  },
+                  {
+                    count: 30,
+                    step: 'minute',
+                    label: '30m',
+                    stepmode: 'backward'
+                  },
+                  {
                     count: 1,
                     step: 'hour',
                     label: '1h',
                     stepmode: 'backward'
                   },
                   {
+                    count: 3,
+                    step: 'hour',
+                    label: '3h',
+                    stepmode: 'backward'
+                  },
+                  {
                     count: 6,
                     step: 'hour',
-                    label: '6d',
+                    label: '6h',
+                    stepmode: 'backward'
+                  },
+                  {
+                    count: 12,
+                    step: 'hour',
+                    label: '12h',
                     stepmode: 'backward'
                   },
                   {
@@ -278,12 +302,12 @@ export default {
                     label: '1d',
                     stepmode: 'backward'
                   },
-                  {
-                    count: 3,
-                    step: 'day',
-                    label: '3d',
-                    stepmode: 'backward'
-                  },
+                  // {
+                  //   count: 3,
+                  //   step: 'day',
+                  //   label: '3d',
+                  //   stepmode: 'backward'
+                  // },
                   // {
                   //   count: 7,
                   //   step: 'day',
@@ -442,6 +466,13 @@ export default {
         {
           fig: 'timeSeriesFig',
           trace: 'timeSeriesTrace',
+          regs: ['質量流率'],
+          plotTitle: '質量流率',
+          yaxisTitle: '質量流率(t/h)'
+        },
+        {
+          fig: 'timeSeriesFig',
+          trace: 'timeSeriesTrace',
           regs: ['頻率'],
           plotTitle: '頻率',
           yaxisTitle: '頻率(Hz)'
@@ -452,6 +483,20 @@ export default {
           regs: ['三相功率'],
           plotTitle: '三相功率',
           yaxisTitle: '三相功率(kW)'
+        },
+        {
+          fig: 'timeSeriesFig',
+          trace: 'timeSeriesTrace',
+          regs: ['A相電壓', 'B相電壓', 'C相電壓'],
+          plotTitle: '三相電壓',
+          yaxisTitle: '三相電壓(V)'
+        },
+        {
+          fig: 'timeSeriesFig',
+          trace: 'timeSeriesTrace',
+          regs: ['A相電流', 'B相電流', 'C相電流'],
+          plotTitle: '三相電流',
+          yaxisTitle: '三相電流(A)'
         }
       ],
       option: {
