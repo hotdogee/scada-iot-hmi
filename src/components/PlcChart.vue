@@ -3,9 +3,9 @@
     <div class="col-xs-12">
       <q-card class="bg-white">
         <q-card-title class="pad-b-8">
-          <div class="title">已繪製{{ animatedLogsLength | totalFormat }}資料</div>
+          <div class="title">圖表顯示{{ animatedTotal | totalFormat }}資料時間點</div>
         </q-card-title>
-        <q-card-main class="pad-b-0">
+        <q-card-main class="">
           <q-list>
             <q-list-header class="lh-normal pad-t-8">資料庫</q-list-header>
             <div class="pad-8 row wrap">
@@ -49,13 +49,13 @@
                   error-label="所選時間範圍查無資料"
                   :label-width="2"
                 >
-                  <q-datetime-range class="no-margin" v-model="chartRange" type="datetime" @change="chartRangeChange" />
+                  <q-datetime-range class="no-margin" v-model="chartRange" type="datetime" />
                 </q-field>
               </q-item-main>
             </q-item>
           </q-list>
         </q-card-main>
-        <q-card-actions>
+        <!-- <q-card-actions>
           <q-field
             :error="total > 100000" class="full-width margin-0 pad-8"
             error-label="注意：繪製超過 100,000 筆資料可能會很慢"
@@ -72,13 +72,13 @@
               </div>
             </q-btn>
           </q-field>
-        </q-card-actions>
+        </q-card-actions> -->
       </q-card>
     </div>
     <div class="col-xs-12" v-for="(fig, index) in figs" :key="index" v-show="showChart">
       <q-card class="bg-white">
         <q-card-main>
-          <div ref="gd"><!-- Plotly chart will be drawn inside this DIV --></div>
+          <div ref="chartDiv"></div>
         </q-card-main>
       </q-card>
     </div>
@@ -93,63 +93,73 @@ getSeriesData -> chartUpdate
 import _ from 'lodash'
 import TWEEN from '@tweenjs/tween.js'
 
-// import Highcharts from 'highcharts/highstock'
+import Highcharts from 'highcharts/highstock'
+import Exporting from 'highcharts/modules/exporting'
 
-import Plotly from 'plotly.js/lib/core'
-// Load in the trace types for scattergl
-Plotly.register([
-  require('plotly.js/lib/scattergl')
-])
-Plotly.register([
-  require('plotly.js/lib/aggregate'),
-  require('plotly.js/lib/filter'),
-  require('plotly.js/lib/groupby'),
-  require('plotly.js/lib/sort')
-])
+Exporting(Highcharts)
+Highcharts.setOptions({
+  global: {
+    useUTC: false
+  }
+})
+global.Highcharts = Highcharts
 
-import ECharts from 'vue-echarts/components/ECharts.vue'
-import 'echarts/lib/chart/line'
-// import 'echarts/lib/chart/bar'
-// import 'echarts/lib/chart/pie'
-// import 'echarts/lib/chart/scatter'
-// import 'echarts/lib/chart/radar'
+// import Plotly from 'plotly.js/lib/core'
+// // Load in the trace types for scattergl
+// Plotly.register([
+//   require('plotly.js/lib/scattergl')
+// ])
+// Plotly.register([
+//   require('plotly.js/lib/aggregate'),
+//   require('plotly.js/lib/filter'),
+//   require('plotly.js/lib/groupby'),
+//   require('plotly.js/lib/sort')
+// ])
 
-// import 'echarts/lib/chart/map'
-// import 'echarts/lib/chart/treemap'
-// import 'echarts/lib/chart/graph'
-// import 'echarts/lib/chart/gauge'
-// import 'echarts/lib/chart/funnel'
-// import 'echarts/lib/chart/parallel'
-// import 'echarts/lib/chart/sankey'
-// import 'echarts/lib/chart/boxplot'
-// import 'echarts/lib/chart/candlestick'
-// import 'echarts/lib/chart/effectScatter'
-// import 'echarts/lib/chart/lines'
-// import 'echarts/lib/chart/heatmap'
+// import ECharts from 'vue-echarts/components/ECharts.vue'
+// import 'echarts/lib/chart/line'
+// // import 'echarts/lib/chart/bar'
+// // import 'echarts/lib/chart/pie'
+// // import 'echarts/lib/chart/scatter'
+// // import 'echarts/lib/chart/radar'
 
-import 'echarts/lib/component/graphic'
-import 'echarts/lib/component/grid'
-import 'echarts/lib/component/legend'
-import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/polar'
-import 'echarts/lib/component/geo'
-import 'echarts/lib/component/parallel'
-import 'echarts/lib/component/singleAxis'
-import 'echarts/lib/component/brush'
+// // import 'echarts/lib/chart/map'
+// // import 'echarts/lib/chart/treemap'
+// // import 'echarts/lib/chart/graph'
+// // import 'echarts/lib/chart/gauge'
+// // import 'echarts/lib/chart/funnel'
+// // import 'echarts/lib/chart/parallel'
+// // import 'echarts/lib/chart/sankey'
+// // import 'echarts/lib/chart/boxplot'
+// // import 'echarts/lib/chart/candlestick'
+// // import 'echarts/lib/chart/effectScatter'
+// // import 'echarts/lib/chart/lines'
+// // import 'echarts/lib/chart/heatmap'
 
-import 'echarts/lib/component/title'
+// import 'echarts/lib/component/graphic'
+// import 'echarts/lib/component/grid'
+// import 'echarts/lib/component/legend'
+// import 'echarts/lib/component/tooltip'
+// import 'echarts/lib/component/polar'
+// import 'echarts/lib/component/geo'
+// import 'echarts/lib/component/parallel'
+// import 'echarts/lib/component/singleAxis'
+// import 'echarts/lib/component/brush'
 
-import 'echarts/lib/component/dataZoom'
-import 'echarts/lib/component/visualMap'
+// import 'echarts/lib/component/title'
 
-import 'echarts/lib/component/markPoint'
-import 'echarts/lib/component/markLine'
-import 'echarts/lib/component/markArea'
+// import 'echarts/lib/component/dataZoom'
+// import 'echarts/lib/component/visualMap'
 
-import 'echarts/lib/component/timeline'
-import 'echarts/lib/component/toolbox'
+// import 'echarts/lib/component/markPoint'
+// import 'echarts/lib/component/markLine'
+// import 'echarts/lib/component/markArea'
 
-import 'zrender/lib/vml/vml'
+// import 'echarts/lib/component/timeline'
+// import 'echarts/lib/component/toolbox'
+
+// import 'zrender/lib/vml/vml'
+
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 import {
@@ -196,8 +206,7 @@ export default {
     QDatetimeRange,
     QInnerLoading,
     QSpinner,
-    QSpinnerAudio,
-    chart: ECharts
+    QSpinnerAudio
   },
   data () {
     let data = []
@@ -214,11 +223,12 @@ export default {
       chartRangeHasError: false,
       chartRange: {
         // from: date.subtractFromDate(new Date(), {days: 5}),
-        from: date.subtractFromDate(new Date(), {hours: 1}),
+        from: date.subtractFromDate(new Date(), { hours: 1 }),
         to: new Date()
       },
       showChart: false,
       animatedLogsLength: 0,
+      animatedTotal: 0,
       traceTemplates: {
         timeSeriesTrace: { // Plotly
           type: 'scatter',
@@ -228,16 +238,84 @@ export default {
           x: [],
           y: []
         },
-        timeSeriesTrace2: {
-          type: 'line',
-          name: '',
-          data: [],
-          dataGrouping: {
-            enabled: true
+        highStockLine () {
+          return {
+            type: 'line',
+            name: '',
+            data: [],
+            dataGrouping: {
+              enabled: false
+            },
+            showInNavigator: true,
+            connectNulls: false,
+            turboThreshold: 0,
+            gapSize: 10
           }
         }
       },
       figTemplates: {
+        highStockChart () {
+          return {
+            chart: {
+              zoomType: 'x'
+            },
+            navigator: {
+              adaptToUpdatedData: false,
+              xAxis: {}
+            },
+            scrollbar: {
+              liveRedraw: false
+            },
+            title: {
+              text: ''
+            },
+            subtitle: {
+              text: ''
+            },
+            rangeSelector: {
+              buttons: [{
+                count: 15,
+                type: 'minute',
+                text: '15m',
+              }, {
+                type: 'hour',
+                count: 1,
+                text: '1h'
+              }, {
+                count: 1,
+                type: 'day',
+                text: '1d'
+              }, {
+                type: 'month',
+                count: 1,
+                text: '1m'
+              }, {
+                type: 'year',
+                count: 1,
+                text: '1y'
+              }, {
+                type: 'all',
+                text: 'All'
+              }],
+              inputEnabled: false, // it supports only days
+              selected: 5 // all
+            },
+            xAxis: {
+              events: {},
+              minRange: 60 * 1000, // one minute
+              ordinal: false
+            },
+            yAxis: {
+              title: {
+                text: ''
+              }
+            },
+            series: [],
+            credits: {
+              enabled: false
+            }
+          }
+        },
         timeSeriesFig: { // Plotly
           data: [],
           layout: {
@@ -356,156 +434,114 @@ export default {
           config: {},
           frames: []
         },
-        timeSeriesFig2: {
-          series: [],
-          chart: {
-            type: 'line',
-            zoomType: 'x'
-          },
-          navigator: {
-            adaptToUpdatedData: true,
-            series: {
-              data: []
-            }
-          },
-          scrollbar: {
-            liveRedraw: false
-          },
-          title: {
-            text: ''
-          },
-          rangeSelector: {
-            buttons: [
-              {
-                count: 5,
-                type: 'minute',
-                text: '5m'
-              },
-              {
-                count: 1,
-                type: 'hour',
-                text: '1h'
-              },
-              {
-                count: 6,
-                type: 'hour',
-                text: '6d'
-              },
-              {
-                count: 1,
-                type: 'day',
-                text: '1d'
-              },
-              {
-                count: 3,
-                type: 'day',
-                text: '3d'
-              },
-              // {
-              //   count: 7,
-              //   step: 'day',
-              //   label: '7d',
-              //   stepmode: 'backward'
-              // },
-              // {
-              //   count: 14,
-              //   step: 'day',
-              //   label: '14d',
-              //   stepmode: 'backward'
-              // },
-              // {
-              //   count: 1,
-              //   step: 'month',
-              //   label: '1m',
-              //   stepmode: 'backward'
-              // },
-              // {
-              //   count: 3,
-              //   step: 'month',
-              //   label: '3m',
-              //   stepmode: 'backward'
-              // },
-              // {
-              //   count: 6,
-              //   step: 'month',
-              //   label: '6m',
-              //   stepmode: 'backward'
-              // },
-              // {
-              //   count: 1,
-              //   step: 'year',
-              //   label: '6y',
-              //   stepmode: 'backward'
-              // },
-              {type: 'all'}
-            ]
-          },
-          xAxis: {
-          },
-          yAxis: {
-          }
-        },
         emptyFig: {
         }
       },
       figs: [
         {
-          fig: 'timeSeriesFig',
-          trace: 'timeSeriesTrace',
+          fig: 'highStockChart',
+          trace: 'highStockLine',
           regs: ['溫度'],
           plotTitle: '溫度',
           yaxisTitle: '溫度(℃)'
         },
         {
-          fig: 'timeSeriesFig',
-          trace: 'timeSeriesTrace',
+          fig: 'highStockChart',
+          trace: 'highStockLine',
           regs: ['壓力'],
           plotTitle: '壓力',
           yaxisTitle: '壓力(bar)'
         },
         {
-          fig: 'timeSeriesFig',
-          trace: 'timeSeriesTrace',
+          fig: 'highStockChart',
+          trace: 'highStockLine',
           regs: ['質量流率'],
           plotTitle: '質量流率',
           yaxisTitle: '質量流率(t/h)'
         },
         {
-          fig: 'timeSeriesFig',
-          trace: 'timeSeriesTrace',
+          fig: 'highStockChart',
+          trace: 'highStockLine',
           regs: ['頻率'],
           plotTitle: '頻率',
           yaxisTitle: '頻率(Hz)'
         },
         {
-          fig: 'timeSeriesFig',
-          trace: 'timeSeriesTrace',
+          fig: 'highStockChart',
+          trace: 'highStockLine',
           regs: ['三相功率'],
           plotTitle: '三相功率',
           yaxisTitle: '三相功率(kW)'
         },
         {
-          fig: 'timeSeriesFig',
-          trace: 'timeSeriesTrace',
+          fig: 'highStockChart',
+          trace: 'highStockLine',
           regs: ['A相電壓', 'B相電壓', 'C相電壓'],
           plotTitle: '三相電壓',
           yaxisTitle: '三相電壓(V)'
         },
         {
-          fig: 'timeSeriesFig',
-          trace: 'timeSeriesTrace',
+          fig: 'highStockChart',
+          trace: 'highStockLine',
           regs: ['A相電流', 'B相電流', 'C相電流'],
           plotTitle: '三相電流',
           yaxisTitle: '三相電流(A)'
         },
         {
-          fig: 'timeSeriesFig',
-          trace: 'timeSeriesTrace',
+          fig: 'highStockChart',
+          trace: 'highStockLine',
           regs: ['入水測溫度', '發電機測溫度'],
           plotTitle: '軸心溫度',
           yaxisTitle: '溫度(℃)'
         }
       ],
+      options: {
+        title: {
+          text: 'Monthly Average Temperature',
+          x: -20 //center
+        },
+        subtitle: {
+          text: 'Source: WorldClimate.com',
+          x: -20
+        },
+        xAxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+          ]
+        },
+        yAxis: {
+          title: {
+            text: 'Temperature (°C)'
+          },
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+        },
+        tooltip: {
+          valueSuffix: '°C'
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        series: [{
+          name: 'Tokyo',
+          data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }, {
+          name: 'New York',
+          data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+        }, {
+          name: 'Berlin',
+          data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+        }, {
+          name: 'London',
+          data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+        }]
+      },
       option: {
         title: {
           text: '歷史數據'
@@ -582,59 +618,77 @@ export default {
     ...mapActions([
       'getLogs', // map `this.getChartData(payloads)` to `this.$store.dispatch('getChartData', payloads)`
       'getLogsCountInRange',
-      'getLogsInRange'
+      'getLogsInRange',
+      'getChartLogsInRange'
     ]),
     ...mapGetters([
       // 'chartLogs',
       'chartRtuRegs'
     ]),
-    getChartData (event, done) {
-      // console.log(this.chartRange.from, this.chartRange.to)
-      // this.getLogsCountInRange(this.chartRange)
-      this.showChart = false
-      // clear charts
-      // this.figs.forEach((fig, i) => {
-      //   // console.log(i, fig)
-      //   Plotly.newPlot(this.$refs.gd[i], [])
-      // })
-      const newDone = () => {
-        this.showChart = true
-        this.$nextTick(function () {
-          // draw charts
-          const rtuRegs = this.chartRtuRegs()
-          // console.log('rtuRegs: ', rtuRegs)
-          // const rtuRegKeys = Object.keys(rtuRegs)
-          // console.log('Trace Names: ', rtuRegKeys)
-          this.figs.forEach((fig, i) => {
-            // console.log(i, fig)
-            // build data = [trace, ...]
-            const matchedRtuRegs = _.filter(rtuRegs, (rtuReg, header) => {
-              return _.some(fig.regs, reg => reg === rtuReg.reg)
-            })
-            const data = _.map(matchedRtuRegs, (rtuReg) => {
-              const trace = JSON.parse(JSON.stringify(this.traceTemplates[fig.trace]))
-              trace.name = rtuReg.header
-              trace.x = rtuReg.x
-              trace.y = rtuReg.y
-              return trace
-            })
-            // build layout = {}
-            const layout = JSON.parse(JSON.stringify(this.figTemplates[fig.fig])).layout
-            layout.title = fig.plotTitle
-            layout.yaxis.title = fig.yaxisTitle
-            Plotly.newPlot(this.$refs.gd[i], data, layout)
-          })
-          done()
-        })
-      }
-      this.getLogsInRange({
+    // getChartData (event, done) {
+    //   // console.log(this.chartRange.from, this.chartRange.to)
+    //   // this.getLogsCountInRange(this.chartRange)
+    //   this.showChart = false
+    //   // clear charts
+    //   // this.figs.forEach((fig, i) => {
+    //   //   // console.log(i, fig)
+    //   //   Plotly.newPlot(this.$refs.gd[i], [])
+    //   // })
+    //   const newDone = () => {
+    //     this.showChart = true
+    //     this.$nextTick(function () {
+    //       // draw charts
+    //       const rtuRegs = this.chartRtuRegs()
+    //       // console.log('rtuRegs: ', rtuRegs)
+    //       // const rtuRegKeys = Object.keys(rtuRegs)
+    //       // console.log('Trace Names: ', rtuRegKeys)
+    //       this.figs.forEach((fig, i) => {
+    //         // console.log(i, fig)
+    //         // build data = [trace, ...]
+    //         const matchedRtuRegs = _.filter(rtuRegs, (rtuReg, header) => {
+    //           return _.some(fig.regs, reg => reg === rtuReg.reg)
+    //         })
+    //         const data = _.map(matchedRtuRegs, (rtuReg) => {
+    //           const trace = JSON.parse(JSON.stringify(this.traceTemplates[fig.trace]))
+    //           trace.name = rtuReg.header
+    //           trace.x = rtuReg.x
+    //           trace.y = rtuReg.y
+    //           return trace
+    //         })
+    //         // build layout = {}
+    //         const layout = JSON.parse(JSON.stringify(this.figTemplates[fig.fig])).layout
+    //         layout.title = fig.plotTitle
+    //         layout.yaxis.title = fig.yaxisTitle
+    //         Plotly.newPlot(this.$refs.gd[i], data, layout)
+    //       })
+    //       done()
+    //     })
+    //   }
+    //   this.getLogsInRange({
+    //     from: this.chartRange.from,
+    //     to: this.chartRange.to,
+    //     done: newDone
+    //   })
+    // },
+    afterSetExtremes (event) {
+      console.log('afterSetExtremes', event.min, event.max, this.chartRange.from.getTime(), this.chartRange.to.getTime())
+      // set chartRange
+      let chartRange = {
         from: this.chartRange.from,
-        to: this.chartRange.to,
-        done: newDone
-      })
-    },
-    chartRangeChange (newVal) {
-      this.getLogsCountInRange(this.chartRange)
+        to: this.chartRange.to
+      }
+      let changed = false
+      if (event.min !== this.chartRange.from.getTime()) {
+        changed = true
+        chartRange.from = new Date(event.min)
+      }
+      if (event.max !== this.chartRange.to.getTime()) {
+        changed = true
+        chartRange.to = new Date(event.max)
+      }
+      if (changed) {
+        this.chartRange = chartRange
+      }
     }
   },
   filters: {
@@ -648,11 +702,41 @@ export default {
     }
   },
   watch: {
-    chartUpdate (val, oldVal) {
-      // console.log(this.$refs.chart.computedOptions.legend[0].data)
-      // if (_.isEmpty(this.$refs.chart.computedOptions.legend[0].data)) return
-      // this.$refs.chart.mergeOptions(val)
-      // console.log(this.$refs.chart)
+    // chartUpdate (val, oldVal) {
+    //   // console.log(this.$refs.chart.computedOptions.legend[0].data)
+    //   // if (_.isEmpty(this.$refs.chart.computedOptions.legend[0].data)) return
+    //   // this.$refs.chart.mergeOptions(val)
+    //   // console.log(this.$refs.chart)
+    // },
+    chartRange: {
+      handler: function (val, oldVal) {
+        console.log('chartRange', val.from.getTime(), val.to.getTime(), oldVal.from.getTime(), oldVal.to.getTime())
+        this.getLogsCountInRange(val)
+        // set navigator
+        // console.log(Highcharts.charts)
+        _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+          chartDiv.chart.xAxis[0].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime())
+          // chart.xAxis[1].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime())
+        })
+
+        const updateCharts = (chartLogs) => {
+          _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+            _.forEach(chartDiv.chart.series, (series, j) => {
+              series.setData(chartLogs.data[series.name] || [])
+            })
+            chartDiv.chart.hideLoading()
+          })
+        }
+        _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+          chartDiv.chart.showLoading('讀取資料中...')
+        })
+        this.getChartLogsInRange({
+          from: val.from.getTime(),
+          to: val.to.getTime(),
+          done: updateCharts
+        })
+      },
+      deep: true
     },
     total (val, oldVal) {
       if (!val) {
@@ -660,6 +744,22 @@ export default {
       }
       else {
         this.chartRangeHasError = false
+
+        // tween animatedLogsLength
+        var vm = this
+        function animate () {
+          if (TWEEN.update()) {
+            requestAnimationFrame(animate)
+          }
+        }
+        new TWEEN.Tween({ val: oldVal })
+          .easing(TWEEN.Easing.Quadratic.Out)
+          .to({ val: val }, 1000)
+          .onUpdate(function (obj) {
+            vm.animatedTotal = obj.val.toFixed(0)
+          })
+          .start()
+        animate()
       }
     },
     logsLength (val, oldVal) {
@@ -728,53 +828,54 @@ export default {
       animate()
     }
   },
+  beforeDestroy () {
+    _.forEach(Highcharts.charts, (chart, i) => {
+      chart.destroy()
+    })
+  },
   mounted () {
-    this.getLogsCountInRange(this.chartRange)
-    // let TESTER = document.getElementById('tester')
-
-    // Plotly.plot(TESTER, [{
-    //   x: [1, 2, 3, 4, 5],
-    //   y: [1, 2, 4, 8, 16]
-    // }], {
-    //   margin: { t: 0 }
-    // })
-    // var data = [
-    //   {
-    //     x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00', '2013-12-06 22:23:00', '2013-12-09 22:23:00'],
-    //     y: [1, 3, null, 6, 4],
-    //     type: 'scattergl'
-    //   }
-    // ]
-    // window.gd = this.$refs.gd
-    this.figs.forEach((fig, i) => {
-      // console.log(i, fig)
-      // Plotly.newPlot(this.$refs.gd[i], [])
-      // Highcharts.chart(this.$refs.gd[i], {
-      //   chart: {
-      //     type: 'bar'
-      //   },
-      //   credits: {
-      //     enabled: false
-      //   },
-      //   title: {
-      //     text: 'Fruit Consumption'
-      //   },
-      //   xAxis: {
-      //     categories: ['Apples', 'Bananas', 'Oranges']
-      //   },
-      //   yAxis: {
-      //     title: {
-      //       text: 'Fruit eaten'
-      //     }
-      //   },
-      //   series: [{
-      //     name: 'Jane',
-      //     data: [1, 0, 4]
-      //   }, {
-      //     name: 'John',
-      //     data: [5, 7, 3]
-      //   }]
-      // })
+    const headerRe = /^M(\d+)-([^-]+)-([^-]+)\(([^\(\)]+)\)$/
+    const initCharts = (chartLogs) => {
+      this.showChart = true
+      this.$nextTick(() => {
+        // draw charts
+        this.figs.forEach((fig, i) => {
+          // console.log(i, fig)
+          const series = _.transform(chartLogs.data, (traces, data, header) => {
+            const parsed = headerRe.exec(header)
+            if (parsed) {
+              const regName = parsed[3]
+              if (_.some(fig.regs, reg => reg === regName)) {
+                const trace = this.traceTemplates[fig.trace]()
+                trace.name = header
+                trace.data = data
+                traces.push(trace)
+              }
+            }
+          }, [])
+          // build options
+          const options = this.figTemplates[fig.fig]()
+          options.title.text = fig.plotTitle
+          options.yAxis.title.text = fig.yaxisTitle
+          options.xAxis.min = new Date(chartLogs.start).getTime()
+          options.xAxis.max = new Date(chartLogs.end).getTime()
+          options.navigator.xAxis.min = new Date(chartLogs.start).getTime()
+          options.navigator.xAxis.max = new Date(chartLogs.end).getTime()
+          options.xAxis.events.afterSetExtremes = this.afterSetExtremes
+          options.series = series
+          // console.log(this.$refs.chartDiv[i])
+          this.$refs.chartDiv[i].chart = Highcharts.stockChart(this.$refs.chartDiv[i], options)
+        })
+        // set chartRange
+        this.chartRange = {
+          from: new Date(chartLogs.start),
+          to: new Date(chartLogs.end)
+        }
+        this.getLogsCountInRange(this.chartRange)
+      })
+    }
+    this.getChartLogsInRange({
+      done: initCharts
     })
   }
 }

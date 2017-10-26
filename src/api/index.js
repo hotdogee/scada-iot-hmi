@@ -2,7 +2,7 @@ import io from 'socket.io-client'
 import socketio from 'feathers-socketio/client'
 import feathers from 'feathers/client'
 
-export const url = 'http://api.scada.hanl.in'
+export const url = 'http://localhost:8081'
 
 export const socket = io(url)
 

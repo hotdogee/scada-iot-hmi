@@ -13,6 +13,7 @@ require(`./themes/app.${__THEME}.styl`)
 import Vue from 'vue'
 import Quasar from 'quasar'
 import Trend from 'vuetrend'
+
 import * as api from './api'
 import store from './store'
 import router from './router'

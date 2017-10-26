@@ -60,6 +60,20 @@ const actions = {
       console.log('logs.find:', err)
     })
   },
+  async getChartLogsInRange ({ state, commit, rootState }, payload) {
+    let url = `${api.url}/logs?$client[chart]=true`
+    if (payload.from) {
+      const from = new Date(payload.from).toISOString()
+      url += `&logTime[$gt]=${from}`
+    }
+    if (payload.to) {
+      const to = new Date(payload.to).toISOString()
+      url += `&logTime[$lt]=${to}`
+    }
+    const chartLogs = await (await fetch(url)).json()
+    console.log(`bucket: ${chartLogs.bucket}`)
+    payload.done(chartLogs)
+  },
   async getLogsInRange ({ state, commit, rootState }, payload) {
     // getChartData({from: from, to: to})
     // console.log('store.dispatch - findLogs')
