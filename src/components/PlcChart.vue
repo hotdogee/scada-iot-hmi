@@ -3,7 +3,7 @@
     <div class="col-xs-12">
       <q-card class="bg-white">
         <q-card-title class="pad-b-8">
-          <div class="title">圖表顯示{{ animatedTotal | totalFormat }}資料時間點</div>
+          <div class="title">圖表顯示{{ animatedTotal | totalFormat }}時間點資料</div>
         </q-card-title>
         <q-card-main class="">
           <q-list>
@@ -78,7 +78,7 @@
     <div class="col-xs-12" v-for="(fig, index) in figs" :key="index" v-show="showChart">
       <q-card class="bg-white">
         <q-card-main>
-          <div ref="chartDiv"></div>
+          <div ref="chartDiv" class="margin-8"></div>
         </q-card-main>
       </q-card>
     </div>
@@ -95,8 +95,16 @@ import TWEEN from '@tweenjs/tween.js'
 
 import Highcharts from 'highcharts/highstock'
 import Exporting from 'highcharts/modules/exporting'
+import ExportData from 'highcharts/modules/export-data'
+import OfflineExporting from 'highcharts/modules/offline-exporting'
+import Boost from 'highcharts/modules/boost'
+import BoostCanvas from 'highcharts/modules/boost-canvas'
 
 Exporting(Highcharts)
+ExportData(Highcharts)
+OfflineExporting(Highcharts)
+Boost(Highcharts)
+BoostCanvas(Highcharts)
 Highcharts.setOptions({
   global: {
     useUTC: false
@@ -257,7 +265,8 @@ export default {
         highStockChart () {
           return {
             chart: {
-              zoomType: 'x'
+              zoomType: 'x',
+              height: 600
             },
             navigator: {
               adaptToUpdatedData: false,
@@ -267,7 +276,10 @@ export default {
               liveRedraw: false
             },
             title: {
-              text: ''
+              text: '',
+              style: {
+                fontSize: '18px'
+              }
             },
             subtitle: {
               text: ''
@@ -307,12 +319,24 @@ export default {
             },
             yAxis: {
               title: {
-                text: ''
-              }
+                text: '',
+                style: {
+                  fontSize: '14px'
+                }
+              },
+              opposite: false
             },
             series: [],
             credits: {
               enabled: false
+            },
+            legend:{
+              enabled: true
+            },
+            tooltip: {
+              valueDecimals: 2,
+              shared: true,
+              split: false
             }
           }
         },
@@ -462,16 +486,16 @@ export default {
         {
           fig: 'highStockChart',
           trace: 'highStockLine',
-          regs: ['頻率'],
-          plotTitle: '頻率',
-          yaxisTitle: '頻率(Hz)'
+          regs: ['三相功率'],
+          plotTitle: '三相功率',
+          yaxisTitle: '三相功率(kW)'
         },
         {
           fig: 'highStockChart',
           trace: 'highStockLine',
-          regs: ['三相功率'],
-          plotTitle: '三相功率',
-          yaxisTitle: '三相功率(kW)'
+          regs: ['頻率'],
+          plotTitle: '頻率',
+          yaxisTitle: '頻率(Hz)'
         },
         {
           fig: 'highStockChart',
@@ -756,7 +780,7 @@ export default {
           .easing(TWEEN.Easing.Quadratic.Out)
           .to({ val: val }, 1000)
           .onUpdate(function (obj) {
-            vm.animatedTotal = obj.val.toFixed(0)
+            vm.animatedTotal = parseInt(obj.val.toFixed(0))
           })
           .start()
         animate()
@@ -883,7 +907,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.echarts {
+.charts {
   width: 100%;
   height: 700px;
 }
@@ -905,6 +929,9 @@ export default {
 }
 .margin-0 {
   margin: 0px;
+}
+.margin-8 {
+  margin: 8px;
 }
 .lh-normal {
   line-height: normal;
