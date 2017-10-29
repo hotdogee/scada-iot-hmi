@@ -75,7 +75,7 @@
         </q-card-actions> -->
       </q-card>
     </div>
-    <div class="col-xs-12" v-for="(fig, index) in figs" :key="index" v-show="showChart">
+    <div class="col-xs-12" v-for="(fig, index) in figs" :key="index">
       <q-card class="bg-white">
         <q-card-main>
           <div ref="chartDiv" class="margin-8"></div>
@@ -113,63 +113,69 @@ Highcharts.setOptions({
     contextButtonTitle: '匯出選項'
   }
 })
+
+// Custom navigator handles
+Highcharts.SVGRenderer.prototype.symbols['navigator-handle-left'] = function (x, y, w, h, options) {
+  const height = options.height
+  const width = options.width
+  const halfWidth = options.width / 2
+  const markerPosition = Math.round(halfWidth / 3) + 0.5
+
+	return [
+		'M',
+		-width - 1, 0.5,
+		'L',
+		0, 0.5,
+		'L',
+		0, height + 0.5,
+		'L',
+		-width - 1, height + 0.5,
+		'L',
+		-width - 1, 0.5,
+		'M',
+		-markerPosition - halfWidth, 4,
+		'L',
+		-markerPosition - halfWidth, height - 3,
+		'M',
+		markerPosition - halfWidth - 1, 4,
+		'L',
+		markerPosition - halfWidth - 1, height - 3
+	]
+}
+
+Highcharts.SVGRenderer.prototype.symbols['navigator-handle-right'] = function (x, y, w, h, options) {
+  const height = options.height
+  const width = options.width
+  const halfWidth = options.width / 2
+  const markerPosition = Math.round(halfWidth / 3) + 0.5
+
+	return [
+		'M',
+		-1, 0.5,
+		'L',
+		width, 0.5,
+		'L',
+		width, height + 0.5,
+		'L',
+		-1, height + 0.5,
+		'L',
+		-1, 0.5,
+		'M',
+		halfWidth - markerPosition, 4,
+		'L',
+		halfWidth - markerPosition, height - 3,
+		'M',
+		halfWidth + markerPosition - 1, 4,
+		'L',
+		halfWidth + markerPosition - 1, height - 3
+	]
+}
+
+if (Highcharts.VMLRenderer) {
+    Highcharts.VMLRenderer.prototype.symbols['navigator-handle-left'] = Highcharts.SVGRenderer.prototype.symbol['navigator-handle-left']
+    Highcharts.VMLRenderer.prototype.symbols['navigator-handle-right'] = Highcharts.SVGRenderer.prototype.symbol['navigator-handle-right']
+}
 global.Highcharts = Highcharts
-
-// import Plotly from 'plotly.js/lib/core'
-// // Load in the trace types for scattergl
-// Plotly.register([
-//   require('plotly.js/lib/scattergl')
-// ])
-// Plotly.register([
-//   require('plotly.js/lib/aggregate'),
-//   require('plotly.js/lib/filter'),
-//   require('plotly.js/lib/groupby'),
-//   require('plotly.js/lib/sort')
-// ])
-
-// import ECharts from 'vue-echarts/components/ECharts.vue'
-// import 'echarts/lib/chart/line'
-// // import 'echarts/lib/chart/bar'
-// // import 'echarts/lib/chart/pie'
-// // import 'echarts/lib/chart/scatter'
-// // import 'echarts/lib/chart/radar'
-
-// // import 'echarts/lib/chart/map'
-// // import 'echarts/lib/chart/treemap'
-// // import 'echarts/lib/chart/graph'
-// // import 'echarts/lib/chart/gauge'
-// // import 'echarts/lib/chart/funnel'
-// // import 'echarts/lib/chart/parallel'
-// // import 'echarts/lib/chart/sankey'
-// // import 'echarts/lib/chart/boxplot'
-// // import 'echarts/lib/chart/candlestick'
-// // import 'echarts/lib/chart/effectScatter'
-// // import 'echarts/lib/chart/lines'
-// // import 'echarts/lib/chart/heatmap'
-
-// import 'echarts/lib/component/graphic'
-// import 'echarts/lib/component/grid'
-// import 'echarts/lib/component/legend'
-// import 'echarts/lib/component/tooltip'
-// import 'echarts/lib/component/polar'
-// import 'echarts/lib/component/geo'
-// import 'echarts/lib/component/parallel'
-// import 'echarts/lib/component/singleAxis'
-// import 'echarts/lib/component/brush'
-
-// import 'echarts/lib/component/title'
-
-// import 'echarts/lib/component/dataZoom'
-// import 'echarts/lib/component/visualMap'
-
-// import 'echarts/lib/component/markPoint'
-// import 'echarts/lib/component/markLine'
-// import 'echarts/lib/component/markArea'
-
-// import 'echarts/lib/component/timeline'
-// import 'echarts/lib/component/toolbox'
-
-// import 'zrender/lib/vml/vml'
 
 import { mapState, mapGetters, mapActions } from 'vuex'
 
@@ -369,7 +375,10 @@ export default {
             colors: _.map(chartColors, 'color'),
             navigator: {
               adaptToUpdatedData: false,
-              xAxis: {}
+              xAxis: {},
+              handles: {
+                  symbols: ['navigator-handle-left', 'navigator-handle-right']
+              }
             },
             scrollbar: {
               liveRedraw: false
@@ -425,7 +434,7 @@ export default {
                 text: 'All'
               }],
               inputEnabled: false, // it supports only days
-              selected: 5 // all
+              selected: -1 // all
             },
             xAxis: {
               events: {},
@@ -811,7 +820,7 @@ export default {
     //   })
     // },
     afterSetExtremes (event) {
-      console.log('afterSetExtremes', event.min, event.max, this.chartRange.from.getTime(), this.chartRange.to.getTime())
+      // console.log('afterSetExtremes', event.min, event.max, this.chartRange.from.getTime(), this.chartRange.to.getTime())
       // set chartRange
       let chartRange = {
         from: this.chartRange.from,
@@ -853,36 +862,6 @@ export default {
     //   // this.$refs.chart.mergeOptions(val)
     //   // console.log(this.$refs.chart)
     // },
-    chartRange: {
-      handler: function (val, oldVal) {
-        console.log('chartRange', val.from.getTime(), val.to.getTime(), oldVal.from.getTime(), oldVal.to.getTime())
-        this.getLogsCountInRange(val)
-        // set navigator
-        // console.log(Highcharts.charts)
-        _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
-          chartDiv.chart.xAxis[0].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime())
-          // chart.xAxis[1].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime())
-        })
-
-        const updateCharts = (chartLogs) => {
-          _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
-            _.forEach(chartDiv.chart.series, (series, j) => {
-              series.setData(chartLogs.data[series.name] || [])
-            })
-            chartDiv.chart.hideLoading()
-          })
-        }
-        _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
-          chartDiv.chart.showLoading('讀取資料中...')
-        })
-        this.getChartLogsInRange({
-          from: val.from.getTime(),
-          to: val.to.getTime(),
-          done: updateCharts
-        })
-      },
-      deep: true
-    },
     total (val, oldVal) {
       if (!val) {
         this.chartRangeHasError = true
@@ -982,6 +961,12 @@ export default {
     const headerRe = /^M(\d+)-([^-]+)-([^-]+)\(([^\(\)]+)\)$/
     const initCharts = (chartLogs) => {
       this.showChart = true
+      // set chartRange
+      this.chartRange = {
+        from: new Date(chartLogs.start),
+        to: new Date(chartLogs.end)
+      }
+      this.getLogsCountInRange(this.chartRange)
       this.$nextTick(() => {
         // draw charts
         this.figs.forEach((fig, i) => {
@@ -1011,12 +996,38 @@ export default {
           // console.log(this.$refs.chartDiv[i])
           this.$refs.chartDiv[i].chart = Highcharts.stockChart(this.$refs.chartDiv[i], options)
         })
-        // set chartRange
-        this.chartRange = {
-          from: new Date(chartLogs.start),
-          to: new Date(chartLogs.end)
-        }
-        this.getLogsCountInRange(this.chartRange)
+        // watch chartRange
+        this.$watch('chartRange', function (val, oldVal) {
+          // console.log('chartRange', val.from.getTime(), val.to.getTime(), oldVal.from.getTime(), oldVal.to.getTime())
+          this.getLogsCountInRange(val)
+          // set navigator
+          // console.log(Highcharts.charts)
+          _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+            chartDiv.chart.xAxis[0].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime())
+            // chart.xAxis[1].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime())
+          })
+
+          const updateCharts = (chartLogs) => {
+            _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+              _.forEach(chartDiv.chart.series, (series, j) => {
+                if (!series.hasOwnProperty('baseSeries')) {
+                  series.setData(chartLogs.data[series.name] || [])
+                }
+              })
+              chartDiv.chart.hideLoading()
+            })
+          }
+          _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+            chartDiv.chart.showLoading('讀取資料中...')
+          })
+          this.getChartLogsInRange({
+            from: val.from.getTime(),
+            to: val.to.getTime(),
+            done: updateCharts
+          })
+        },{
+          deep: true
+        })
       })
     }
     this.getChartLogsInRange({

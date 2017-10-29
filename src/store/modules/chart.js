@@ -72,7 +72,7 @@ const actions = {
       url += `&logTime[$lt]=${to}`
     }
     const chartLogs = await (await fetch(url)).json()
-    console.log(`bucket: ${chartLogs.bucket}`)
+    // console.log(`bucket: ${chartLogs.bucket}`)
     commit(types.SET_CHART_BUCKET, {
       bucket: chartLogs.bucket
     })
