@@ -581,14 +581,14 @@ export default {
           fig: 'highStockChart',
           trace: 'highStockLine',
           regs: ['溫度'],
-          plotTitle: '溫度',
+          plotTitle: '管線溫度',
           yaxisTitle: '溫度(℃)'
         },
         {
           fig: 'highStockChart',
           trace: 'highStockLine',
           regs: ['壓力'],
-          plotTitle: '壓力',
+          plotTitle: '管線壓力',
           yaxisTitle: '壓力(bar)'
         },
         {
