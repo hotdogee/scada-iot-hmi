@@ -108,6 +108,9 @@ BoostCanvas(Highcharts)
 Highcharts.setOptions({
   global: {
     useUTC: false
+  },
+  lang: {
+    contextButtonTitle: '匯出選項'
   }
 })
 global.Highcharts = Highcharts
@@ -193,6 +196,101 @@ import {
   date
 } from 'quasar'
 
+const chartColors = [{
+    color: "#3366CC",
+    lighter: "#45AFE2"
+}, {
+    color: "#DC3912",
+    lighter: "#FF3300"
+}, {
+    color: "#FF9900",
+    lighter: "#FFCC00"
+}, {
+    color: "#109618",
+    lighter: "#14C21D"
+}, {
+    color: "#990099",
+    lighter: "#DF51FD"
+}, {
+    color: "#0099C6",
+    lighter: "#15CBFF"
+}, {
+    color: "#DD4477",
+    lighter: "#FF97D2"
+}, {
+    color: "#66AA00",
+    lighter: "#97FB00"
+}, {
+    color: "#B82E2E",
+    lighter: "#DB6651"
+}, {
+    color: "#316395",
+    lighter: "#518BC6"
+}, {
+    color: "#994499",
+    lighter: "#BD6CBD"
+}, {
+    color: "#22AA99",
+    lighter: "#35D7C2"
+}, {
+    color: "#AAAA11",
+    lighter: "#E9E91F"
+}, {
+    color: "#6633CC",
+    lighter: "#9877DD"
+}, {
+    color: "#E67300",
+    lighter: "#FF8F20"
+}, {
+    color: "#8B0707",
+    lighter: "#D20B0B"
+}, {
+    color: "#651067",
+    lighter: "#B61DBA"
+}, {
+    color: "#329262",
+    lighter: "#40BD7E"
+}, {
+    color: "#5574A6",
+    lighter: "#6AA7C4"
+}, {
+    color: "#3B3EAC",
+    lighter: "#6D70CD"
+}, {
+    color: "#B77322",
+    lighter: "#DA9136"
+}, {
+    color: "#16D620",
+    lighter: "#2DEA36"
+}, {
+    color: "#B91383",
+    lighter: "#E81EA6"
+}, {
+    color: "#F4359E",
+    lighter: "#F558AE"
+}, {
+    color: "#9C5935",
+    lighter: "#C07145"
+}, {
+    color: "#A9C413",
+    lighter: "#D7EE53"
+}, {
+    color: "#2A778D",
+    lighter: "#3EA7C6"
+}, {
+    color: "#668D1C",
+    lighter: "#97D129"
+}, {
+    color: "#BEA413",
+    lighter: "#E9CA1D"
+}, {
+    color: "#0C5922",
+    lighter: "#149638"
+}, {
+    color: "#743411",
+    lighter: "#C5571D"
+}]
+
 export default {
   name: 'plc-chart',
   components: {
@@ -268,6 +366,7 @@ export default {
               zoomType: 'x',
               height: 600
             },
+            colors: _.map(chartColors, 'color'),
             navigator: {
               adaptToUpdatedData: false,
               xAxis: {}
@@ -294,9 +393,25 @@ export default {
                 count: 1,
                 text: '1h'
               }, {
+                type: 'hour',
+                count: 3,
+                text: '3h'
+              }, {
+                type: 'hour',
+                count: 6,
+                text: '6h'
+              }, {
+                type: 'hour',
+                count: 12,
+                text: '12h'
+              }, {
                 count: 1,
                 type: 'day',
                 text: '1d'
+              }, {
+                count: 1,
+                type: 'week',
+                text: '1w'
               }, {
                 type: 'month',
                 count: 1,
