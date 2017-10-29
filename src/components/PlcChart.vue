@@ -3,7 +3,7 @@
     <div class="col-xs-12">
       <q-card class="bg-white">
         <q-card-title class="pad-b-8">
-          <div class="title">圖表顯示{{ animatedTotal | totalFormat }}時間點資料</div>
+          <div class="title">圖表顯示{{ animatedTotal | totalFormat }}時間點資料 <span v-show="bucket">(統計區間：{{ bucket | bucketFormat }})</span></div>
         </q-card-title>
         <q-card-main class="">
           <q-list>
@@ -729,7 +729,8 @@ export default {
   computed: {
     ...mapState({
       total: state => state.chart.total,
-      logsLength: state => state.chart.logsLength
+      logsLength: state => state.chart.logsLength,
+      bucket: state => state.chart.bucket
     }),
     ...mapState([
       'logsTotal',
@@ -838,6 +839,11 @@ export default {
     dateFormat (value) {
       if (!value) return ''
       return new Date(value).toLocaleString()
+    },
+    bucketFormat (value) {
+      if (!value) return ''
+      if (value === 'all') return '無'
+      return value
     }
   },
   watch: {

@@ -6,6 +6,7 @@ import * as types from '../mutation-types'
 // initial state
 const state = {
   total: null,
+  bucket: null,
   logsLength: 0
 }
 
@@ -72,6 +73,9 @@ const actions = {
     }
     const chartLogs = await (await fetch(url)).json()
     console.log(`bucket: ${chartLogs.bucket}`)
+    commit(types.SET_CHART_BUCKET, {
+      bucket: chartLogs.bucket
+    })
     payload.done(chartLogs)
   },
   async getLogsInRange ({ state, commit, rootState }, payload) {
@@ -223,6 +227,10 @@ const mutations = {
   [types.SET_CHART_LOGS_LENGTH] (state, { logsLength }) {
     // state.logs = state.logs.concat(logs)
     state.logsLength = logsLength
+  },
+  [types.SET_CHART_BUCKET] (state, { bucket }) {
+    // state.logs = state.logs.concat(logs)
+    state.bucket = bucket
   }
   // [types.ADD_TO_CART] (state, { id }) {
   //   state.all.find(p => p.id === id).inventory--
