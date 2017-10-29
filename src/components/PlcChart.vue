@@ -996,6 +996,9 @@ export default {
           // console.log(this.$refs.chartDiv[i])
           this.$refs.chartDiv[i].chart = Highcharts.stockChart(this.$refs.chartDiv[i], options)
         })
+        this.$nextTick(() => {
+          this.$refs.chartDiv[0].chart.reflow()
+        })
         // watch chartRange
         this.$watch('chartRange', function (val, oldVal) {
           // console.log('chartRange', val.from.getTime(), val.to.getTime(), oldVal.from.getTime(), oldVal.to.getTime())
