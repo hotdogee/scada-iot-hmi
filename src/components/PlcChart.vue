@@ -356,6 +356,7 @@ export default {
           return {
             type: 'line',
             name: '',
+            description: '',
             data: [],
             dataGrouping: {
               enabled: false
@@ -374,6 +375,7 @@ export default {
           return {
             type: 'arearange',
             name: '',
+            description: '',
             data: [],
             dataGrouping: {
               enabled: false
@@ -1018,6 +1020,7 @@ export default {
                 _.forEach(fig.traceTemplates, (traceTemplate, i) => {
                   const trace = this.traceTemplates[traceTemplate]()
                   // trace.name = header
+                  trace.description = header
                   trace.name = `M${rtuAddr}-${rtuName}${regNameRest}`
                   trace.data = data
                   trace.tooltip.valueSuffix = unit
@@ -1065,7 +1068,7 @@ export default {
             _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
               _.forEach(chartDiv.chart.series, (series, j) => {
                 if (!series.hasOwnProperty('baseSeries')) {
-                  series.setData(chartLogs.data[series.name] || [])
+                  series.setData(chartLogs.data[series.userOptions.description] || [])
                 }
               })
               chartDiv.chart.hideLoading()
