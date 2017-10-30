@@ -1050,8 +1050,11 @@ export default {
           // console.log(this.$refs.chartDiv[i])
           this.$refs.chartDiv[i].chart = Highcharts.stockChart(this.$refs.chartDiv[i], options)
         })
-        this.$nextTick(() => {
+        this.$nextTick(() => { // fix margins
           this.$refs.chartDiv[0].chart.reflow()
+          _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+            chartDiv.chart.reflow()
+          })
         })
         // watch chartRange
         this.$watch('chartRange', function (val, oldVal) {
