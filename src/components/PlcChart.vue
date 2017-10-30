@@ -364,7 +364,10 @@ export default {
             connectNulls: false,
             turboThreshold: 0,
             gapSize: 10,
-            zindex: 1
+            zindex: 1,
+            tooltip: {
+              valueSuffix: undefined
+            }
           }
         },
         highStockLineRange () {
@@ -385,7 +388,10 @@ export default {
             zindex: 0,
             fillOpacity: 0.2,
             linkedTo: ':previous',
-            lineWidth: 0
+            lineWidth: 0,
+            tooltip: {
+              valueSuffix: undefined
+            }
           }
         }
       },
@@ -1000,16 +1006,27 @@ export default {
           const series = _.transform(chartLogs.data, (traces, data, header) => {
             const parsed = headerRe.exec(header)
             if (parsed) {
+              const rtuAddr = parsed[1]
+              const rtuName = parsed[2]
               const regName = parsed[3]
+              const unit = parsed[4]
+              let regNameRest = `${regName}(${unit})`.replace(fig.yaxisTitle, '')
+              if (regNameRest.length > 0) {
+                regNameRest = '-' + regNameRest
+              }
               if (_.some(fig.regs, reg => reg === regName)) {
                 _.forEach(fig.traceTemplates, (traceTemplate, i) => {
                   const trace = this.traceTemplates[traceTemplate]()
-                  trace.name = header
+                  // trace.name = header
+                  trace.name = `M${rtuAddr}-${rtuName}${regNameRest}`
                   trace.data = data
-                  if (i === 1) {
-                    trace.color = chartColors[traceid].lighter
-                  } else {
+                  trace.tooltip.valueSuffix = unit
+                  if (i === 0) {
+                    trace.tooltip.pointFormat = '<span style="color:{series.color}">●</span> {series.name}: <b>{point.y}</b> '
                     trace.color = chartColors[traceid].colors
+                  } else {
+                    trace.tooltip.pointFormat = '(<b>{point.low}</b> - <b>{point.high}</b>)<br/>'
+                    trace.color = chartColors[traceid].lighter
                   }
                   traces.push(trace)
                 })
