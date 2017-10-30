@@ -75,7 +75,7 @@
         </q-card-actions> -->
       </q-card>
     </div>
-    <div class="col-xs-12" v-for="(fig, index) in figs" :key="index">
+    <div class="col-xs-12" v-for="(fig, index) in figs" :key="index" v-show="showChart">
       <q-card class="bg-white">
         <q-card-main>
           <div ref="chartDiv" class="margin-8"></div>
