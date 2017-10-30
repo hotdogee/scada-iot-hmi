@@ -881,7 +881,7 @@ export default {
     },
     bucketFormat (value) {
       if (!value) return ''
-      if (value === 'all') return '無'
+      if (value === '1ms') return '無'
       return value
     }
   },
