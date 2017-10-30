@@ -658,14 +658,14 @@ export default {
           traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['A相電壓', 'B相電壓', 'C相電壓'],
           plotTitle: '三相電壓',
-          yaxisTitle: '三相電壓(V)'
+          yaxisTitle: '電壓(V)'
         },
         {
           figTemplate: 'highStockChart',
           traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['A相電流', 'B相電流', 'C相電流'],
           plotTitle: '三相電流',
-          yaxisTitle: '三相電流(A)'
+          yaxisTitle: '電流(A)'
         },
         {
           figTemplate: 'highStockChart',
