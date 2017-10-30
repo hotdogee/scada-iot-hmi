@@ -94,12 +94,15 @@ import _ from 'lodash'
 import TWEEN from '@tweenjs/tween.js'
 
 import Highcharts from 'highcharts/highstock'
+import HighchartsMore from 'highcharts/highcharts-more'
 import Exporting from 'highcharts/modules/exporting'
 import ExportData from 'highcharts/modules/export-data'
 import OfflineExporting from 'highcharts/modules/offline-exporting'
 import Boost from 'highcharts/modules/boost'
 import BoostCanvas from 'highcharts/modules/boost-canvas'
+global.Highcharts = Highcharts
 
+HighchartsMore(Highcharts)
 Exporting(Highcharts)
 ExportData(Highcharts)
 OfflineExporting(Highcharts)
@@ -175,7 +178,6 @@ if (Highcharts.VMLRenderer) {
     Highcharts.VMLRenderer.prototype.symbols['navigator-handle-left'] = Highcharts.SVGRenderer.prototype.symbol['navigator-handle-left']
     Highcharts.VMLRenderer.prototype.symbols['navigator-handle-right'] = Highcharts.SVGRenderer.prototype.symbol['navigator-handle-right']
 }
-global.Highcharts = Highcharts
 
 import { mapState, mapGetters, mapActions } from 'vuex'
 
@@ -361,7 +363,29 @@ export default {
             showInNavigator: true,
             connectNulls: false,
             turboThreshold: 0,
-            gapSize: 10
+            gapSize: 10,
+            zindex: 1
+          }
+        },
+        highStockLineRange () {
+          return {
+            type: 'arearange',
+            name: '',
+            data: [],
+            dataGrouping: {
+              enabled: false
+            },
+            showInNavigator: false,
+            connectNulls: false,
+            turboThreshold: 0,
+            gapSize: 10,
+            marker: {
+              enabled: false
+            },
+            zindex: 0,
+            fillOpacity: 0.2,
+            linkedTo: ':previous',
+            lineWidth: 0
           }
         }
       },
@@ -587,57 +611,57 @@ export default {
       },
       figs: [
         {
-          fig: 'highStockChart',
-          trace: 'highStockLine',
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['溫度'],
           plotTitle: '管線溫度',
           yaxisTitle: '溫度(℃)'
         },
         {
-          fig: 'highStockChart',
-          trace: 'highStockLine',
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['壓力'],
           plotTitle: '管線壓力',
           yaxisTitle: '壓力(bar)'
         },
         {
-          fig: 'highStockChart',
-          trace: 'highStockLine',
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['質量流率'],
           plotTitle: '質量流率',
           yaxisTitle: '質量流率(t/h)'
         },
         {
-          fig: 'highStockChart',
-          trace: 'highStockLine',
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['三相功率'],
           plotTitle: '三相功率',
           yaxisTitle: '三相功率(kW)'
         },
         {
-          fig: 'highStockChart',
-          trace: 'highStockLine',
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['頻率'],
           plotTitle: '頻率',
           yaxisTitle: '頻率(Hz)'
         },
         {
-          fig: 'highStockChart',
-          trace: 'highStockLine',
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['A相電壓', 'B相電壓', 'C相電壓'],
           plotTitle: '三相電壓',
           yaxisTitle: '三相電壓(V)'
         },
         {
-          fig: 'highStockChart',
-          trace: 'highStockLine',
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['A相電流', 'B相電流', 'C相電流'],
           plotTitle: '三相電流',
           yaxisTitle: '三相電流(A)'
         },
         {
-          fig: 'highStockChart',
-          trace: 'highStockLine',
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['入水測溫度', '發電機測溫度'],
           plotTitle: '軸心溫度',
           yaxisTitle: '溫度(℃)'
@@ -953,8 +977,8 @@ export default {
     }
   },
   beforeDestroy () {
-    _.forEach(Highcharts.charts, (chart, i) => {
-      chart.destroy()
+    _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+      chartDiv.chart.destroy()
     })
   },
   mounted () {
@@ -971,20 +995,30 @@ export default {
         // draw charts
         this.figs.forEach((fig, i) => {
           // console.log(i, fig)
+          // build traces
+          let traceid = 0
           const series = _.transform(chartLogs.data, (traces, data, header) => {
             const parsed = headerRe.exec(header)
             if (parsed) {
               const regName = parsed[3]
               if (_.some(fig.regs, reg => reg === regName)) {
-                const trace = this.traceTemplates[fig.trace]()
-                trace.name = header
-                trace.data = data
-                traces.push(trace)
+                _.forEach(fig.traceTemplates, (traceTemplate, i) => {
+                  const trace = this.traceTemplates[traceTemplate]()
+                  trace.name = header
+                  trace.data = data
+                  if (i === 1) {
+                    trace.color = chartColors[traceid].lighter
+                  } else {
+                    trace.color = chartColors[traceid].colors
+                  }
+                  traces.push(trace)
+                })
+                traceid++
               }
             }
           }, [])
-          // build options
-          const options = this.figTemplates[fig.fig]()
+          // build figure
+          const options = this.figTemplates[fig.figTemplate]()
           options.title.text = fig.plotTitle
           options.yAxis.title.text = fig.yaxisTitle
           options.xAxis.min = new Date(chartLogs.start).getTime()
