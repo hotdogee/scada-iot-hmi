@@ -75,6 +75,13 @@
         </q-card-actions> -->
       </q-card>
     </div>
+    <div class="col-xs-12" v-show="!showChart">
+      <q-card class="bg-white">
+        <q-card-title>
+          <div class="title text-center">圖表資料載入中...</div>
+        </q-card-title>
+      </q-card>
+    </div>
     <div class="col-xs-12" v-for="(fig, index) in figs" :key="index" v-show="showChart">
       <q-card class="bg-white">
         <q-card-main>
