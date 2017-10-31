@@ -1008,10 +1008,12 @@ export default {
       this.getLogsCountInRange(this.chartRange)
       this.$nextTick(() => {
         // draw charts
+        // map traces with the same name to the same color
+        const traceToColorId = {}
+        let colorId = 0
         this.figs.forEach((fig, i) => {
           // console.log(i, fig)
           // build traces
-          let traceid = 0
           const series = _.transform(chartLogs.data, (traces, data, header) => {
             const parsed = headerRe.exec(header)
             if (parsed) {
@@ -1029,18 +1031,20 @@ export default {
                   // trace.name = header
                   trace.description = header
                   trace.name = `M${rtuAddr}-${rtuName}${regNameRest}`
+                  if (!traceToColorId.hasOwnProperty(trace.name)) {
+                    traceToColorId[trace.name] = colorId++
+                  }
                   trace.data = data
                   trace.tooltip.valueSuffix = unit
                   if (i === 0) {
                     trace.tooltip.pointFormat = '<span style="color:{series.color}">●</span> {series.name}: <b>{point.y}</b> '
-                    trace.color = chartColors[traceid].colors
+                    trace.color = chartColors[traceToColorId[trace.name]].color
                   } else {
                     trace.tooltip.pointFormat = '(<b>{point.low}</b> - <b>{point.high}</b>)<br/>'
-                    trace.color = chartColors[traceid].lighter
+                    trace.color = chartColors[traceToColorId[trace.name]].lighter
                   }
                   traces.push(trace)
                 })
-                traceid++
               }
             }
           }, [])
