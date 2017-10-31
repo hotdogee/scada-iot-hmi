@@ -30,6 +30,12 @@ import 'quasar-extras/material-icons'
 // import 'quasar-extras/fontawesome'
 // import 'quasar-extras/animate'
 
+import VueAnalytics from 'vue-analytics'
+Vue.use(VueAnalytics, {
+  id: 'UA-108822113-1',
+  router
+})
+
 api.socket.on('connect', function () {
   // console.log('connected')
   api.logs.removeAllListeners('created')

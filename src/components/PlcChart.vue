@@ -1058,24 +1058,25 @@ export default {
         })
         // watch chartRange
         this.$watch('chartRange', function (val, oldVal) {
+          // const t0 = performance.now()
           // console.log('chartRange', val.from.getTime(), val.to.getTime(), oldVal.from.getTime(), oldVal.to.getTime())
           this.getLogsCountInRange(val)
-          // set navigator
-          // console.log(Highcharts.charts)
-          _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
-            chartDiv.chart.xAxis[0].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime())
-            // chart.xAxis[1].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime())
-          })
-
           const updateCharts = (chartLogs) => {
+            // console.log(`updateCharts start: ${performance.now() - t0}ms`)
             _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+              // set navigator
+              chartDiv.chart.xAxis[0].setExtremes(new Date(val.from).getTime(), new Date(val.to).getTime(), false)
               _.forEach(chartDiv.chart.series, (series, j) => {
                 if (!series.hasOwnProperty('baseSeries')) {
-                  series.setData(chartLogs.data[series.userOptions.description] || [])
+                  series.setData(chartLogs.data[series.userOptions.description] || [], false)
                 }
               })
+              // console.log(`+++setData done: ${performance.now() - t0}ms`)
+              chartDiv.chart.redraw(false)
+              // console.log(`***redraw done: ${performance.now() - t0}ms`)
               chartDiv.chart.hideLoading()
             })
+            // console.log(`--updateCharts done: ${performance.now() - t0}ms`)
           }
           _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
             chartDiv.chart.showLoading('讀取資料中...')
@@ -1085,6 +1086,7 @@ export default {
             to: val.to.getTime(),
             done: updateCharts
           })
+          // console.log(`chartRange done: ${performance.now() - t0}ms`)
         },{
           deep: true
         })
