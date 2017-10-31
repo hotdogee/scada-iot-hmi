@@ -51,7 +51,7 @@ export default {
   },
   mounted () {
     // setup live view
-    console.log(this.$refs)
+    // console.log(this.$refs)
     this.cameras.forEach((cam, index) => {
       cam.player = new JSMpeg.Player(cam.url, {canvas: this.$refs['camera-canvas'][index], preserveDrawingBuffer: true})
       // cam.show = true
