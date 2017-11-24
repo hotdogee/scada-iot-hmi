@@ -649,6 +649,13 @@ export default {
         {
           figTemplate: 'highStockChart',
           traceTemplates: ['highStockLine', 'highStockLineRange'],
+          regs: ['計算'],
+          plotTitle: '計算',
+          yaxisTitle: '計算'
+        },
+        {
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['三相功率'],
           plotTitle: '三相功率',
           yaxisTitle: '三相功率(kW)'
