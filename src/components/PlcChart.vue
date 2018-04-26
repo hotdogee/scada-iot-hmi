@@ -643,8 +643,15 @@ export default {
           figTemplate: 'highStockChart',
           traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['質量流率'],
-          plotTitle: '質量流率',
+          plotTitle: '質量流率-科氏力流量計',
           yaxisTitle: '質量流率(t/h)'
+        },
+        {
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
+          regs: ['流量'],
+          plotTitle: '體積流率-電磁流量計',
+          yaxisTitle: '體積流率(m3/h)'
         },
         {
           figTemplate: 'highStockChart',

@@ -62,8 +62,14 @@ const getters = {
   currentLog: (state, getters) => {
     if (!state.logs.length) return {reads: []}
     // console.log(state.logs[0].reads.map((x) => x.addr))
-    let defaultOrder = [63, 64, 62, 25, 50, 51, 22, 1, 2, 5, 6, 10, 11, 13, 14, 21, 9, 60, 61]
-    state.logs[0].reads = _.sortBy(state.logs[0].reads, [function (o) { return defaultOrder.indexOf(o.addr) }])
+    let defaultOrder = [63, 64, 62, 26, 50, 51, 52, 22, 1, 2, 5, 6, 7, 10, 11, 13, 14, 21, 9, 60, 61, 25]
+    state.logs[0].reads = _.sortBy(state.logs[0].reads, [function (o) {
+      let i = defaultOrder.indexOf(o.addr)
+      if (i < 0)
+        return 999
+      else
+        return i
+    }])
     return state.logs[0]
   },
   currentLogTime: (state, getters) => {
