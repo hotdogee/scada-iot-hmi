@@ -2,7 +2,8 @@ import io from 'socket.io-client'
 import socketio from 'feathers-socketio/client'
 import feathers from 'feathers/client'
 
-let apiUrl = 'http://localhost:8081'
+// let apiUrl = 'http://localhost:8081'
+let apiUrl = 'http://api.scada.hanl.in'
 if (process.env.NODE_ENV == 'production') {
   apiUrl = 'http://api.scada.hanl.in'
 }
