@@ -3,13 +3,15 @@ import socketio from 'feathers-socketio/client'
 import feathers from 'feathers/client'
 
 // let apiUrl = 'http://localhost:8081'
-let apiUrl = 'http://api.scada.hanl.in'
+let apiUrl = 'https://scada.hanl.in'
+let path = '/api/'
 if (process.env.NODE_ENV == 'production') {
-  apiUrl = 'http://api.scada.hanl.in'
+  apiUrl = 'https://scada.hanl.in'
+  path = '/api/'
 }
 export const url = apiUrl
 
-export const socket = io(url)
+export const socket = io(url, { path })
 
 const api = feathers().configure(socketio(socket, { timeout: 10000 }))
 
