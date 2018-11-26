@@ -33,19 +33,19 @@ export default {
       loading: true,
       cameras: [
         {
-          url: 'https://scada.hanl.in/live/live/cam1/index.m3u8',
+          url: 'https://scada.hanl.in/media/live/cam1/index.m3u8',
           show: false
         },
         {
-          url: 'https://scada.hanl.in/live/live/cam2/index.m3u8',
+          url: 'https://scada.hanl.in/media/live/cam2/index.m3u8',
           show: false
         },
         {
-          url: 'https://scada.hanl.in/live/live/cam3/index.m3u8',
+          url: 'https://scada.hanl.in/media/live/cam3/index.m3u8',
           show: false
         },
         {
-          url: 'https://scada.hanl.in/live/live/cam4/index.m3u8',
+          url: 'https://scada.hanl.in/media/live/cam4/index.m3u8',
           show: false
         }
       ]
