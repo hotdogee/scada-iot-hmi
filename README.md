@@ -19,6 +19,9 @@ $ quasar lint
 ```
 
 # Setup server pm2
-cd scada-iot-hmi
+cd scada-iot-supervisor
+NODE_ENV=production pm2 start npm --name scada-iot-supervisor -- run start
+
+cd ../scada-iot-hmi
 quasar build
-sudo pm2 start /usr/bin/http-server --name hmi -- ./dist -p 8600 -d false
+NODE_ENV=production pm2 start /usr/bin/http-server --name scada-iot-hmi -- ./dist -p 8303 -d false

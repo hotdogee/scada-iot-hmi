@@ -3,11 +3,11 @@ import socketio from 'feathers-socketio/client'
 import feathers from 'feathers/client'
 
 // let apiUrl = 'http://localhost:8081'
-let apiUrl = 'https://scada.hanl.in/api/'
-let path = '/api/'
-if (process.env.NODE_ENV == 'production') {
-  apiUrl = 'https://scada.hanl.in/api/'
-  path = '/api/'
+let apiUrl = 'https://scada.hanl.in/'
+let path = '/api/socket.io'
+if (process.env.NODE_ENV === 'production') {
+  apiUrl = 'https://scada.hanl.in/'
+  path = '/api/socket.io'
 }
 export const url = apiUrl
 
