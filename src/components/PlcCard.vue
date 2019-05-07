@@ -52,7 +52,7 @@ export default {
   name: 'plc-card',
   data: function () {
     return {
-      defaultOrder: [63, 64, 62, 26, 50, 51, 52, 22, 1, 2, 5, 6, 7, 10, 11, 13, 14, 21, 9, 60, 61, 25],
+      defaultOrder: [71, 72, 73, 1, 2, 5, 6, 25, 26, 50, 51, 52, 22, 7, 10, 11, 13, 14, 21, 9, 60, 61, 63, 64, 62],
       option: {
         itemSelector: '.grid-item',
         percentPosition: true,
