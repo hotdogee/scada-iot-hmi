@@ -62,6 +62,7 @@ const actions = {
     })
   },
   async getChartLogsInRange ({ state, commit, rootState }, payload) {
+    const t0 = performance.now()
     let url = `${api.url}/logs?$client[chart]=true`
     if (payload.from) {
       const from = new Date(payload.from).toISOString()
@@ -72,6 +73,7 @@ const actions = {
       url += `&logTime[$lt]=${to}`
     }
     const chartLogs = await (await fetch(url)).json()
+    // console.log('time1:', ((performance.now() - t0) / 1000).toFixed(2), url)
     // console.log(`bucket: ${chartLogs.bucket}`)
     commit(types.SET_CHART_BUCKET, {
       bucket: chartLogs.bucket

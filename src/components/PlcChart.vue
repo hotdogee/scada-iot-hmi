@@ -1021,11 +1021,14 @@ export default {
       }
       this.getLogsCountInRange(this.chartRange)
       this.$nextTick(() => {
+        const t0 = performance.now()
         // draw charts
         // map traces with the same name to the same color
         const traceToColorId = {}
         let colorId = 0
-        this.figs.forEach((fig, i) => {
+        let i = 0
+        const initFig = () => {
+          const fig = this.figs[i]
           // console.log(i, fig)
           // build traces
           const series = _.transform(chartLogs.data, (traces, data, header) => {
@@ -1062,6 +1065,7 @@ export default {
               }
             }
           }, [])
+          // console.log('transform time:', ((performance.now() - t0) / 1000).toFixed(2))
           // build figure
           const options = this.figTemplates[fig.figTemplate]()
           options.title.text = fig.plotTitle
@@ -1073,14 +1077,20 @@ export default {
           options.xAxis.events.afterSetExtremes = this.afterSetExtremes
           options.series = series
           // console.log(this.$refs.chartDiv[i])
-          this.$refs.chartDiv[i].chart = Highcharts.stockChart(this.$refs.chartDiv[i], options)
-        })
-        this.$nextTick(() => { // fix margins
-          this.$refs.chartDiv[0].chart.reflow()
-          _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
-            chartDiv.chart.reflow()
+          this.$refs.chartDiv[i].chart = Highcharts.stockChart(this.$refs.chartDiv[i], options, () => {
+            // this.$refs.chartDiv[i].chart.reflow()
+            i += 1
+            if (i < this.figs.length) {
+              setTimeout(() => {
+                this.$refs.chartDiv[i-1].chart.reflow()
+                initFig()
+                // console.log('draw time:', ((performance.now() - t0) / 1000).toFixed(2))
+              }, 10)
+            }
           })
-        })
+        }
+        initFig()
+        // console.log('draw time:', ((performance.now() - t0) / 1000).toFixed(2))
         // watch chartRange
         this.$watch('chartRange', function (val, oldVal) {
           // const t0 = performance.now()
