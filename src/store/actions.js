@@ -59,7 +59,7 @@ export const findLogs = ({ commit }) => {
   // console.log('store.dispatch - findLogs')
   const params = {
     query: {
-      $limit: 100,
+      $limit: 200,
       $sort: {
         logTime: -1
       }

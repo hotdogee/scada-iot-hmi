@@ -22,54 +22,103 @@ export default {
     state.logsEnd = end
   }
 }
+const limit = 100
 
 function setLogs (state, logs) {
   state.logs = logs
-  let regList = {}
-  let chartData = {}
+  const regList = {}
+  const chartData = {}
+  const cardData = {}
   _.forEachRight(logs, (log) => { // oldest log first
     _.forEach(log.reads, (rtu) => {
       _.forEach(rtu.reads, (reg) => {
-        if (!regList[rtu.name]) {
-          regList[rtu.name] = {}
+        if (Array.isArray(reg.value)) return
+        // 'M1-九號井口'
+        const addrName = util.format('M%s-%s', rtu.addr, rtu.name)
+        if (!regList[addrName]) {
+          regList[addrName] = {}
         }
-        if (!regList[rtu.name][reg.name]) {
-          regList[rtu.name][reg.name] = []
+        if (!regList[addrName][reg.name]) {
+          regList[addrName][reg.name] = []
         }
-        regList[rtu.name][reg.name].push(reg)
+        regList[addrName][reg.name].push(reg)
+        if (regList[addrName][reg.name].length > limit) {
+          regList[addrName][reg.name].shift()
+        }
+        // cardData
+        if (!cardData[addrName]) {
+          cardData[addrName] = {}
+        }
+        if (!cardData[addrName][reg.name]) {
+          cardData[addrName][reg.name] = {
+            trend: []
+          }
+        }
+        cardData[addrName][reg.name].current = reg
+        cardData[addrName][reg.name].trend.push(Math.round(reg.value * 10000) / 100)
+        if (cardData[addrName][reg.name].trend.length > limit) {
+          cardData[addrName][reg.name].trend.shift()
+        }
         // 'M1-九號井口-溫度(°C)'
-        let header = util.format('M%s-%s-%s(%s)', rtu.addr, rtu.name, reg.name, reg.unit)
+        const header = util.format('M%s-%s-%s(%s)', rtu.addr, rtu.name, reg.name, reg.unit)
         if (!chartData[header]) {
           chartData[header] = []
         }
         chartData[header].push(reg)
+        if (chartData[header].length > limit) {
+          chartData[header].shift()
+        }
       })
     })
   })
   state.regList = regList
+  state.cardData = cardData
   state.chartData = chartData
 }
 
 function addLog (state, log) {
   state.logs.unshift(log)
-  state.logs.pop()
+  while (state.logs.length > limit) {
+    state.logs.pop()
+  }
   _.forEach(log.reads, (rtu) => {
     _.forEach(rtu.reads, (reg) => {
-      if (!state.regList[rtu.name]) {
-        state.regList[rtu.name] = {}
+      if (Array.isArray(reg.value)) return
+      // 'M1-九號井口'
+      const addrName = util.format('M%s-%s', rtu.addr, rtu.name)
+      if (!state.regList[addrName]) {
+        state.regList[addrName] = {}
       }
-      if (!state.regList[rtu.name][reg.name]) {
-        state.regList[rtu.name][reg.name] = []
+      if (!state.regList[addrName][reg.name]) {
+        state.regList[addrName][reg.name] = []
       }
-      state.regList[rtu.name][reg.name].push(reg)
-      state.regList[rtu.name][reg.name].shift()
+      state.regList[addrName][reg.name].push(reg)
+      while (state.regList[addrName][reg.name].length > limit) {
+        state.regList[addrName][reg.name].shift()
+      }
+      // cardData
+      if (!state.cardData[addrName]) {
+        state.cardData[addrName] = {}
+      }
+      if (!state.cardData[addrName][reg.name]) {
+        state.cardData[addrName][reg.name] = {
+          trend: []
+        }
+      }
+      state.cardData[addrName][reg.name].current = reg
+      state.cardData[addrName][reg.name].trend.push(Math.round(reg.value * 10000) / 100)
+      while (state.cardData[addrName][reg.name].trend.length > limit) {
+        state.cardData[addrName][reg.name].trend.shift()
+      }
       // 'M1-九號井口-溫度(°C)'
-      let header = util.format('M%s-%s-%s(%s)', rtu.addr, rtu.name, reg.name, reg.unit)
+      const header = util.format('M%s-%s-%s(%s)', rtu.addr, rtu.name, reg.name, reg.unit)
       if (!state.chartData[header]) {
         state.chartData[header] = []
       }
       state.chartData[header].push(reg)
-      state.chartData[header].shift()
+      while (state.chartData[header].length > limit) {
+        state.chartData[header].shift()
+      }
     })
   })
 }

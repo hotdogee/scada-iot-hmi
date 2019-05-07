@@ -73,3 +73,6 @@ selenium-debug.log
 # cordova
 cordova/platforms
 cordova/plugins
+
+#backup
+*.rar

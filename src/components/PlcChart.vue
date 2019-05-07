@@ -628,6 +628,34 @@ export default {
         {
           figTemplate: 'highStockChart',
           traceTemplates: ['highStockLine', 'highStockLineRange'],
+          regs: ['三相功率'],
+          plotTitle: '三相功率',
+          yaxisTitle: '三相功率(kW)'
+        },
+        {
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
+          regs: ['頻率'],
+          plotTitle: '頻率',
+          yaxisTitle: '頻率(Hz)'
+        },
+        {
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
+          regs: ['A相電壓', 'B相電壓', 'C相電壓'],
+          plotTitle: '三相電壓',
+          yaxisTitle: '電壓(V)'
+        },
+        {
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
+          regs: ['A相電流', 'B相電流', 'C相電流'],
+          plotTitle: '三相電流',
+          yaxisTitle: '電流(A)'
+        },
+        {
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
           regs: ['溫度'],
           plotTitle: '管線溫度',
           yaxisTitle: '溫度(℃)'
@@ -659,34 +687,6 @@ export default {
           regs: ['計算'],
           plotTitle: '計算',
           yaxisTitle: '計算'
-        },
-        {
-          figTemplate: 'highStockChart',
-          traceTemplates: ['highStockLine', 'highStockLineRange'],
-          regs: ['三相功率'],
-          plotTitle: '三相功率',
-          yaxisTitle: '三相功率(kW)'
-        },
-        {
-          figTemplate: 'highStockChart',
-          traceTemplates: ['highStockLine', 'highStockLineRange'],
-          regs: ['頻率'],
-          plotTitle: '頻率',
-          yaxisTitle: '頻率(Hz)'
-        },
-        {
-          figTemplate: 'highStockChart',
-          traceTemplates: ['highStockLine', 'highStockLineRange'],
-          regs: ['A相電壓', 'B相電壓', 'C相電壓'],
-          plotTitle: '三相電壓',
-          yaxisTitle: '電壓(V)'
-        },
-        {
-          figTemplate: 'highStockChart',
-          traceTemplates: ['highStockLine', 'highStockLineRange'],
-          regs: ['A相電流', 'B相電流', 'C相電流'],
-          plotTitle: '三相電流',
-          yaxisTitle: '電流(A)'
         },
         {
           figTemplate: 'highStockChart',

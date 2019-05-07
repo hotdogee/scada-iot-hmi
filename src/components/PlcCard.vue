@@ -8,23 +8,23 @@
       </q-card>
     </div>
     <div class="col-xs-12">
-      <isotope :list="currentLog.reads" class="grid" itemSelector="grid-item" :options='option' >
-        <div v-for="rtu in currentLog.reads" :key="rtu.name" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <isotope :list="rtus" class="grid" itemSelector="grid-item" :options='option' >
+        <div v-for="rtu in rtus" :key="rtu" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
           <q-card class="bg-white">
             <q-card-title>
-              <div class="title">M{{ rtu.addr }}-{{ rtu.name }}</div>
+              <div class="title">{{ rtu }}</div>
             </q-card-title>
             <div class="row wrap">
-              <div class="col-xs-6 top-12" v-for="reg in rtu.reads" v-if="reg.name != '三相功因'" :key="rtu.name + reg.name">
+              <div class="col-xs-6 top-12" v-for="reg in Object.keys(cardData[rtu])" v-if="reg !== '三相功因'" :key="rtu + reg">
                 <q-card light>
                   <q-card-main class="absolute">
-                    <span class="caption top-6 text-grey">{{ reg.name }}</span><br>
-                    <span class="headline top-12"><strong>{{ reg.value.toFixed(2) }} </strong></span>
-                    <span class="subheading top-12">{{ reg.unit }}</span>
+                    <span class="caption top-6 text-grey">{{ reg }}</span><br>
+                    <span class="headline top-12"><strong>{{ cardData[rtu][reg].current.value.toFixed(2) }} </strong></span>
+                    <span class="subheading top-12">{{ cardData[rtu][reg].current.unit }}</span>
                   </q-card-main>
                   <br><br><br>
                   <trend
-                    :data="regList(rtu.name, reg.name)"
+                    :data="cardData[rtu][reg].trend"
                     :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
                   >
                   </trend>
@@ -45,12 +45,14 @@ import {
   QCardTitle
 } from 'quasar'
 import isotope from 'vueisotope'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
+import _ from 'lodash'
 
 export default {
   name: 'plc-card',
   data: function () {
     return {
+      defaultOrder: [63, 64, 62, 26, 50, 51, 52, 22, 1, 2, 5, 6, 7, 10, 11, 13, 14, 21, 9, 60, 61, 25],
       option: {
         itemSelector: '.grid-item',
         percentPosition: true,
@@ -60,12 +62,25 @@ export default {
       }
     }
   },
-  computed: mapGetters([
-    // map this.logs to store.state.logs
-    'currentLog',
-    'regList',
-    'currentLogTime'
-  ]),
+  computed: {
+    ...mapGetters([
+      // map this.logs to store.state.logs
+      'currentLog',
+      'regList',
+      'currentLogTime'
+    ]),
+    ...mapState([
+      'cardData'
+    ]),
+    rtus () {
+      return _.sortBy(Object.keys(this.cardData), [(o) => {
+        const id = parseInt(o.match(/^M(\d+)-/)[1])
+        let i = this.defaultOrder.indexOf(id)
+        if (i < 0) { return 999 }
+        else { return i }
+      }])
+    }
+  },
   components: {
     isotope,
     QCard,

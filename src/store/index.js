@@ -34,7 +34,8 @@ const state = {
   logsStart: -1,
   logsEnd: -1,
   regList: {},
-  chartData: {}
+  chartData: {},
+  cardData: {}
 }
 
 // const options = {
@@ -49,13 +50,26 @@ const state = {
 const getters = {
   logText: (state, getters) => {
     if (!state.logs.length) return 'loading...'
-    var data = flattenMessage(state.logs[0])
     var reply = ''
     // reply += util.format('%s：%s\n', '時間', new Intl.DateTimeFormat('zh-TW', options).format(new Date(data.Time)))
-    reply += util.format('%s：%s\n', '時間', new Date(data.Time).toLocaleString())
-    delete data.Time
-    Object.keys(data).forEach(k => {
-      reply += util.format('%s：%s\n', k, Math.round(data[k] * 100) / 100)
+    reply += util.format(
+      '%s：%s\n',
+      '時間',
+      new Date(state.logs[0].logTime).toLocaleString()
+    )
+    Object.keys(state.chartData).sort((a, b) => {
+      const aid = parseInt(a.match(/^M(\d+)-/)[1])
+      const bid = parseInt(b.match(/^M(\d+)-/)[1])
+      return aid - bid
+    }).forEach(k => {
+      if (Array.isArray(state.chartData[k][state.chartData[k].length - 1].value)) return
+      reply += util.format(
+        '%s：%s\n',
+        k,
+        Math.round(
+          state.chartData[k][state.chartData[k].length - 1].value * 100
+        ) / 100
+      )
     })
     return reply
   },
@@ -65,10 +79,8 @@ const getters = {
     let defaultOrder = [63, 64, 62, 26, 50, 51, 52, 22, 1, 2, 5, 6, 7, 10, 11, 13, 14, 21, 9, 60, 61, 25]
     state.logs[0].reads = _.sortBy(state.logs[0].reads, [function (o) {
       let i = defaultOrder.indexOf(o.addr)
-      if (i < 0)
-        return 999
-      else
-        return i
+      if (i < 0) { return 999 }
+      else { return i }
     }])
     return state.logs[0]
   },
@@ -193,15 +205,15 @@ export default new Vuex.Store({
   }
 })
 
-function flattenMessage (message) {
-  let data = _.fromPairs(_.flatMap(message.reads, (rtu, index) => {
-    return rtu.reads.map((reg, i) => {
-      // 'M1-九號井口-溫度(°C)'
-      let header = util.format('M%s-%s-%s(%s)', rtu.addr, rtu.name, reg.name, reg.unit)
-      return [header, reg.value]
-    })
-  }))
-  return Object.assign({
-    Time: message.logTime
-  }, data)
-}
+// function flattenMessage (message) {
+//   let data = _.fromPairs(_.flatMap(message.reads, (rtu, index) => {
+//     return rtu.reads.map((reg, i) => {
+//       // 'M1-九號井口-溫度(°C)'
+//       let header = util.format('M%s-%s-%s(%s)', rtu.addr, rtu.name, reg.name, reg.unit)
+//       return [header, reg.value]
+//     })
+//   }))
+//   return Object.assign({
+//     Time: message.logTime
+//   }, data)
+// }
