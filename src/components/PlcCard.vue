@@ -19,8 +19,8 @@
                 <q-card light>
                   <q-card-main class="absolute">
                     <span class="caption top-6 text-grey">{{ reg }}</span><br>
-                    <span class="headline top-12"><strong>{{ cardData[rtu][reg].current.value.toFixed(2) }} </strong></span>
-                    <span class="subheading top-12">{{ cardData[rtu][reg].current.unit }}</span>
+                    <span class="headline top-12"><strong>{{ cardData[rtu][reg].value }} </strong></span>
+                    <span class="subheading top-12">{{ cardData[rtu][reg].unit }}</span>
                   </q-card-main>
                   <br><br><br>
                   <trend

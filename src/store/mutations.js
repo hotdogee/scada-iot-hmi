@@ -23,6 +23,17 @@ export default {
   }
 }
 const limit = 100
+const prefixExp = {
+  'k': 3,
+  'M': 6,
+  'G': 9,
+  'T': 12,
+  'P': 15
+}
+const expPrefix = Object.keys(prefixExp).reduce((o, p) => {
+  o[prefixExp[p]] = p
+  return o
+}, {})
 
 function setLogs (state, logs) {
   state.logs = logs
@@ -54,7 +65,17 @@ function setLogs (state, logs) {
             trend: []
           }
         }
-        cardData[addrName][reg.name].current = reg
+        const unit = prefixExp[reg.unit[0]] ? reg.unit.slice(1) : reg.unit
+        let exp = prefixExp[reg.unit[0]] || 0
+        let value = reg.value
+        while (value > 10000) {
+          value /= 1000
+          exp += 3
+        }
+        const prefix = expPrefix[exp] || ''
+
+        cardData[addrName][reg.name].value = value.toFixed(2)
+        cardData[addrName][reg.name].unit = prefix + unit
         cardData[addrName][reg.name].trend.push(Math.round(reg.value * 10000) / 100)
         if (cardData[addrName][reg.name].trend.length > limit) {
           cardData[addrName][reg.name].trend.shift()
@@ -105,7 +126,16 @@ function addLog (state, log) {
           trend: []
         }
       }
-      state.cardData[addrName][reg.name].current = reg
+      const unit = prefixExp[reg.unit[0]] ? reg.unit.slice(1) : reg.unit
+      let exp = prefixExp[reg.unit[0]] || 0
+      let value = reg.value
+      while (value > 10000) {
+        value /= 1000
+        exp += 3
+      }
+      const prefix = expPrefix[exp] || ''
+      state.cardData[addrName][reg.name].value = value.toFixed(2)
+      state.cardData[addrName][reg.name].unit = prefix + unit
       state.cardData[addrName][reg.name].trend.push(Math.round(reg.value * 10000) / 100)
       while (state.cardData[addrName][reg.name].trend.length > limit) {
         state.cardData[addrName][reg.name].trend.shift()
