@@ -13,6 +13,7 @@ require(`./themes/app.${__THEME}.styl`)
 import Vue from 'vue'
 import Quasar from 'quasar'
 import Trend from 'vuetrend'
+import Bars from 'vuebars'
 
 import * as api from './api'
 import store from './store'
@@ -21,6 +22,7 @@ import router from './router'
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework
 Vue.use(Trend)
+Vue.use(Bars)
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')

@@ -43,9 +43,29 @@ function setLogs (state, logs) {
   _.forEachRight(logs, (log) => { // oldest log first
     _.forEach(log.reads, (rtu) => {
       _.forEach(rtu.reads, (reg) => {
-        if (Array.isArray(reg.value)) return
-        // 'M1-九號井口'
         const addrName = util.format('M%s-%s', rtu.addr, rtu.name)
+        // cardData init
+        if (!cardData[addrName]) {
+          cardData[addrName] = {}
+        }
+        // THD
+        if (Array.isArray(reg.value)) {
+          const name = reg.name.replace('諧波比', '總諧波失真')
+          if (!cardData[addrName][name]) {
+            cardData[addrName][name] = {
+              trend: []
+            }
+          }
+          const thd = Math.sqrt(reg.value.reduce((a, v) => {
+            a += v * v
+            return a
+          }, 0))
+          cardData[addrName][name].value = thd.toFixed(2)
+          cardData[addrName][name].unit = reg.unit
+          cardData[addrName][name].bars = reg.value
+          return
+        }
+        // 'M1-九號井口'
         if (!regList[addrName]) {
           regList[addrName] = {}
         }
@@ -57,9 +77,6 @@ function setLogs (state, logs) {
           regList[addrName][reg.name].shift()
         }
         // cardData
-        if (!cardData[addrName]) {
-          cardData[addrName] = {}
-        }
         if (!cardData[addrName][reg.name]) {
           cardData[addrName][reg.name] = {
             trend: []
@@ -104,9 +121,29 @@ function addLog (state, log) {
   }
   _.forEach(log.reads, (rtu) => {
     _.forEach(rtu.reads, (reg) => {
-      if (Array.isArray(reg.value)) return
-      // 'M1-九號井口'
       const addrName = util.format('M%s-%s', rtu.addr, rtu.name)
+      // cardData init
+      if (!state.cardData[addrName]) {
+        state.cardData[addrName] = {}
+      }
+      // THD
+      if (Array.isArray(reg.value)) {
+        const name = reg.name.replace('諧波比', '總諧波失真')
+        if (!state.cardData[addrName][name]) {
+          state.cardData[addrName][name] = {
+            trend: []
+          }
+        }
+        const thd = Math.sqrt(reg.value.reduce((a, v) => {
+          a += v * v
+          return a
+        }, 0))
+        state.cardData[addrName][name].value = thd.toFixed(2)
+        state.cardData[addrName][name].unit = reg.unit
+        state.cardData[addrName][name].bars = reg.value
+        return
+      }
+      // 'M1-九號井口'
       if (!state.regList[addrName]) {
         state.regList[addrName] = {}
       }
@@ -118,6 +155,11 @@ function addLog (state, log) {
         state.regList[addrName][reg.name].shift()
       }
       // cardData
+      if (!state.cardData[addrName][reg.name]) {
+        state.cardData[addrName][reg.name] = {
+          trend: []
+        }
+      }
       if (!state.cardData[addrName]) {
         state.cardData[addrName] = {}
       }
