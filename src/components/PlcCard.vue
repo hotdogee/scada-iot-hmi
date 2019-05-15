@@ -9,25 +9,35 @@
     </div>
     <div class="col-xs-12">
       <isotope :list="rtus" class="grid" itemSelector="grid-item" :options='option' >
-        <div v-for="rtu in rtus" :key="rtu" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+        <div v-for="[sid, rtu] in rtus" :key="sid" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
           <q-card class="bg-white">
             <q-card-title>
-              <div class="title">{{ rtu }}</div>
+              <div class="title">{{ sid }}</div>
             </q-card-title>
             <div class="row wrap">
-              <div class="col-xs-6 top-12" v-for="reg in Object.keys(cardData[rtu])" v-if="reg !== '三相功因'" :key="rtu + reg">
+              <div class="col-xs-6 top-12" v-for="[regName, reg] in regs(sid)" :key="sid + regName">
                 <q-card light>
                   <q-card-main class="absolute">
-                    <span class="caption top-6 text-grey">{{ reg }}</span><br>
-                    <span class="headline top-12"><strong>{{ cardData[rtu][reg].value }} </strong></span>
-                    <span class="subheading top-12">{{ cardData[rtu][reg].unit }}</span>
+                    <span class="caption top-6 text-grey">{{ regName }}</span><br>
+                    <span class="headline top-12"><strong>{{ rtu[regName].value }} </strong></span>
+                    <span class="subheading top-12">{{ rtu[regName].unit }}</span>
                   </q-card-main>
                   <br><br><br>
                   <trend
-                    :data="cardData[rtu][reg].trend"
+                    v-if="rtu[regName].trend"
+                    :data="rtu[regName].trend"
                     :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
                   >
                   </trend>
+                  <bars
+                    v-if="rtu[regName].bars"
+                    :data="rtu[regName].bars"
+                    :key="JSON.stringify(rtu[regName].bars)"
+                    :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
+                    :growDuration="0.01"
+                    :padding="16"
+                  >
+                  </bars>
                 </q-card>
               </div>
             </div>
@@ -52,7 +62,92 @@ export default {
   name: 'plc-card',
   data: function () {
     return {
-      defaultOrder: [71, 72, 73, 1, 2, 5, 6, 25, 26, 50, 51, 52, 22, 7, 10, 11, 13, 14, 21, 9, 60, 61, 63, 64, 62],
+      defaultOrder: [
+        { sid: 71, regOrder: [] },
+        { sid: 72, regOrder: [
+          { name: 'AB線電壓', show: true },
+          { name: 'A相電流', show: true },
+          { name: 'BC線電壓', show: true },
+          { name: 'B相電流', show: true },
+          { name: 'CA線電壓', show: true },
+          { name: 'C相電流', show: true },
+          { name: '有功功率', show: true },
+          { name: '無功功率', show: true },
+          { name: '視在功率', show: true },
+          { name: '功率因數', show: true },
+          { name: '正有功電量', show: true },
+          { name: '負有功電量', show: true },
+          { name: '正無功電量', show: true },
+          { name: '負無功電量', show: true },
+          { name: '有功電量', show: false },
+          { name: '無功電量', show: false },
+          { name: '視在電量', show: true },
+          { name: '頻率', show: true },
+          { name: 'A相電流諧波比', show: true },
+          { name: 'B相電流諧波比', show: true },
+          { name: 'C相電流諧波比', show: true },
+          { name: 'A相電壓諧波比', show: true },
+          { name: 'B相電壓諧波比', show: true },
+          { name: 'C相電壓諧波比', show: true }
+        ] },
+        { sid: 73, regOrder: [
+          { name: 'AB線電壓', show: true },
+          { name: 'A相電流', show: true },
+          { name: 'BC線電壓', show: true },
+          { name: 'B相電流', show: true },
+          { name: 'CA線電壓', show: true },
+          { name: 'C相電流', show: true },
+          { name: '有功功率', show: true },
+          { name: '無功功率', show: true },
+          { name: '視在功率', show: true },
+          { name: '功率因數', show: true },
+          { name: '正有功電量', show: true },
+          { name: '負有功電量', show: true },
+          { name: '正無功電量', show: true },
+          { name: '負無功電量', show: true },
+          { name: '有功電量', show: false },
+          { name: '無功電量', show: false },
+          { name: '視在電量', show: true },
+          { name: 'A相電流諧波比', show: true },
+          { name: 'B相電流諧波比', show: true },
+          { name: 'C相電流諧波比', show: true },
+          { name: 'A相電壓諧波比', show: true },
+          { name: 'B相電壓諧波比', show: true },
+          { name: 'C相電壓諧波比', show: true }
+        ] },
+        { sid: 1, regOrder: [] },
+        { sid: 2, regOrder: [] },
+        { sid: 5, regOrder: [] },
+        { sid: 6, regOrder: [] },
+        { sid: 25, regOrder: [] },
+        { sid: 26, regOrder: [] },
+        { sid: 50, regOrder: [] },
+        { sid: 51, regOrder: [] },
+        { sid: 52, regOrder: [] },
+        { sid: 22, regOrder: [] },
+        { sid: 7, regOrder: [] },
+        { sid: 10, regOrder: [] },
+        { sid: 11, regOrder: [] },
+        { sid: 13, regOrder: [] },
+        { sid: 14, regOrder: [] },
+        { sid: 21, regOrder: [] },
+        { sid: 9, regOrder: [] },
+        { sid: 60, regOrder: [] },
+        { sid: 61, regOrder: [] },
+        { sid: 63, regOrder: [
+          { name: '三相功率', show: true },
+          { name: '三相功因', show: false },
+          { name: '發電量', show: true },
+          { name: 'A相電壓', show: true },
+          { name: 'A相電流', show: true },
+          { name: 'B相電壓', show: true },
+          { name: 'B相電流', show: true },
+          { name: 'C相電壓', show: true },
+          { name: 'C相電流', show: true }
+        ] },
+        { sid: 64, regOrder: [] },
+        { sid: 62, regOrder: [] }
+      ],
       option: {
         itemSelector: '.grid-item',
         percentPosition: true,
@@ -73,12 +168,34 @@ export default {
       'cardData'
     ]),
     rtus () {
-      return _.sortBy(Object.keys(this.cardData), [(o) => {
-        const id = parseInt(o.match(/^M(\d+)-/)[1])
-        let i = this.defaultOrder.indexOf(id)
+      return _.sortBy(Object.entries(this.cardData), [([k, v]) => {
+        const sid = parseInt(k.match(/^M(\d+)-/)[1])
+        let i = this.defaultOrder.map(o => o.sid).indexOf(sid)
         if (i < 0) { return 999 }
         else { return i }
       }])
+    },
+    regs () {
+      return (rtuName) => {
+        const sid = parseInt(rtuName.match(/^M(\d+)-/)[1])
+        const orderItem = _.find(this.defaultOrder, { sid })
+        const regEntries = Object.entries(this.cardData[rtuName])
+        if (orderItem && Array.isArray(orderItem.regOrder)) {
+          const regOrder = orderItem.regOrder
+          const sorted = _.sortBy(regEntries, [([regName, v]) => {
+            let i = regOrder.map(o => o.name).indexOf(regName)
+            if (i < 0) { return 999 }
+            else { return i }
+          }])
+          return _.filter(sorted, ([regName, v]) => {
+            const regOrderItem = _.find(regOrder, { name: regName })
+            if (regOrderItem) return regOrderItem.show !== false
+            else return true // default show
+          })
+        } else {
+          return regEntries
+        }
+      }
     }
   },
   components: {
