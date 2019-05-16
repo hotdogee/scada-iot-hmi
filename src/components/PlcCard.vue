@@ -208,9 +208,12 @@ export default {
       return (rtuName, regName) => {
         const reg = this.cardData[rtuName][regName]
         const data = reg.trend || reg.bars || [0]
-        if (!data.length) return ['N/A', 1, 'N/A', 'N/A']
+        if (!data.length) {
+          // console.log(rtuName, regName, reg, data)
+          return ['N/A', 1, 'N/A', 'N/A']
+        }
         const sum = data.reduce((acc, v) => acc + v, 0)
-        let fac = 100
+        let fac = reg.trend ? 100 : 1
         let avg = (sum / data.length / fac)
         while (avg > 10000) {
           avg /= 1000

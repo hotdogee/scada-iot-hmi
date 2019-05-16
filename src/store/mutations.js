@@ -52,9 +52,7 @@ function setLogs (state, logs) {
         if (Array.isArray(reg.value)) {
           const name = reg.name.replace('諧波比', '總諧波失真')
           if (!cardData[addrName][name]) {
-            cardData[addrName][name] = {
-              trend: []
-            }
+            cardData[addrName][name] = {}
           }
           const thd = Math.sqrt(reg.value.reduce((a, v) => {
             a += v * v
@@ -130,9 +128,7 @@ function addLog (state, log) {
       if (Array.isArray(reg.value)) {
         const name = reg.name.replace('諧波比', '總諧波失真')
         if (!state.cardData[addrName][name]) {
-          state.cardData[addrName][name] = {
-            trend: []
-          }
+          state.cardData[addrName][name] = {}
         }
         const thd = Math.sqrt(reg.value.reduce((a, v) => {
           a += v * v
