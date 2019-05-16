@@ -9,18 +9,22 @@
     </div>
     <div class="col-xs-12">
       <isotope :list="rtus" class="grid" itemSelector="grid-item" :options='option' >
-        <div v-for="[sid, rtu] in rtus" :key="sid" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+        <div v-for="[rtuName, rtu] in rtus" :key="rtuName" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
           <q-card class="bg-white">
             <q-card-title>
-              <div class="title">{{ sid }}</div>
+              <div class="title">{{ rtuName }}</div>
             </q-card-title>
             <div class="row wrap">
-              <div class="col-xs-6 top-12" v-for="[regName, reg] in regs(sid)" :key="sid + regName">
+              <div class="col-xs-6 top-12" v-for="[regName, reg] in regs(rtuName)" :key="rtuName + regName">
                 <q-card light>
-                  <q-card-main class="absolute">
+                  <q-card-main class="absolute fit">
                     <span class="caption top-6 text-grey">{{ regName }}</span><br>
                     <span class="headline top-12"><strong>{{ rtu[regName].value }} </strong></span>
                     <span class="subheading top-12">{{ rtu[regName].unit }}</span>
+                  </q-card-main>
+                  <q-card-main class="absolute fit">
+                    <span class="caption top-right-6 text-grey">AVG {{ avg(rtuName, regName)[0] }}</span><br>
+                    <span class="caption top-right-6 text-grey">SD {{ sd(rtuName, regName) }}</span>
                   </q-card-main>
                   <br><br><br>
                   <trend
@@ -196,6 +200,30 @@ export default {
           return regEntries
         }
       }
+    },
+    avg () {
+      return (rtuName, regName) => {
+        const reg = this.cardData[rtuName][regName]
+        const data = reg.trend || reg.bars || [0]
+        if (!data.length) return 0
+        const sum = data.reduce((acc, v) => acc + v, 0)
+        let div = 100
+        let avg = (sum / data.length / div)
+        while (avg > 10000) {
+          avg /= 1000
+          div *= 1000
+        }
+        return [avg.toFixed(2), div]
+      }
+    },
+    sd () {
+      return (rtuName, regName) => {
+        const reg = this.cardData[rtuName][regName]
+        const data = reg.trend || reg.bars || [0]
+        if (!data.length) return 0
+        const [avg, div] = this.avg(rtuName, regName)
+        return Math.sqrt(data.reduce((acc, v) => acc + (v / div - avg) * (v / div - avg), 0) / data.length).toFixed(2)
+      }
     }
   },
   components: {
@@ -212,6 +240,12 @@ export default {
 .top-6 {
   top: -6px;
   position: relative;
+}
+.top-right-6 {
+  top: -4px;
+  right: 0px;
+  position: relative;
+  float: right;
 }
 .top-12 {
   top: -12px;
