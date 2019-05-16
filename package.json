@@ -12,6 +12,7 @@
     "start": "http-server ./dist -c-1 -p 8083 -d false --push-state"
   },
   "dependencies": {
+    "@neutrium/thermo.eos.iapws97": "^2.0.2",
     "@tweenjs/tween.js": "^17.1.1",
     "babel-runtime": "^6.25.0",
     "config": "^1.27.0",
