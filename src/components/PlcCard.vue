@@ -87,14 +87,14 @@ export default {
           { name: 'B相電壓總諧波失真', show: true },
           { name: 'B相電流總諧波失真', show: true },
           { name: 'C相電壓總諧波失真', show: true },
-          { name: 'C相電流總諧波失真', show: true }
+          { name: 'C相電流總諧波失真', show: true },
           { name: '正有功電量', show: true },
           { name: '負有功電量', show: true },
           { name: '正無功電量', show: true },
           { name: '負無功電量', show: true },
           { name: '有功電量', show: false },
           { name: '無功電量', show: false },
-          { name: '視在電量', show: true },
+          { name: '視在電量', show: true }
         ] },
         { sid: 72, regOrder: [
           { name: '有功功率', show: true },
@@ -112,7 +112,7 @@ export default {
           { name: 'B相電壓總諧波失真', show: true },
           { name: 'B相電流總諧波失真', show: true },
           { name: 'C相電壓總諧波失真', show: true },
-          { name: 'C相電流總諧波失真', show: true }
+          { name: 'C相電流總諧波失真', show: true },
           { name: '正有功電量', show: true },
           { name: '負有功電量', show: true },
           { name: '正無功電量', show: true },
@@ -120,7 +120,7 @@ export default {
           { name: '有功電量', show: false },
           { name: '無功電量', show: false },
           { name: '視在電量', show: true },
-          { name: '頻率', show: true },
+          { name: '頻率', show: true }
         ] },
         { sid: 1, regOrder: [] },
         { sid: 2, regOrder: [] },
