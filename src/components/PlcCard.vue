@@ -24,7 +24,10 @@
                   </q-card-main>
                   <q-card-main class="absolute fit">
                     <span class="caption top-right-6 text-grey">AVG {{ avg(rtuName, regName)[0] }}</span><br>
-                    <span class="caption top-right-6 text-grey">SD {{ sd(rtuName, regName) }}</span>
+                    <span class="caption top-right-6 text-grey">SD {{ sd(rtuName, regName) }}</span><br>
+                    <span class="caption max-text text-grey">{{ avg(rtuName, regName)[3] }}</span><br>
+                    <br><br>
+                    <span class="caption min-text text-grey">{{ avg(rtuName, regName)[2] }}</span>
                   </q-card-main>
                   <br><br><br>
                   <trend
@@ -205,7 +208,7 @@ export default {
       return (rtuName, regName) => {
         const reg = this.cardData[rtuName][regName]
         const data = reg.trend || reg.bars || [0]
-        if (!data.length) return ['N/A', 1]
+        if (!data.length) return ['N/A', 1, 'N/A', 'N/A']
         const sum = data.reduce((acc, v) => acc + v, 0)
         let fac = 100
         let avg = (sum / data.length / fac)
@@ -213,7 +216,9 @@ export default {
           avg /= 1000
           fac *= 1000
         }
-        return [avg.toFixed(2), fac]
+        const min = Math.min(...data) / fac
+        const max = Math.max(...data) / fac
+        return [avg.toFixed(2), fac, min.toFixed(2), max.toFixed(2)]
       }
     },
     sd () {
@@ -221,7 +226,7 @@ export default {
         const reg = this.cardData[rtuName][regName]
         const data = reg.trend || reg.bars || [0]
         if (!data.length) return 'N/A'
-        const [avg, fac] = this.avg(rtuName, regName)
+        const [avg, fac, min, max] = this.avg(rtuName, regName)
         return Math.sqrt(data.reduce((acc, v) => acc + (v / fac - avg) * (v / fac - avg), 0) / data.length).toFixed(2)
       }
     }
@@ -246,6 +251,24 @@ export default {
   right: 0px;
   position: relative;
   float: right;
+}
+.max-text {
+  top: 0px;
+  right: 0px;
+  position: relative;
+  float: right;
+}
+.min-text {
+  top: -8px;
+  right: 0px;
+  position: relative;
+  float: right;
+}
+.top-left-6 {
+  top: -4px;
+  right: 0px;
+  position: relative;
+  float: left;
 }
 .top-12 {
   top: -12px;
