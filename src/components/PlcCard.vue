@@ -207,13 +207,13 @@ export default {
         const data = reg.trend || reg.bars || [0]
         if (!data.length) return ['N/A', 1]
         const sum = data.reduce((acc, v) => acc + v, 0)
-        let div = 100
-        let avg = (sum / data.length / div)
+        let fac = 100
+        let avg = (sum / data.length / fac)
         while (avg > 10000) {
           avg /= 1000
-          div *= 1000
+          fac *= 1000
         }
-        return [avg.toFixed(2), div]
+        return [avg.toFixed(2), fac]
       }
     },
     sd () {
@@ -221,8 +221,8 @@ export default {
         const reg = this.cardData[rtuName][regName]
         const data = reg.trend || reg.bars || [0]
         if (!data.length) return 'N/A'
-        const [avg, div] = this.avg(rtuName, regName)
-        return Math.sqrt(data.reduce((acc, v) => acc + (v / div - avg) * (v / div - avg), 0) / data.length).toFixed(2)
+        const [avg, fac] = this.avg(rtuName, regName)
+        return Math.sqrt(data.reduce((acc, v) => acc + (v / fac - avg) * (v / fac - avg), 0) / data.length).toFixed(2)
       }
     }
   },
