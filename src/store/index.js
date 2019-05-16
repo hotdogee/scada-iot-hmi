@@ -33,7 +33,6 @@ const state = {
   logsTotal: -1,
   logsStart: -1,
   logsEnd: -1,
-  regList: {},
   chartData: {},
   cardData: {}
 }
@@ -87,24 +86,6 @@ const getters = {
   currentLogTime: (state, getters) => {
     if (!state.logs.length) return 'loading...'
     return new Date(state.logs[0].logTime).toLocaleString()
-  },
-  regList: (state, getters) => (rtuName, regName) => {
-    if (_.isEmpty(state.regList)) return []
-    // let rl = state.regList[rtuName][regName]
-    // let min = _.minBy(rl, (reg) => reg.value).value
-    // let max = _.maxBy(rl, (reg) => reg.value).value
-    return _.map(state.regList[rtuName][regName], (reg) => {
-      return Math.round(reg.value * 10000) / 100
-    })
-  },
-  chartData: (state, getters) => (rtuName, regName) => {
-    if (_.isEmpty(state.regList)) return []
-    // let rl = state.regList[rtuName][regName]
-    // let min = _.minBy(rl, (reg) => reg.value).value
-    // let max = _.maxBy(rl, (reg) => reg.value).value
-    return _.map(state.regList[rtuName][regName], (reg) => {
-      return [ reg.time, Math.round(reg.value * 10000) / 100 ]
-    })
   },
   chartInit: (state, getters) => {
     let option = {

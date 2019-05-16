@@ -37,7 +37,6 @@ const expPrefix = Object.keys(prefixExp).reduce((o, p) => {
 
 function setLogs (state, logs) {
   state.logs = logs
-  const regList = {}
   const chartData = {}
   const cardData = {}
   _.forEachRight(logs, (log) => { // oldest log first
@@ -62,17 +61,6 @@ function setLogs (state, logs) {
           cardData[addrName][name].unit = reg.unit
           cardData[addrName][name].bars = reg.value
           return
-        }
-        // 'M1-九號井口'
-        if (!regList[addrName]) {
-          regList[addrName] = {}
-        }
-        if (!regList[addrName][reg.name]) {
-          regList[addrName][reg.name] = []
-        }
-        regList[addrName][reg.name].push(reg)
-        if (regList[addrName][reg.name].length > limit) {
-          regList[addrName][reg.name].shift()
         }
         // cardData
         if (!cardData[addrName][reg.name]) {
@@ -107,7 +95,6 @@ function setLogs (state, logs) {
       })
     })
   })
-  state.regList = regList
   state.cardData = cardData
   state.chartData = chartData
 }
@@ -138,17 +125,6 @@ function addLog (state, log) {
         state.cardData[addrName][name].unit = reg.unit
         state.cardData[addrName][name].bars = reg.value
         return
-      }
-      // 'M1-九號井口'
-      if (!state.regList[addrName]) {
-        state.regList[addrName] = {}
-      }
-      if (!state.regList[addrName][reg.name]) {
-        state.regList[addrName][reg.name] = []
-      }
-      state.regList[addrName][reg.name].push(reg)
-      while (state.regList[addrName][reg.name].length > limit) {
-        state.regList[addrName][reg.name].shift()
       }
       // cardData
       if (!state.cardData[addrName][reg.name]) {

@@ -168,7 +168,6 @@ export default {
     ...mapGetters([
       // map this.logs to store.state.logs
       'currentLog',
-      'regList',
       'currentLogTime'
     ]),
     ...mapState([
