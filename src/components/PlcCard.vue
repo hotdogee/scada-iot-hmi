@@ -82,12 +82,12 @@ export default {
           { name: '有功電量', show: false },
           { name: '無功電量', show: false },
           { name: '視在電量', show: true },
-          { name: 'A相電壓諧波比', show: true },
-          { name: 'A相電流諧波比', show: true },
-          { name: 'B相電壓諧波比', show: true },
-          { name: 'B相電流諧波比', show: true },
-          { name: 'C相電壓諧波比', show: true },
-          { name: 'C相電流諧波比', show: true }
+          { name: 'A相電壓總諧波失真', show: true },
+          { name: 'A相電流總諧波失真', show: true },
+          { name: 'B相電壓總諧波失真', show: true },
+          { name: 'B相電流總諧波失真', show: true },
+          { name: 'C相電壓總諧波失真', show: true },
+          { name: 'C相電流總諧波失真', show: true }
         ] },
         { sid: 72, regOrder: [
           { name: 'AB線電壓', show: true },
@@ -108,12 +108,12 @@ export default {
           { name: '無功電量', show: false },
           { name: '視在電量', show: true },
           { name: '頻率', show: true },
-          { name: 'A相電壓諧波比', show: true },
-          { name: 'A相電流諧波比', show: true },
-          { name: 'B相電壓諧波比', show: true },
-          { name: 'B相電流諧波比', show: true },
-          { name: 'C相電壓諧波比', show: true },
-          { name: 'C相電流諧波比', show: true }
+          { name: 'A相電壓總諧波失真', show: true },
+          { name: 'A相電流總諧波失真', show: true },
+          { name: 'B相電壓總諧波失真', show: true },
+          { name: 'B相電流總諧波失真', show: true },
+          { name: 'C相電壓總諧波失真', show: true },
+          { name: 'C相電流總諧波失真', show: true }
         ] },
         { sid: 1, regOrder: [] },
         { sid: 2, regOrder: [] },
