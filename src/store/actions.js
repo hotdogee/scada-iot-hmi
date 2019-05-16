@@ -66,7 +66,7 @@ export const findLogs = ({ commit }) => {
     }
   }
   api.logs.find(params).then(results => {
-    // console.log('logs.find:', results)
+    console.log('logs.find:', results)
     commit(types.SET_LOGS, {
       logs: results.data
     })
