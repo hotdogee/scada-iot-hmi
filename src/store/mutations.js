@@ -155,26 +155,6 @@ function addLog (state, log) {
         } else return -1
       }
     },
-    '併網效率': {
-      unit: '%',
-      value: () => {
-        if (m73W && m72W && m72W.slice(-1)[0].value > 0 && m73W.slice(-1)[0].value > 0) {
-          // console.log(m72W.slice(-1)[0].value, m73W.slice(-1)[0].value)
-          const eff = (m72W.slice(-1)[0].value + 3000) / m73W.slice(-1)[0].value
-          return eff > 1 ? 100 : eff * 100
-        } else return -1
-      }
-    },
-    '常數': {
-      unit: '', // kW/bar2
-      value: () => {
-        if (m73VA && m5bar && m6bar && (m5bar.slice(-1)[0].value - m6bar.slice(-1)[0].value) > 0) {
-          // console.log(m73VA, m5bar, m6bar)
-          const c = m73VA.slice(-1)[0].value / 1000 / Math.pow(m5bar.slice(-1)[0].value - m6bar.slice(-1)[0].value, 2)
-          return c
-        } else return -1
-      }
-    },
     '井口質量焓': {
       unit: 'kJ/kg',
       value: () => {
@@ -219,6 +199,26 @@ function addLog (state, log) {
           const hi = m5e.h
           const ho = m6e.h
           return kva / kgs / (hi - ho) * 100
+        } else return -1
+      }
+    },
+    '常數': {
+      unit: '', // kW/bar2
+      value: () => {
+        if (m73VA && m5bar && m6bar && (m5bar.slice(-1)[0].value - m6bar.slice(-1)[0].value) > 0) {
+          // console.log(m73VA, m5bar, m6bar)
+          const c = m73VA.slice(-1)[0].value / 1000 / Math.pow(m5bar.slice(-1)[0].value - m6bar.slice(-1)[0].value, 2)
+          return c
+        } else return -1
+      }
+    },
+    '併網效率': {
+      unit: '%',
+      value: () => {
+        if (m73W && m72W && m72W.slice(-1)[0].value > 0 && m73W.slice(-1)[0].value > 0) {
+          // console.log(m72W.slice(-1)[0].value, m73W.slice(-1)[0].value)
+          const eff = (m72W.slice(-1)[0].value + 3000) / m73W.slice(-1)[0].value
+          return eff > 1 ? 100 : eff * 100
         } else return -1
       }
     }
