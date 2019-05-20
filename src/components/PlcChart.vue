@@ -495,6 +495,8 @@ export default {
             dataGrouping: {
               enabled: false
             },
+            includeInCSVExport: false,
+            // includeInDataExport: false, // 7.1.0
             showInNavigator: false,
             connectNulls: false,
             turboThreshold: 0,
@@ -522,6 +524,10 @@ export default {
             colors: _.map(chartColors, 'color'),
             navigator: {
               adaptToUpdatedData: false,
+              series: {
+                includeInCSVExport: false
+                // includeInDataExport: false, // 7.1.0
+              },
               xAxis: {
                 dateTimeLabelFormats: {
                   millisecond: '%H:%M:%S.%L',
@@ -536,6 +542,16 @@ export default {
               },
               handles: {
                   symbols: ['navigator-handle-left', 'navigator-handle-right']
+              }
+            },
+            exporting: {
+              chartOptions: {
+                navigator: {
+                  enabled: false
+                },
+                scrollbar: {
+                  enabled: false
+                }
               }
             },
             scrollbar: {
@@ -598,6 +614,9 @@ export default {
               events: {},
               minRange: 60 * 1000, // one minute
               ordinal: false,
+              title: {
+                text: '時間'
+              },
               dateTimeLabelFormats: {
                 millisecond: '%H:%M:%S.%L',
                 second: '%H:%M:%S',
@@ -1191,7 +1210,7 @@ export default {
           const fig = this.figs[i]
           // console.log(i, fig)
           // build traces
-          const series = _.transform(chartLogs.data, (traces, data, header) => {
+          const series = _.transform(chartLogs.data, (traces, data, header) => { // (accumulator, value, key, object)
             const parsed = headerRe.exec(header)
             if (parsed) {
               const rtuAddr = parsed[1]
