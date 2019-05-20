@@ -554,7 +554,7 @@ export default {
               }
             },
             exporting: {
-              sourceWidth: 1400,
+              sourceWidth: 1400, // works with css height: 700px
               chartOptions: {
                 navigator: {
                   enabled: false
