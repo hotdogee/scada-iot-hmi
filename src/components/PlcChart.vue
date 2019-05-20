@@ -721,9 +721,23 @@ export default {
         {
           figTemplate: 'highStockChart',
           traceTemplates: ['highStockLine', 'highStockLineRange'],
-          regs: ['三相功率'],
-          plotTitle: '三相功率',
-          yaxisTitle: '三相功率(kW)'
+          regs: ['三相功率', '有功功率'],
+          plotTitle: '有功功率',
+          yaxisTitle: '有功功率(kW)'
+        },
+        {
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
+          regs: ['無功功率'],
+          plotTitle: '無功功率',
+          yaxisTitle: '無功功率(kvar)'
+        },
+        {
+          figTemplate: 'highStockChart',
+          traceTemplates: ['highStockLine', 'highStockLineRange'],
+          regs: ['視在功率'],
+          plotTitle: '視在功率',
+          yaxisTitle: '視在功率(kVA)'
         },
         {
           figTemplate: 'highStockChart',
@@ -735,7 +749,7 @@ export default {
         {
           figTemplate: 'highStockChart',
           traceTemplates: ['highStockLine', 'highStockLineRange'],
-          regs: ['A相電壓', 'B相電壓', 'C相電壓'],
+          regs: ['A相電壓', 'B相電壓', 'C相電壓', 'AB線電壓', 'BC線電壓', 'CA線電壓'],
           plotTitle: '三相電壓',
           yaxisTitle: '電壓(V)'
         },
@@ -746,6 +760,13 @@ export default {
           plotTitle: '三相電流',
           yaxisTitle: '電流(A)'
         },
+        // {
+        //   figTemplate: 'highStockChart',
+        //   traceTemplates: ['highStockLine', 'highStockLineRange'],
+        //   regs: ['有功電量', '無功電量', '視在電量'],
+        //   plotTitle: '發電量',
+        //   yaxisTitle: '發電量(kWh/kvarh/kVAh)'
+        // },
         {
           figTemplate: 'highStockChart',
           traceTemplates: ['highStockLine', 'highStockLineRange'],

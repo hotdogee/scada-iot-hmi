@@ -11,6 +11,9 @@ if (process.env.NODE_ENV === 'production') {
   socketUrl = 'https://scada.hanl.in'
   path = '/api/socket.io'
 }
+// restUrl = 'http://localhost:8081'
+// socketUrl = 'http://localhost:8081'
+// path = '/socket.io'
 export const url = restUrl
 
 export const socket = io(socketUrl, { path: path })
