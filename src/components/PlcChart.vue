@@ -139,6 +139,15 @@ Highcharts.setOptions({
   }
 })
 
+// fix pdf export
+Highcharts.wrap(Highcharts.Chart.prototype, 'exportChartLocal', function (proceed, options) {
+		if (options && options.type === 'application/pdf') {
+      this.exportChart(options)
+    } else {
+    	proceed.call(this, options)
+    }
+})
+
 // Custom navigator handles
 Highcharts.SVGRenderer.prototype.symbols['navigator-handle-left'] = function (x, y, w, h, options) {
   const height = options.height
@@ -545,11 +554,15 @@ export default {
               }
             },
             exporting: {
+              sourceWidth: 1400,
               chartOptions: {
                 navigator: {
                   enabled: false
                 },
                 scrollbar: {
+                  enabled: false
+                },
+                rangeSelector: {
                   enabled: false
                 }
               }
