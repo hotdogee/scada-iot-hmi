@@ -120,7 +120,22 @@ Highcharts.setOptions({
     useUTC: false
   },
   lang: {
-    contextButtonTitle: '匯出選項'
+    contextButtonTitle: '匯出選項',
+    downloadCSV: '下載 CSV 檔',
+    downloadJPEG: '下載 JPG 檔',
+    downloadPDF: '下載 PDF 檔',
+    downloadPNG: '下載 PNG 檔',
+    downloadSVG: '下載 SVG 檔',
+    downloadXLS: '下載 XLS 檔',
+    loading: '載入中',
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    printChart: '列印',
+    resetZoom: '重設縮放',
+    shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    viewData: '顯示資料表格',
+    weekdays: ['週日', '週一', '週二', '週三', '週四', '週五', '週六'],
+    rangeSelectorZoom: '縮放',
+    viewFullscreen: '全螢幕'
   }
 })
 
@@ -507,7 +522,18 @@ export default {
             colors: _.map(chartColors, 'color'),
             navigator: {
               adaptToUpdatedData: false,
-              xAxis: {},
+              xAxis: {
+                dateTimeLabelFormats: {
+                  millisecond: '%H:%M:%S.%L',
+                  second: '%H:%M:%S',
+                  minute: '%H:%M',
+                  hour: '%H:%M',
+                  day: '%m/%d',
+                  week: '%m/%d',
+                  month: '%Y/%m',
+                  year: '%Y'
+                }
+              },
               handles: {
                   symbols: ['navigator-handle-left', 'navigator-handle-right']
               }
@@ -571,7 +597,17 @@ export default {
             xAxis: {
               events: {},
               minRange: 60 * 1000, // one minute
-              ordinal: false
+              ordinal: false,
+              dateTimeLabelFormats: {
+                millisecond: '%H:%M:%S.%L',
+                second: '%H:%M:%S',
+                minute: '%H:%M',
+                hour: '%H:%M',
+                day: '%m/%d',
+                week: '%m/%d',
+                month: '%Y/%m',
+                year: '%Y'
+              }
             },
             yAxis: {
               title: {
@@ -592,7 +628,17 @@ export default {
             tooltip: {
               valueDecimals: 2,
               shared: true,
-              split: false
+              split: false,
+              dateTimeLabelFormats: {
+                millisecond: '%Y/%m/%d %A %k:%M:%S.%L',
+                second: '%Y/%m/%d %A %k:%M:%S',
+                minute: '%Y/%m/%d %A %k:%M',
+                hour: '%Y/%m/%d %A %k時',
+                day: '%Y/%m/%d %A',
+                week: '%Y/%m/%d',
+                month: '%Y/%m',
+                year: '%Y'
+              }
             }
           }
         },
