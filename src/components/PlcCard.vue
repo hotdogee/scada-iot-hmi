@@ -127,7 +127,7 @@ export default {
         { sid: 5, regOrder: [] },
         { sid: 6, regOrder: [] },
         { sid: 25, regOrder: [] },
-        { sid: 26, regOrder: [] },
+        // { sid: 26, regOrder: [] },
         { sid: 200, regOrder: [] },
         { sid: 50, regOrder: [] },
         { sid: 51, regOrder: [] },
@@ -262,9 +262,9 @@ export default {
   float: right;
 }
 .min-text {
-  top: -8px;
-  right: 0px;
-  position: relative;
+  bottom: 10px;
+  right: 15px;
+  position: absolute;
   float: right;
 }
 .top-left-6 {
