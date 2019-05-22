@@ -652,7 +652,7 @@ export default {
             },
             series: [],
             credits: {
-              enabled: false
+              text: `© ${ new Date().getFullYear() } 蘭陽地熱`
             },
             legend:{
               enabled: true
@@ -1362,6 +1362,39 @@ export default {
 }
 .pad-t-16 {
   padding-top: 16px;
+}
+</style>
+<style>
+.highcharts-data-table {
+  height: 500px;
+  overflow: scroll;
+}
+.highcharts-data-table table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: white;
+    min-width: 100%;
+    margin-top: 10px;
+    font-family: sans-serif;
+    font-size: 0.9em;
+}
+.highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+    border: 1px solid silver;
+    padding: 0.5em;
+}
+.highcharts-data-table td:nth-child(1) {
+    width: 140px;
+}
+.highcharts-data-table tr:nth-child(even), .highcharts-data-table thead tr {
+    background: #f8f8f8;
+}
+.highcharts-data-table tr:hover {
+    background: #eff;
+}
+.highcharts-data-table caption {
+    border-bottom: none;
+    font-size: 1.1em;
+    font-weight: bold;
 }
 </style>
 
