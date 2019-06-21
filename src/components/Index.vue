@@ -16,10 +16,10 @@
 
     <!-- Navigation -->
     <q-tabs slot="navigation" align="center" color="dark">
-      <q-route-tab slot="title" icon="subject" to="/text" label="Text" />
-      <q-route-tab slot="title" icon="view_module" to="/card" label="Card" />
-      <q-route-tab slot="title" icon="timeline" to="/chart" label="Chart" />
-      <q-route-tab slot="title" icon="videocam" to="/cam" label="Cam" />
+      <!-- <q-route-tab slot="title" icon="subject" to="/text" label="文字" /> -->
+      <q-route-tab slot="title" icon="view_module" to="/card" label="即時數據" />
+      <q-route-tab slot="title" icon="timeline" to="/chart" label="歷史統計" />
+      <q-route-tab slot="title" icon="videocam" to="/cam" label="現場直播" />
     </q-tabs>
 
     <!-- sub-routes -->
