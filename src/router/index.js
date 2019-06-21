@@ -47,6 +47,11 @@ export default new VueRouter({
           path: 'cam',
           name: 'PlcCam',
           component: load('PlcCam')
+        },
+        {
+          path: 'dcs',
+          name: 'PlcDcs',
+          component: load('PlcCard')
         }
       ]
     },

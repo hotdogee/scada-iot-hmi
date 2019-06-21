@@ -17,9 +17,10 @@
     <!-- Navigation -->
     <q-tabs slot="navigation" align="center" color="dark">
       <!-- <q-route-tab slot="title" icon="subject" to="/text" label="文字" /> -->
-      <q-route-tab slot="title" icon="view_module" to="/card" label="即時數據" />
+      <q-route-tab slot="title" icon="dashboard" to="/card" label="即時數據" />
       <q-route-tab slot="title" icon="timeline" to="/chart" label="歷史統計" />
       <q-route-tab slot="title" icon="videocam" to="/cam" label="現場直播" />
+      <q-route-tab disable slot="title" icon="videogame_asset" to="/dcs" label="電廠控制" />
     </q-tabs>
 
     <!-- sub-routes -->
