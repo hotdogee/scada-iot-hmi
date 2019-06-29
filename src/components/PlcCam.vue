@@ -18,6 +18,7 @@
 
 <script>
 import Hls from 'hls.js'
+import flvjs from 'flv.js'
 // const Hls = require('../statics/hls.js')
 import {
   QCard,
@@ -34,25 +35,29 @@ export default {
       cameras: [
         {
           url: 'https://scada.hanl.in/media/live/cam1/index.m3u8',
+          flvUrl: 'https://scada.hanl.in/media/live/cam1.flv',
           show: false
         },
         {
           url: 'https://scada.hanl.in/media/live/cam2/index.m3u8',
+          flvUrl: 'https://scada.hanl.in/media/live/cam2.flv',
           show: false
         },
         {
           url: 'https://scada.hanl.in/media/live/cam3/index.m3u8',
+          flvUrl: 'https://scada.hanl.in/media/live/cam3.flv',
           show: false
         },
         {
           url: 'https://scada.hanl.in/media/live/cam4/index.m3u8',
+          flvUrl: 'https://scada.hanl.in/media/live/cam4.flv',
           show: false
         }
       ]
     }
   },
   methods: {
-    loadVideo(video, src) {
+    loadHls(video, src) {
       if(Hls.isSupported()) {
         var hls = new Hls()
         hls.loadSource(src)
@@ -91,13 +96,25 @@ export default {
           video.play()
         })
       }
+    },
+    loadFlv(videoElement, url) {
+      if(flvjs.isSupported()) {
+        var flvPlayer = flvjs.createPlayer({
+            type: 'flv',
+            url
+        });
+        flvPlayer.attachMediaElement(videoElement);
+        flvPlayer.load();
+        flvPlayer.play();
+      }
     }
   },
   mounted () {
     // setup live view
     // console.log(this.$refs)
     this.cameras.forEach((cam, index) => {
-      this.loadVideo(this.$refs['camera-video'][index], cam.url)
+      // this.loadHls(this.$refs['camera-video'][index], cam.url)
+      this.loadFlv(this.$refs['camera-video'][index], cam.flvUrl)
       // cam.player = new JSMpeg.Player(cam.url, {canvas: this.$refs['camera-video'][index], preserveDrawingBuffer: true})
       // cam.show = true
       setTimeout(() => {
