@@ -3,37 +3,30 @@ module.exports = {
 
   parserOptions: {
     parser: 'babel-eslint',
-    ecmaVersion: 2018,
     sourceType: 'module'
   },
 
   env: {
-    browser: true,
-    es6: true
+    browser: true
   },
 
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    // "prettier", "prettier/standard",
     'plugin:vue/essential',
-    'standard'
-    // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-    // '@vue/standard',
-    // 'plugin:prettier/recommended',
-    // 'prettier-standard'
+    '@vue/standard'
   ],
 
   // required to lint *.vue files
-  plugins: ['vue'],
+  plugins: [
+    'vue'
+  ],
 
   globals: {
-    ga: true, // Google Analytics
-    cordova: true,
-    __statics: true,
-    process: true,
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+    'ga': true, // Google Analytics
+    'cordova': true,
+    '__statics': true,
+    'process': true
   },
 
   // add your custom rules here
