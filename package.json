@@ -7,6 +7,9 @@
   "author": "Han Lin <hotdogee@gmail.com>",
   "private": true,
   "scripts": {
+    "start": "cross-env NODE_ENV=production http-server ./dist/pwa -c 1 -p 8680 -d false",
+    "dev": "quasar dev -m pwa",
+    "build": "quasar build -m pwa",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
   },
