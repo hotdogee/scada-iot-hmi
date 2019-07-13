@@ -11,5 +11,37 @@
       "dev": {},
       "build": {}
     }
+  },
+  "@quasar/testing": {
+    "harnesses": [
+      "unit-jest",
+      "e2e-cypress",
+      "quality",
+      "security",
+      "security-antivuln"
+    ]
+  },
+  "@quasar/testing-unit-jest": {
+    "babel": "babelrc",
+    "options": [
+      "scripts"
+    ]
+  },
+  "@quasar/testing-e2e-cypress": {
+    "options": [
+      "scripts"
+    ]
+  },
+  "@quasar/testing-quality": {
+    "options": [
+      "scripts"
+    ]
+  },
+  "@quasar/testing-security": {
+    "options": [],
+    "zapbrowser": "Firefox"
+  },
+  "@quasar/testing-security-antivuln": {
+    "options": []
   }
 }
