@@ -7,7 +7,7 @@
   "author": "Han Lin <hotdogee@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=production http-server ./dist/pwa -c 1 -p 8680 -d false",
+    "start": "cross-env NODE_ENV=production http-server ./dist/pwa -c 1 -p 8083 -d false --push-state",
     "dev": "quasar dev -m pwa",
     "build": "quasar build -m pwa",
     "lint": "eslint --ext .js,.vue src",
@@ -27,10 +27,24 @@
     "audit:lighthouse": "lighthouse http://localhost:3000 view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js"
   },
   "dependencies": {
+    "@neutrium/thermo.eos.iapws97": "^2.0.2",
     "@quasar/extras": "^1.0.0",
+    "@tweenjs/tween.js": "^17.4.0",
+    "add-asset-webpack-plugin": "^1.0.0",
     "axios": "^0.19.0",
+    "dotenv": "^8.0.0",
+    "git-revision-webpack-plugin": "^3.0.3",
+    "highcharts": "^7.1.2",
+    "hls.js": "^0.12.4",
+    "localforage": "^1.7.3",
     "quasar": "^1.0.0",
-    "vue-i18n": "^8.0.0"
+    "socket.io-client": "^2.2.0",
+    "vue-analytics": "^5.17.0",
+    "vue-i18n": "^8.0.0",
+    "vue-recaptcha": "^1.2.0",
+    "vuebars": "^0.1.3",
+    "vueisotope": "^3.1.2",
+    "vuetrend": "^0.3.4"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",
@@ -43,9 +57,15 @@
     "@quasar/quasar-app-extension-testing-unit-jest": "^1.0.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^6.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^13.0.1",
     "eslint-loader": "^2.1.1",
-    "eslint-plugin-vue": "^5.0.0"
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "prettier": "^1.18.2",
+    "prettier-eslint": "^9.0.0",
+    "prettier-eslint-cli": "^5.0.0",
+    "standard": "^13.0.2"
   },
   "engines": {
     "node": ">= 8.9.0",

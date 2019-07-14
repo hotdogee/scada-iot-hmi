@@ -1,23 +1,39 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
+require('dotenv').config()
+const fs = require('fs')
+const path = require('path')
+const _ = require('lodash')
+const gitRevisionPlugin = new (require('git-revision-webpack-plugin'))()
+// const Terser = require('terser-webpack-plugin')
+const AddAssetPlugin = require('add-asset-webpack-plugin')
+const env = {
+  API_URL: JSON.stringify(process.env.API_URL),
+  API_PATH: JSON.stringify(process.env.API_PATH),
+  RECAPTCHA_SITE_KEY: JSON.stringify(process.env.RECAPTCHA_SITE_KEY),
+  DEBUG: JSON.stringify(process.env.DEBUG),
+  VERSION: JSON.stringify(gitRevisionPlugin.version()),
+  COMMITHASH: JSON.stringify(gitRevisionPlugin.commithash()),
+  VAPID_PUBLIC: JSON.stringify(process.env.VAPID_PUBLIC)
+}
+const swPath = path.resolve('./src-pwa/custom-service-worker.js')
+let sw = fs.readFileSync(swPath, 'utf-8')
+_.forEach(Object.entries(env), ([k, v]) => {
+  sw = sw.replace(new RegExp(`process.env.${k}`, 'g'), v)
+})
 
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
-    boot: [
-      'i18n',
-      'axios'
-    ],
+    boot: ['i18n', 'axios'],
 
-    css: [
-      'app.styl'
-    ],
+    css: ['app.styl'],
 
     extras: [
-      // 'ionicons-v4',
+      'ionicons-v4',
       // 'mdi-v3',
-      // 'fontawesome-v5',
+      'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
@@ -35,6 +51,7 @@ module.exports = function (ctx) {
       components: [
         'QLayout',
         'QHeader',
+        'QFooter',
         'QDrawer',
         'QPageContainer',
         'QPage',
@@ -45,24 +62,27 @@ module.exports = function (ctx) {
         'QList',
         'QItem',
         'QItemSection',
-        'QItemLabel'
+        'QItemLabel',
+        'QTabs',
+        'QTab',
+        'QRouteTab',
+        'QCard',
+        'QCardSection',
+        'QCardActions'
       ],
 
-      directives: [
-        'Ripple'
-      ],
+      directives: ['Ripple'],
 
       // Quasar plugins
-      plugins: [
-        'Notify'
-      ]
+      plugins: ['Notify']
     },
 
     supportIE: true,
 
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
+      devtool: 'source-map',
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,
@@ -77,58 +97,80 @@ module.exports = function (ctx) {
             formatter: require('eslint').CLIEngine.getFormatter('stylish')
           }
         })
-      }
+        // cfg.plugins.push(new GitRevisionPlugin())
+        cfg.plugins.unshift(
+          new AddAssetPlugin(
+            swPath,
+            sw
+            // fs.readFileSync('./src-pwa/custom-service-worker.js', 'utf-8')
+            // 'console.log(`SW: ${process.env.VERSION}`)'
+            // sw
+          )
+        )
+        // cfg.optimization.minimizer = cfg.optimization.minimizer || []
+        // cfg.optimization.minimizer.push(new Terser({
+        //   // Ensure .mjs files get included.
+        //   test: /\.m?js$/
+        // }))
+      },
+      env
     },
 
     devServer: {
       // https: true,
-      // port: 8080,
+      public: process.env.DEV_SERVER_PUBLIC || '',
+      port: process.env.DEV_SERVER_PORT || 8082,
       open: true // opens browser window automatically
     },
 
-    // animations: 'all', // --- includes all animations
-    animations: [],
+    animations: 'all', // --- includes all animations
+    // animations: [],
 
     ssr: {
       pwa: false
     },
 
     pwa: {
-      // workboxPluginMode: 'InjectManifest',
-      // workboxOptions: {}, // only for NON InjectManifest
+      // workboxPluginMode: 'GenerateSW',
+      workboxPluginMode: 'InjectManifest',
+      workboxOptions: {
+        // skipWaiting: true,
+        // clientsClaim: true
+        // importWorkboxFrom: 'local'
+      },
       manifest: {
-        // name: 'SCADA/IOT',
-        // short_name: 'SCADA/IOT',
+        name: '地熱發電監控系統',
+        short_name: '\u5730\u71b1\u767c\u96fb',
         // description: 'SCADA/IoT Human Machine Interface',
+        start_url: '/',
+        theme_color: '#4caf50',
+        background_color: '#4caf50',
         display: 'standalone',
-        orientation: 'portrait',
-        background_color: '#ffffff',
-        theme_color: '#027be3',
         icons: [
           {
-            'src': 'statics/icons/icon-128x128.png',
-            'sizes': '128x128',
-            'type': 'image/png'
+            src: 'statics/icons/icon-128x128.png',
+            sizes: '128x128',
+            type: 'image/png'
           },
           {
-            'src': 'statics/icons/icon-192x192.png',
-            'sizes': '192x192',
-            'type': 'image/png'
+            src: 'statics/icons/icon-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
           },
           {
-            'src': 'statics/icons/icon-256x256.png',
-            'sizes': '256x256',
-            'type': 'image/png'
+            src: 'statics/icons/icon-256x256.png',
+            sizes: '256x256',
+            type: 'image/png'
           },
           {
-            'src': 'statics/icons/icon-384x384.png',
-            'sizes': '384x384',
-            'type': 'image/png'
+            src: 'statics/icons/icon-384x384.png',
+            sizes: '384x384',
+            type: 'image/png'
           },
           {
-            'src': 'statics/icons/icon-512x512.png',
-            'sizes': '512x512',
-            'type': 'image/png'
+            src: 'statics/icons/icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
           }
         ]
       }
@@ -149,20 +191,17 @@ module.exports = function (ctx) {
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-
         // OS X / Mac App Store
         // appBundleId: '',
         // appCategoryType: '',
         // osxSign: '',
         // protocol: 'myapp://path',
-
         // Windows only
         // win32metadata: { ... }
       },
 
       builder: {
         // https://www.electron.build/configuration/configuration
-
         // appId: 'scada-iot-hmi'
       }
     }

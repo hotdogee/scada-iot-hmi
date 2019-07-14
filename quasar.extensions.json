@@ -8,7 +8,11 @@
     },
     "build_always": false,
     "__internal": {
-      "dev": {},
+      "dev": {
+        "pwa": {
+          "iconHash": "69be7387efe81d2cccca9e97a8bab691"
+        }
+      },
       "build": {}
     }
   },
