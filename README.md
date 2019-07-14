@@ -1,3 +1,11 @@
-# Quasar App
+# scada-iot-hmi
+> SCADA/IoT Human Machine Interface
 
-> WIP
+# Navigation
+* monitor
+* analysis
+* live
+* control
+* user
+* accounts
+* notifications
