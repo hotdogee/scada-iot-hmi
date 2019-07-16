@@ -1,13 +1,8 @@
 {
-  "standard.validate": [
-    "javascript",
-    "vue"
-  ],
+  "standard.validate": ["javascript", "vue"],
   "standard.options": {
     "parser": "babel-eslint",
-    "plugins": [
-      "vue"
-    ]
+    "plugins": ["vue"]
   },
   "files.associations": {
     "*.vue": "vue"
@@ -19,9 +14,8 @@
     {
       "language": "vue",
       "autoFix": true
-    },
+    }
   ],
-  "prettier.eslintIntegration": true,
   "prettier.trailingComma": "none",
   "prettier.singleQuote": true,
   "prettier.semi": false,
@@ -31,5 +25,7 @@
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
   "editor.formatOnSave": true,
   "commitizen.showOutputChannel": "always",
-  "commitizen.subjectLength": 120
+  "commitizen.subjectLength": 120,
+  "prettier.eslintIntegration": true,
+  "eslint.autoFixOnSave": true
 }

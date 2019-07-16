@@ -1,5 +1,5 @@
 const fs = require('fs-extra')
-let extend = undefined
+let extend
 
 /**
  * The .babelrc file has been created to assist Jest for transpiling.
@@ -11,8 +11,7 @@ if (fs.existsSync('./.babelrc')) {
 }
 
 module.exports = {
-  presets: [
-    '@quasar/babel-preset-app'
-  ],
+  plugins: [['@babel/plugin-proposal-object-rest-spread', { loose: true, useBuiltIns: false }]],
+  presets: ['@quasar/babel-preset-app'],
   extends: extend
 }

@@ -1,19 +1,22 @@
 {
-  "plugins": ["@babel/plugin-syntax-dynamic-import"],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": "commonjs",
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-transform-modules-commonjs",
+    "@babel/plugin-syntax-dynamic-import"
+  ],
   "env": {
     "test": {
-      "plugins": ["dynamic-import-node"],
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "modules": "commonjs",
-            "targets": {
-              "node": "current"
-            }
-          }
-        ]
-      ]
+      "plugins": ["dynamic-import-node"]
     }
   }
 }
