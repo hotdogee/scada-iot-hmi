@@ -1,12 +1,12 @@
 <template>
   <q-layout view="hhh lpr fff">
-    <q-header elevated class="bg-white text-grey-9">
-      <q-toolbar>
+    <q-header class="bg-white text-grey-9">
+      <q-toolbar elevated>
         <img src="/statics/icons/favicon-32x32.png" />
-        <q-toolbar-title>蘭陽地熱 SCADA/IoT</q-toolbar-title>
+        <q-toolbar-title class="title">蘭陽地熱 SCADA/IoT</q-toolbar-title>
       </q-toolbar>
       <!-- Navigation -->
-      <q-tabs>
+      <q-tabs class="bg-grey-9 text-white">
         <!-- <q-route-tab icon="subject" to="/text" label="文字" /> -->
         <q-route-tab icon="dashboard" to="/card" label="即時數據" />
         <q-route-tab icon="timeline" to="/chart" label="歷史統計" />
@@ -19,8 +19,7 @@
       <q-toolbar>
         <div>
           Made with
-          <span class="text-red-14">❤</span> by Han Lin
-          (hotdogee)
+          <span class="text-red-14">❤</span> by Han Lin (hotdogee)
         </div>
         <q-toolbar-title></q-toolbar-title>
         <div>© {{ new Date().getFullYear() }} 蘭陽地熱</div>
@@ -50,4 +49,8 @@ export default {
 </script>
 
 <style>
+.title {
+  line-height: 2rem;
+  font-size: 1.125rem;
+}
 </style>
