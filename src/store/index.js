@@ -36,6 +36,15 @@ const vuexPersist = new VuexPersist({
     return s
   }
 })
+const restoredPlugin = store => {
+  store.restored = new Promise((resolve, reject) => {
+    store.subscribe((mutation, state) => {
+      if (mutation.type === 'RESTORE_MUTATION') {
+        resolve(mutation.type)
+      }
+    })
+  })
+}
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
@@ -45,8 +54,10 @@ export default function (/* { ssrContext } */) {
       notifications,
       localSettings
     },
-    plugins: [vuexPersist.plugin],
-
+    mutations: {
+      RESTORE_MUTATION: vuexPersist.RESTORE_MUTATION
+    },
+    plugins: [restoredPlugin, vuexPersist.plugin],
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEV

@@ -28,6 +28,9 @@
     "audit:lighthouse": "lighthouse http://localhost:3000 view --output-path=./test/lighthouse/reports/index.html --config-path=./test/lighthouse/configs/full-config.js"
   },
   "dependencies": {
+    "@feathersjs/authentication-client": "^4.3.0-pre.1",
+    "@feathersjs/feathers": "^4.3.0-pre.1",
+    "@feathersjs/socketio-client": "^4.3.0-pre.1",
     "@neutrium/thermo.eos.iapws97": "^2.0.2",
     "@quasar/extras": "^1.0.0",
     "@tweenjs/tween.js": "^17.4.0",
@@ -47,6 +50,7 @@
     "vue-recaptcha": "^1.2.0",
     "vuebars": "^0.1.3",
     "vueisotope": "^3.1.2",
+    "vuelidate": "^0.7.4",
     "vuetrend": "^0.3.4",
     "vuex-persist": "^2.0.1"
   },

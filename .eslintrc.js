@@ -59,6 +59,7 @@ module.exports = {
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // vue
-    'vue/html-self-closing': 'off'
+    'vue/html-self-closing': 'off',
+    'vue/name-property-casing': 'off'
   }
 }

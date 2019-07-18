@@ -26,7 +26,19 @@ module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
-    boot: ['i18n', 'axios'],
+    boot: [
+      'i18n',
+      'font-size',
+      'axios',
+      'analytics',
+      'feathers',
+      'guards',
+      'vuelidate',
+      'vue-components',
+      // 'vuera'
+      'workbox',
+      'logger'
+    ],
 
     css: ['app.styl'],
 
@@ -112,6 +124,7 @@ module.exports = function (ctx) {
         //   // Ensure .mjs files get included.
         //   test: /\.m?js$/
         // }))
+        cfg.node.__filename = true
       },
       env
     },

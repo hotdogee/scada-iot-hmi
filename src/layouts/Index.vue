@@ -58,11 +58,14 @@
 import { openURL } from 'quasar'
 
 export default {
-  name: 'Index',
+  name: 'layouts.Index',
   data () {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
+  },
+  created () {
+    this.$info('created') //  ${__filename}
   },
   methods: {
     openURL
