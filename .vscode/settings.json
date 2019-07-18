@@ -1,9 +1,4 @@
 {
-  "standard.validate": ["javascript", "vue"],
-  "standard.options": {
-    "parser": "babel-eslint",
-    "plugins": ["vue"]
-  },
   "files.associations": {
     "*.vue": "vue"
   },
@@ -16,16 +11,16 @@
       "autoFix": true
     }
   ],
+  "prettier.eslintIntegration": true,
   "prettier.trailingComma": "none",
   "prettier.singleQuote": true,
   "prettier.semi": false,
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
   "vetur.format.defaultFormatter.js": "prettier-eslint",
   "vetur.validation.script": false,
   "vetur.validation.template": false,
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
   "editor.formatOnSave": true,
   "commitizen.showOutputChannel": "always",
-  "commitizen.subjectLength": 120,
-  "prettier.eslintIntegration": true,
-  "eslint.autoFixOnSave": true
+  "commitizen.subjectLength": 120
 }
