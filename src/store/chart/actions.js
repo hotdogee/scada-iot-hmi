@@ -6,7 +6,7 @@ export async function someAction (
 }
 */
 // import Logger from 'assets/logger'
-// const logger = new Logger('logs.actions')
+// const logger = new Logger('chart.actions')
 
 // export async function skipWaiting (
 //   { commit, dispatch, state, getters, rootState, rootGetters },

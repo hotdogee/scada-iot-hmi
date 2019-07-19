@@ -35,8 +35,9 @@ export async function setupRealtimeUpdates (
     }
   }
   try {
+    // document.getElementById('q-app').__vue__.$feathers.api.service('logs').find(params)
     const service = this.$feathers.api.service('logs')
-    const results = service.find(params)
+    const results = await service.find(params)
     commit('setLogs', {
       logs: results.data
     })

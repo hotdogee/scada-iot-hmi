@@ -4,7 +4,7 @@ import util from 'util'
 // eslint-disable-next-line camelcase
 import { IAPWS97_EoS } from '@neutrium/thermo.eos.iapws97'
 // import Logger from 'assets/logger'
-// const logger = new Logger('system.mutations')
+// const logger = new Logger('logs.mutations')
 /*
 export function someMutation (state, payload) {
 }

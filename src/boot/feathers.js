@@ -1,11 +1,13 @@
 import io from 'socket.io-client'
-import feathers from '@feathersjs/feathers'
-import socketio from '@feathersjs/socketio-client'
-import auth, { AuthenticationClient } from '@feathersjs/authentication-client'
+// import feathers from '@feathersjs/feathers'
+// import socketio from '@feathersjs/socketio-client'
+import feathers from 'feathers/client'
+import socketio from 'feathers-socketio/client'
+// import auth, { AuthenticationClient } from '@feathersjs/authentication-client'
 import Logger from 'assets/logger'
 const logger = new Logger('boot.feathers')
 
-const setupApiEvents = apiSocket => {
+const setupApiEvents = socket => {
   const app = feathers()
   app.on('connection', connection => {
     // 4.0
@@ -20,37 +22,36 @@ const setupApiEvents = apiSocket => {
   app.on('logout', (authResult, params, context) => {
     logger.warn(`logout`, authResult, params, context)
   })
-  app.configure(socketio(apiSocket))
-  app.configure(
-    auth({
-      header: 'Authorization',
-      scheme: 'Bearer',
-      storageKey: 'feathers-jwt',
-      locationKey: 'access_token',
-      locationErrorKey: 'error',
-      jwtStrategy: 'jwt',
-      path: '/authentication',
-      Authentication: AuthenticationClient,
-      storage: window.localStorage
-    })
-  )
+  app.configure(socketio(socket, { timeout: 10000 }))
+  // app.configure(
+  //   auth({
+  //     header: 'Authorization',
+  //     scheme: 'Bearer',
+  //     storageKey: 'feathers-jwt',
+  //     locationKey: 'access_token',
+  //     locationErrorKey: 'error',
+  //     jwtStrategy: 'jwt',
+  //     path: '/authentication',
+  //     Authentication: AuthenticationClient,
+  //     storage: window.localStorage
+  //   })
+  // )
   return app
 }
 // leave the export, even if you don't use it
 export default ({ app, store, router, Vue }) => {
-  const apiSocket = io(process.env.API_URL, {
-    path: process.env.API_PATH + '/socket.io',
-    transports: ['websocket']
+  const socket = io(process.env.API_URL, {
+    path: process.env.API_PATH + '/socket.io'
   })
   const feathersClient = {
-    api: setupApiEvents(apiSocket)
+    api: setupApiEvents(socket)
   }
-  apiSocket.on('connect', () => {
+  socket.on('connect', () => {
     // 2.0
     logger.info(`connect`, app)
     store.dispatch('logs/setupRealtimeUpdates')
   })
-  apiSocket.on('disconnect', () => {
+  socket.on('disconnect', () => {
     // 2.0
     logger.info(`disconnect`, app)
   })
@@ -60,26 +61,26 @@ export default ({ app, store, router, Vue }) => {
   //   feathersClient.api.authenticate()
   // }
   // document.getElementById('q-app').__vue__.$feathers.api.get('accessToken')
-  feathersClient.api.mixins.push(function (service) {
-    service.hooks({
-      error: async context => {
-        logger.debug(`context error`, context.error)
-        // logger.debug(
-        //   `context`,
-        //   context
-        // )
-        // NotAuthenticated{type: "FeathersError", name: "NotAuthenticated", message: "No auth token", code: 401, className: "not-authenticated"}
-        // await store.dispatch('user/refreshToken')
-        if (store.getters['user/isSignedIn'] && context.error.name === 'NotAuthenticated') {
-          // refresh
-          logger.debug(`dispatch user/refreshToken`)
-          await store.dispatch('user/refreshToken')
-        }
-        // context.service[context.method](...context.arguments)
-        return context
-      }
-    })
-  })
+  // feathersClient.api.mixins.push(function (service) {
+  //   service.hooks({
+  //     error: async context => {
+  //       logger.debug(`context error`, context.error)
+  //       // logger.debug(
+  //       //   `context`,
+  //       //   context
+  //       // )
+  //       // NotAuthenticated{type: "FeathersError", name: "NotAuthenticated", message: "No auth token", code: 401, className: "not-authenticated"}
+  //       // await store.dispatch('user/refreshToken')
+  //       if (store.getters['user/isSignedIn'] && context.error.name === 'NotAuthenticated') {
+  //         // refresh
+  //         logger.debug(`dispatch user/refreshToken`)
+  //         await store.dispatch('user/refreshToken')
+  //       }
+  //       // context.service[context.method](...context.arguments)
+  //       return context
+  //     }
+  //   })
+  // })
   store.restored.auth = store.restored.then(async () => {
     // window.a = new errors.NotAuthenticated(`Could not find stored JWT and no authentication strategy was given`)
     // check oauth token in window.location

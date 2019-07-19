@@ -1,6 +1,6 @@
 // import _ from 'lodash'
 // import Logger from 'assets/logger'
-// const logger = new Logger('system.getters')
+// const logger = new Logger('logs.getters')
 /*
 export function someGetter (state) {
 }
