@@ -27,6 +27,7 @@ module.exports = function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     boot: [
+      'logger',
       'i18n',
       'font-size',
       'axios',
@@ -36,8 +37,7 @@ module.exports = function (ctx) {
       'vuelidate',
       'vue-components',
       // 'vuera'
-      'workbox',
-      'logger'
+      'workbox'
     ],
 
     css: ['app.styl'],

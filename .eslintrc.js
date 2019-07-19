@@ -60,6 +60,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // vue
     'vue/html-self-closing': 'off',
-    'vue/name-property-casing': 'off'
+    'vue/name-property-casing': 'off',
+    'vue/attribute-hyphenation': 'off'
   }
 }

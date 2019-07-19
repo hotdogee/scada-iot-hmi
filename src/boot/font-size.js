@@ -9,7 +9,7 @@ export default async ({ app, router, store, Vue }) => {
   app.mixins.push({
     beforeCreate () {
       // load default
-      document.documentElement.style['font-size'] = `114%`
+      document.documentElement.style['font-size'] = `100%`
       this.$store.watch(
         state => {
           return state.localSettings.fontSize

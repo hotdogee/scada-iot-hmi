@@ -5,48 +5,56 @@ import auth, { AuthenticationClient } from '@feathersjs/authentication-client'
 import Logger from 'assets/logger'
 const logger = new Logger('boot.feathers')
 
+const setupApiEvents = apiSocket => {
+  const app = feathers()
+  app.on('connection', connection => {
+    // 4.0
+    logger.info(`connection`, app, connection)
+  })
+  app.on('disconnect', connection => {
+    logger.error(`disconnect`, app, connection)
+  })
+  app.on('login', (authResult, params, context) => {
+    logger.info(`login`, authResult, params, context)
+  })
+  app.on('logout', (authResult, params, context) => {
+    logger.warn(`logout`, authResult, params, context)
+  })
+  app.configure(socketio(apiSocket))
+  app.configure(
+    auth({
+      header: 'Authorization',
+      scheme: 'Bearer',
+      storageKey: 'feathers-jwt',
+      locationKey: 'access_token',
+      locationErrorKey: 'error',
+      jwtStrategy: 'jwt',
+      path: '/authentication',
+      Authentication: AuthenticationClient,
+      storage: window.localStorage
+    })
+  )
+  return app
+}
 // leave the export, even if you don't use it
 export default ({ app, store, router, Vue }) => {
   const apiSocket = io(process.env.API_URL, {
     path: process.env.API_PATH + '/socket.io',
     transports: ['websocket']
   })
-  const api1Socket = io(process.env.API1_URL, {
-    path: process.env.API1_PATH + '/socket.io',
-    transports: ['websocket']
-  })
   const feathersClient = {
-    api: feathers()
-      .configure(socketio(apiSocket))
-      .configure(
-        auth({
-          header: 'Authorization',
-          scheme: 'Bearer',
-          storageKey: 'feathers-jwt',
-          locationKey: 'access_token',
-          locationErrorKey: 'error',
-          jwtStrategy: 'jwt',
-          path: '/authentication',
-          Authentication: AuthenticationClient,
-          storage: window.localStorage
-        })
-      ),
-    api1: feathers()
-      .configure(socketio(api1Socket))
-      .configure(
-        auth({
-          header: 'Authorization',
-          scheme: 'Bearer',
-          storageKey: 'feathers-jwt',
-          locationKey: 'access_token',
-          locationErrorKey: 'error',
-          jwtStrategy: 'jwt',
-          path: '/authentication',
-          Authentication: AuthenticationClient,
-          storage: window.localStorage
-        })
-      )
+    api: setupApiEvents(apiSocket)
   }
+  apiSocket.on('connect', () => {
+    // 2.0
+    logger.info(`connect`, app)
+    store.dispatch('logs/setupRealtimeUpdates')
+  })
+  apiSocket.on('disconnect', () => {
+    // 2.0
+    logger.info(`disconnect`, app)
+  })
+
   // logger.debug(`accessToken`, feathersClient.api.get('accessToken'))
   // if (feathersClient.api.get('accessToken')) {
   //   feathersClient.api.authenticate()

@@ -4,6 +4,8 @@ import localforage from 'localforage'
 import VuexPersist from 'vuex-persist'
 
 import user from './user'
+import logs from './logs'
+import chart from './chart'
 import system from './system'
 import notifications from './notifications'
 import localSettings from './local-settings'
@@ -50,6 +52,8 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       user,
+      logs,
+      chart,
       system,
       notifications,
       localSettings
