@@ -10,8 +10,20 @@ export function someMutation (state, payload) {
 }
 */
 
+export function setTotal (state, { total }) {
+  state.total = total
+}
+
+export function addTotal (state, { total }) {
+  state.total += total
+}
+
+export function setStart (state, { start }) {
+  state.start = start
+}
+
 export function setLogs (state, { logs }) {
-  state.logs = []
+  // state.logs = []
   state.cardData = {}
   state.chartData = {}
   _.forEachRight(logs, log => {
@@ -34,10 +46,11 @@ const expPrefix = Object.keys(prefixExp).reduce((o, p) => {
 }, {})
 
 export function addLog (state, { log }) {
-  state.logs.unshift(log)
-  while (state.logs.length > limit) {
-    state.logs.pop()
-  }
+  // state.logs.unshift(log)
+  // while (state.logs.length > limit) {
+  //   state.logs.pop()
+  // }
+  state.end = log.logTime
   _.forEach(log.reads, rtu => {
     _.forEach(rtu.reads, reg => {
       const addrName = util.format('M%s-%s', rtu.addr, rtu.name)

@@ -46,10 +46,11 @@ export default ({ app, store, router, Vue }) => {
   const feathersClient = {
     api: setupApiEvents(socket)
   }
-  socket.on('connect', () => {
+  socket.on('connect', async () => {
     // 2.0
     logger.info(`connect`, app)
-    store.dispatch('logs/setupRealtimeUpdates')
+    await store.dispatch('logs/setupRealtimeUpdates')
+    store.dispatch('logs/findStart')
   })
   socket.on('disconnect', () => {
     // 2.0

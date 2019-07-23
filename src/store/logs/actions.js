@@ -41,12 +41,42 @@ export async function setupRealtimeUpdates (
     commit('setLogs', {
       logs: results.data
     })
+    commit('setTotal', {
+      total: results.total
+    })
     service.on('created', log => {
       commit('addLog', {
         log
       })
+      commit('addTotal', {
+        total: 1
+      })
     })
   } catch (error) {
     logger.error('setupRealtimeUpdates:', error)
+  }
+}
+
+export async function findStart (
+  { commit, dispatch, state, getters, rootState, rootGetters },
+  payload
+) {
+  const params = {
+    query: {
+      $limit: 1,
+      $sort: {
+        logTime: 1
+      }
+    }
+  }
+  try {
+    // document.getElementById('q-app').__vue__.$feathers.api.service('logs').find(params)
+    const service = this.$feathers.api.service('logs')
+    const results = await service.find(params)
+    commit('setStart', {
+      start: results.data[0].logTime
+    })
+  } catch (error) {
+    logger.error('findStart:', error)
   }
 }

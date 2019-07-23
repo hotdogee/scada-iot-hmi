@@ -1,6 +1,6 @@
 // local-settings is not cleared on logout
 export default {
-  fontSize: 114,
+  fontSize: 100,
   locale: 'default' // use quasar lang instead of browser navigator.language
 }
 /*

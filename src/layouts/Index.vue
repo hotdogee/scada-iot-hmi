@@ -78,4 +78,14 @@ export default {
   line-height: 2rem;
   font-size: 1.125rem;
 }
+.q-tab__label {
+  font-size: 1rem;
+}
+@media (min-width: 992px) {
+  .q-tab,
+  .q-tab.icon-and-label {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
 </style>
