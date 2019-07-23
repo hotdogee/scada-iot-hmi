@@ -1,7 +1,7 @@
 <template>
-  <q-page class="row q-pa-xs">
+  <q-page class="row wrap content-start q-pa-xs">
     <div class="col-xs-12">
-      <q-card class="bg-white">
+      <q-card class="bg-white q-ma-xs">
         <q-card-section class="pad-b-8">
           <div class="title">
             圖表顯示{{ animatedTotal | totalFormat }}時間點資料
@@ -9,86 +9,91 @@
           </div>
         </q-card-section>
         <q-card-section class="">
-          <q-list>
+          <q-list
+            bordered
+            separator
+          >
             <q-item-label
               header
-              class="lh-normal pad-t-8"
+              class="q-pb-none"
             >
               資料庫
             </q-item-label>
-            <div class="pad-8 row wrap">
-              <q-item class="col-xs-12 col-sm-6 col-md-3">
-                <q-item-section avatar>
-                  <q-icon name="timeline" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>
-                    總資料時間點數
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ logsTotal | totalFormat }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="col-xs-12 col-sm-6 col-md-3">
-                <q-item-section avatar>
-                  <q-icon name="bubble_chart" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>
-                    總資料點數
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ (logsTotal * 26) | totalFormat }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="col-xs-12 col-sm-6 col-md-3">
-                <q-item-section avatar>
-                  <q-icon name="skip_previous" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>
-                    總資料起始時間
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ logsStart | dateFormat }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item class="col-xs-12 col-sm-6 col-md-3">
-                <q-item-section avatar>
-                  <q-icon name="skip_next" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>
-                    總資料最後時間
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ logsEnd | dateFormat }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </div>
-            <q-separator spaced />
+            <q-item>
+              <div class="full-width row wrap">
+                <q-item class="col-xs-12 col-sm-6 col-md-3">
+                  <q-item-section side>
+                    <q-icon name="timeline" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      總資料時間點數
+                    </q-item-label>
+                    <q-item-label caption>
+                      {{ logsTotal | totalFormat }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item class="col-xs-12 col-sm-6 col-md-3">
+                  <q-item-section side>
+                    <q-icon name="bubble_chart" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      總資料點數
+                    </q-item-label>
+                    <q-item-label caption>
+                      {{ (logsTotal * 26) | totalFormat }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item class="col-xs-12 col-sm-6 col-md-3">
+                  <q-item-section side>
+                    <q-icon name="skip_previous" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      總資料起始時間
+                    </q-item-label>
+                    <q-item-label caption>
+                      {{ logsStart | dateFormat }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item class="col-xs-12 col-sm-6 col-md-3">
+                  <q-item-section side>
+                    <q-icon name="skip_next" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      總資料最後時間
+                    </q-item-label>
+                    <q-item-label caption>
+                      {{ logsEnd | dateFormat }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </div>
+            </q-item>
+            <q-separator />
             <q-item-label
               header
-              class="lh-normal pad-t-16"
+              class="q-pb-none"
             >
               自訂圖表
             </q-item-label>
             <q-item>
-              <q-item-section>
-                <q-field
-                  icon="date_range"
-                  label="圖表時間"
-                  :error="chartRangeHasError"
-                  error-label="所選時間範圍查無資料"
-                  :label-width="2"
-                >
+              <div class="full-width row wrap">
+                <q-item class="col-xs-12 col-sm-6 col-md-3">
                   <q-input
                     v-model="fromModel"
+                    class="full-width"
+                    label="起始時間"
+                    error-message="所選時間範圍查無資料"
+                    :error="chartRangeHasError"
+                    mask="datetime"
                     filled
+                    hide-bottom-space
                   >
                     <template v-slot:prepend>
                       <q-icon
@@ -98,6 +103,10 @@
                         <q-popup-proxy
                           transition-show="scale"
                           transition-hide="scale"
+                          anchor="bottom left"
+                          self="top left"
+                          :cover="false"
+                          :offset="[12, 14]"
                         >
                           <q-date
                             v-model="fromModel"
@@ -105,9 +114,6 @@
                           />
                         </q-popup-proxy>
                       </q-icon>
-                    </template>
-
-                    <template v-slot:append>
                       <q-icon
                         name="access_time"
                         class="cursor-pointer"
@@ -115,6 +121,10 @@
                         <q-popup-proxy
                           transition-show="scale"
                           transition-hide="scale"
+                          anchor="bottom left"
+                          self="top left"
+                          :cover="false"
+                          :offset="[38, 14]"
                         >
                           <q-time
                             v-model="fromModel"
@@ -125,36 +135,70 @@
                       </q-icon>
                     </template>
                   </q-input>
-                </q-field>
-              </q-item-section>
+                </q-item>
+                <q-item class="col-xs-12 col-sm-6 col-md-3">
+                  <q-input
+                    v-model="toModel"
+                    class="full-width"
+                    label="結束時間"
+                    error-message="所選時間範圍查無資料"
+                    :error="chartRangeHasError"
+                    mask="datetime"
+                    filled
+                    hide-bottom-space
+                  >
+                    <template v-slot:prepend>
+                      <q-icon
+                        name="event"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          transition-show="scale"
+                          transition-hide="scale"
+                          anchor="bottom left"
+                          self="top left"
+                          :cover="false"
+                          :offset="[12, 14]"
+                        >
+                          <q-date
+                            v-model="toModel"
+                            mask="YYYY/MM/DD HH:mm"
+                          />
+                        </q-popup-proxy>
+                      </q-icon>
+                      <q-icon
+                        name="access_time"
+                        class="cursor-pointer"
+                      >
+                        <q-popup-proxy
+                          transition-show="scale"
+                          transition-hide="scale"
+                          anchor="bottom left"
+                          self="top left"
+                          :cover="false"
+                          :offset="[38, 14]"
+                        >
+                          <q-time
+                            v-model="toModel"
+                            mask="YYYY/MM/DD HH:mm"
+                            format24h
+                          />
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                </q-item>
+              </div>
             </q-item>
           </q-list>
         </q-card-section>
-        <!-- <q-card-actions>
-          <q-field
-            :error="total > 100000" class="full-width margin-0 pad-8"
-            error-label="注意：繪製超過 100,000 筆資料可能會很慢"
-          >
-            <q-btn color="primary" class="full-width"
-              @click="getChartData"
-              :percentage="getChartDataProgress" loader
-              :disabled="chartRangeHasError">
-              <span v-if="loadingLogsTotal" class="row flex-center"><q-spinner class="on-left"/>取得資料筆數</span>
-              <span v-else class="row flex-center"><q-icon name="insert_chart" class="on-left"/>繪製{{ total | totalFormat }}資料</span>
-              <div slot="loading" class="row flex-center">
-                <q-spinner-audio class="on-left" />
-                正在準備{{ total | totalFormat }}資料，已獲得{{ animatedLogsLength | totalFormat }}
-              </div>
-            </q-btn>
-          </q-field>
-        </q-card-actions> -->
       </q-card>
     </div>
     <div
       v-show="!showChart"
       class="col-xs-12"
     >
-      <q-card class="bg-white">
+      <q-card class="bg-white q-ma-xs">
         <q-card-section>
           <div class="title text-center">
             圖表資料載入中...
@@ -168,7 +212,7 @@
       :key="index"
       class="col-xs-12"
     >
-      <q-card class="bg-white">
+      <q-card class="bg-white q-ma-xs">
         <q-card-section>
           <div
             ref="chartDiv"
@@ -181,6 +225,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { date } from 'quasar'
 import _ from 'lodash'
@@ -629,7 +674,6 @@ export default {
         to: new Date()
       },
       showChart: false,
-      animatedLogsLength: 0,
       animatedTotal: 0,
       traceTemplates: {
         timeSeriesTrace: {
@@ -1174,37 +1218,24 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      total: state => state.chart.total,
-      logsLength: state => state.chart.logsLength,
-      bucket: state => state.chart.bucket
-    }),
+    ...mapState('chart', ['total', 'bucket']),
     ...mapState('logs', { logsTotal: 'total', logsStart: 'start', logsEnd: 'end' }),
-    ...mapGetters(['chartInit', 'chartUpdate']),
-    start () {
-      return new Date().getTime() - 60 * 60 * 1000
-    },
-    end () {
-      return new Date().getTime()
-    },
-    getChartDataProgress () {
-      return (this.logsLength / this.total) * 100
-    },
-    loadingLogsTotal () {
-      return this.total === -1
-    },
     fromModel: {
       get () {
         return date.formatDate(this.chartRange.from, 'YYYY/MM/DD HH:mm')
       },
       set (v) {
-        const d = new Date(`${v}Z`)
+        this.$debug(v)
+        const d = new Date(`${v}`)
+        this.$debug(d)
         this.chartRange.from = date.adjustDate(this.chartRange.from, {
           year: d.getFullYear(),
           month: d.getMonth() + 1,
           date: d.getDate(),
-          hours: d.getUTCHours(),
-          minutes: d.getUTCMinutes()
+          hours: d.getHours(),
+          minutes: d.getMinutes(),
+          seconds: 0,
+          milliseconds: 0
         })
       }
     },
@@ -1213,31 +1244,27 @@ export default {
         return date.formatDate(this.chartRange.to, 'YYYY/MM/DD HH:mm')
       },
       set (v) {
-        const d = new Date(`${v}Z`)
+        // this.$debug(v)
+        const d = new Date(`${v}`)
         this.chartRange.to = date.adjustDate(this.chartRange.to, {
           year: d.getFullYear(),
           month: d.getMonth() + 1,
           date: d.getDate(),
-          hours: d.getUTCHours(),
-          minutes: d.getUTCMinutes()
+          hours: d.getHours(),
+          minutes: d.getMinutes(),
+          seconds: 0,
+          milliseconds: 0
         })
       }
     }
   },
   watch: {
-    // chartUpdate (val, oldVal) {
-    //   // console.log(this.$refs.chart.computedOptions.legend[0].data)
-    //   // if (_.isEmpty(this.$refs.chart.computedOptions.legend[0].data)) return
-    //   // this.$refs.chart.mergeOptions(val)
-    //   // console.log(this.$refs.chart)
-    // },
     total (val, oldVal) {
       if (!val) {
         this.chartRangeHasError = true
       } else {
         this.chartRangeHasError = false
 
-        // tween animatedLogsLength
         var vm = this
         const animate = () => {
           if (TWEEN.update()) {
@@ -1253,71 +1280,6 @@ export default {
           .start()
         animate()
       }
-    },
-    logsLength (val, oldVal) {
-      // const chartLogsLength = this.chartLogs().length
-      // // console.log('chartLogs: ', this.chartLogs())
-      // // console.log('this.chartLogs().length: ', chartLogsLength)
-
-      // // update charts
-      // const rtuRegs = this.chartRtuRegs()
-      // // console.log('rtuRegs: ', rtuRegs)
-      // // const rtuRegKeys = Object.keys(rtuRegs)
-      // // console.log('Trace Names: ', rtuRegKeys)
-      // this.figs.forEach((fig, i) => {
-      //   // console.log(i, fig)
-      //   // build data = [trace, ...]
-      //   const matchedRtuRegs = _.filter(rtuRegs, (rtuReg, header) => {
-      //     return _.some(fig.regs, reg => reg === rtuReg.reg)
-      //   })
-      //   // console.log('matchedRtuRegs', matchedRtuRegs)
-      //   if (chartLogsLength <= 1000) {
-      //     const data = _.map(matchedRtuRegs, (rtuReg) => {
-      //       const trace = JSON.parse(JSON.stringify(this.traceTemplates[fig.trace]))
-      //       trace.name = rtuReg.header
-      //       trace.x = rtuReg.x
-      //       trace.y = rtuReg.y
-      //       return trace
-      //     })
-      //     // build layout = {}
-      //     const layout = JSON.parse(JSON.stringify(this.figTemplates[fig.fig])).layout
-      //     layout.title = fig.plotTitle
-      //     layout.yaxis.title = fig.yaxisTitle
-      //     Plotly.newPlot(this.$refs.gd[i], data, layout)
-      //   }
-      //   else {
-      //     // const update = {
-      //     //   x: _.map(matchedRtuRegs, rtuReg => rtuReg.x),
-      //     //   y: _.map(matchedRtuRegs, rtuReg => rtuReg.y)
-      //     // }
-      //     const data = _.map(matchedRtuRegs, (rtuReg) => {
-      //       const trace = JSON.parse(JSON.stringify(this.traceTemplates[fig.trace]))
-      //       trace.name = rtuReg.header
-      //       trace.x = rtuReg.x
-      //       trace.y = rtuReg.y
-      //       return trace
-      //     })
-      //     // build layout = {}
-      //     Plotly.update(this.$refs.gd[i], data)
-      //     // console.log(this.$refs.gd[i], data)
-      //   }
-      // })
-
-      // tween animatedLogsLength
-      var vm = this
-      function animate () {
-        if (TWEEN.update()) {
-          requestAnimationFrame(animate)
-        }
-      }
-      new TWEEN.Tween({ val: oldVal })
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .to({ val: val }, 1000)
-        .onUpdate(function (obj) {
-          vm.animatedLogsLength = obj.val.toFixed(0)
-        })
-        .start()
-      animate()
     }
   },
   beforeDestroy () {
@@ -1447,7 +1409,7 @@ export default {
             _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
               chartDiv.chart.showLoading('讀取資料中...')
             })
-            this.getChartLogsInRange({
+            this.findLogsInRange({
               from: val.from.getTime(),
               to: val.to.getTime(),
               done: updateCharts
@@ -1460,66 +1422,12 @@ export default {
         )
       })
     }
-    this.getChartLogsInRange({
+    this.findLogsInRange({
       done: initCharts
     })
   },
   methods: {
-    ...mapActions([
-      'getLogs', // map `this.getChartData(payloads)` to `this.$store.dispatch('getChartData', payloads)`
-      'getLogsCountInRange',
-      'getLogsInRange',
-      'getChartLogsInRange'
-    ]),
-    ...mapGetters([
-      // 'chartLogs',
-      'chartRtuRegs'
-    ]),
-    // getChartData (event, done) {
-    //   // console.log(this.chartRange.from, this.chartRange.to)
-    //   // this.getLogsCountInRange(this.chartRange)
-    //   this.showChart = false
-    //   // clear charts
-    //   // this.figs.forEach((fig, i) => {
-    //   //   // console.log(i, fig)
-    //   //   Plotly.newPlot(this.$refs.gd[i], [])
-    //   // })
-    //   const newDone = () => {
-    //     this.showChart = true
-    //     this.$nextTick(function () {
-    //       // draw charts
-    //       const rtuRegs = this.chartRtuRegs()
-    //       // console.log('rtuRegs: ', rtuRegs)
-    //       // const rtuRegKeys = Object.keys(rtuRegs)
-    //       // console.log('Trace Names: ', rtuRegKeys)
-    //       this.figs.forEach((fig, i) => {
-    //         // console.log(i, fig)
-    //         // build data = [trace, ...]
-    //         const matchedRtuRegs = _.filter(rtuRegs, (rtuReg, header) => {
-    //           return _.some(fig.regs, reg => reg === rtuReg.reg)
-    //         })
-    //         const data = _.map(matchedRtuRegs, (rtuReg) => {
-    //           const trace = JSON.parse(JSON.stringify(this.traceTemplates[fig.trace]))
-    //           trace.name = rtuReg.header
-    //           trace.x = rtuReg.x
-    //           trace.y = rtuReg.y
-    //           return trace
-    //         })
-    //         // build layout = {}
-    //         const layout = JSON.parse(JSON.stringify(this.figTemplates[fig.fig])).layout
-    //         layout.title = fig.plotTitle
-    //         layout.yaxis.title = fig.yaxisTitle
-    //         Plotly.newPlot(this.$refs.gd[i], data, layout)
-    //       })
-    //       done()
-    //     })
-    //   }
-    //   this.getLogsInRange({
-    //     from: this.chartRange.from,
-    //     to: this.chartRange.to,
-    //     done: newDone
-    //   })
-    // },
+    ...mapActions('chart', ['getLogsCountInRange', 'findLogsInRange']),
     afterSetExtremes (event) {
       // console.log('afterSetExtremes', event.min, event.max, this.chartRange.from.getTime(), this.chartRange.to.getTime())
       // set chartRange

@@ -2,6 +2,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 require('dotenv').config()
 const fs = require('fs')
+const isWsl = require('is-wsl')
 const path = require('path')
 const _ = require('lodash')
 const gitRevisionPlugin = new (require('git-revision-webpack-plugin'))()
@@ -21,6 +22,24 @@ let sw = fs.readFileSync(swPath, 'utf-8')
 _.forEach(Object.entries(env), ([k, v]) => {
   sw = sw.replace(new RegExp(`process.env.${k}`, 'g'), v)
 })
+
+// use for devServer.open
+let chromeName = ''
+// let firefoxName = ''
+// let chromeWslName = ''
+// let firefoxWslName = ''
+if (process.platform === 'darwin') {
+  chromeName = 'google chrome canary'
+  // firefoxName = 'firefox'
+} else if (process.platform === 'win32' || isWsl) {
+  chromeName = 'Chrome'
+  // firefoxName = 'C:\\Program Files\\Mozilla Firefox\\firefox.exe'
+  // chromeWslName = '/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe'
+  // firefoxWslName = '/mnt/c/Program Files/Mozilla Firefox/firefox.exe'
+} else if (process.platform === 'linux') {
+  chromeName = 'google-chrome'
+  // firefoxName = 'firefox'
+}
 
 module.exports = function (ctx) {
   return {
@@ -86,6 +105,8 @@ module.exports = function (ctx) {
         'QInput',
         'QTime',
         'QDate',
+        'QMenu',
+        'QDialog',
         'QPopupProxy'
       ],
 
@@ -136,10 +157,10 @@ module.exports = function (ctx) {
     },
 
     devServer: {
-      // https: true,
+      // https: true, // chrome://flags/#allow-insecure-localhost
       public: process.env.DEV_SERVER_PUBLIC || '',
       port: process.env.DEV_SERVER_PORT || 8082,
-      open: true // opens browser window automatically
+      open: chromeName // opens browser window automatically
     },
 
     animations: 'all', // --- includes all animations
