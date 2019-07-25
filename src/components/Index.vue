@@ -4,7 +4,7 @@
     <q-toolbar slot="header" color="dark">
       <img src="/statics/icons/favicon-32x32.png">
       <q-toolbar-title class="col-auto">
-        SCADA/IoT
+        蘭陽地熱 SCADA/IoT
       </q-toolbar-title>
       <q-select color="dark"
         v-model="select"

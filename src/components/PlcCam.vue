@@ -35,21 +35,25 @@ export default {
       cameras: [
         {
           url: 'https://scada.hanl.in/media/live/cam1/index.m3u8',
+          hlsUrl: 'https://scada.hanl.in/live/cam1/index.m3u8',
           flvUrl: 'https://scada.hanl.in/media/live/cam1.flv',
           show: false
         },
         {
           url: 'https://scada.hanl.in/media/live/cam2/index.m3u8',
+          hlsUrl: 'https://scada.hanl.in/live/cam2/index.m3u8',
           flvUrl: 'https://scada.hanl.in/media/live/cam2.flv',
           show: false
         },
         {
           url: 'https://scada.hanl.in/media/live/cam3/index.m3u8',
+          hlsUrl: 'https://scada.hanl.in/live/cam3/index.m3u8',
           flvUrl: 'https://scada.hanl.in/media/live/cam3.flv',
           show: false
         },
         {
           url: 'https://scada.hanl.in/media/live/cam4/index.m3u8',
+          hlsUrl: 'https://scada.hanl.in/live/cam4/index.m3u8',
           flvUrl: 'https://scada.hanl.in/media/live/cam4.flv',
           show: false
         }
@@ -58,32 +62,32 @@ export default {
   },
   methods: {
     loadHls(video, src) {
-      if(Hls.isSupported()) {
+      if (Hls.isSupported()) {
         var hls = new Hls()
         hls.loadSource(src)
         hls.attachMedia(video)
-        hls.on(Hls.Events.MANIFEST_PARSED,function() {
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
           video.play()
         })
-        hls.on(Hls.Events.ERROR, function (event, data) {
-          var errorType = data.type
-          var errorDetails = data.details
-          var errorFatal = data.fatal
+        // hls.on(Hls.Events.ERROR, function (event, data) {
+        //   var errorType = data.type
+        //   var errorDetails = data.details
+        //   var errorFatal = data.fatal
 
-          console.log(`Error: ${errorType} - ${errorDetails} - ${errorFatal} - ${src}`)
-          switch(data.type) {
-            case Hls.ErrorTypes.NETWORK_ERROR:
-              // try to recover network error
-              console.log("fatal network error encountered, try to recover")
-              hls.startLoad()
-              break
-            case Hls.ErrorTypes.MEDIA_ERROR:
-              console.log("fatal media error encountered, try to recover")
-              hls.recoverMediaError()
-              break
-          }
-          hls.loadSource(src)
-        })
+        //   console.log(`Error: ${errorType} - ${errorDetails} - ${errorFatal} - ${src}`)
+        //   switch(data.type) {
+        //     case Hls.ErrorTypes.NETWORK_ERROR:
+        //       // try to recover network error
+        //       console.log("fatal network error encountered, try to recover")
+        //       hls.startLoad()
+        //       break
+        //     case Hls.ErrorTypes.MEDIA_ERROR:
+        //       console.log("fatal media error encountered, try to recover")
+        //       hls.recoverMediaError()
+        //       break
+        //   }
+        //   hls.loadSource(src)
+        // })
       }
       // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
       // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element throught the `src` property.
@@ -115,6 +119,7 @@ export default {
     this.cameras.forEach((cam, index) => {
       // this.loadHls(this.$refs['camera-video'][index], cam.url)
       this.loadFlv(this.$refs['camera-video'][index], cam.flvUrl)
+      // this.loadHls(this.$refs['camera-video'][index], cam.hlsUrl)
       // cam.player = new JSMpeg.Player(cam.url, {canvas: this.$refs['camera-video'][index], preserveDrawingBuffer: true})
       // cam.show = true
       setTimeout(() => {
