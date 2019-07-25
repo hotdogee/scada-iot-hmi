@@ -17,11 +17,6 @@ const env = {
   COMMITHASH: JSON.stringify(gitRevisionPlugin.commithash()),
   VAPID_PUBLIC: JSON.stringify(process.env.VAPID_PUBLIC)
 }
-const swPath = path.resolve('./src-pwa/custom-service-worker.js')
-let sw = fs.readFileSync(swPath, 'utf-8')
-_.forEach(Object.entries(env), ([k, v]) => {
-  sw = sw.replace(new RegExp(`process.env.${k}`, 'g'), v)
-})
 
 // use for devServer.open
 let chromeName = ''
@@ -42,6 +37,7 @@ if (process.platform === 'darwin') {
 }
 
 module.exports = function (ctx) {
+  const swPath = path.resolve('./src-pwa/custom-service-worker.js')
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -68,7 +64,6 @@ module.exports = function (ctx) {
       // 'eva-icons',
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
       'roboto-font', // optional, you are not bound to it
       'material-icons' // optional, you are not bound to it
     ],
@@ -113,7 +108,8 @@ module.exports = function (ctx) {
       directives: ['Ripple', 'ClosePopup'],
 
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify'],
+      lang: 'zh-hant' // Quasar language
     },
 
     supportIE: true,
@@ -137,21 +133,27 @@ module.exports = function (ctx) {
           }
         })
         // cfg.plugins.push(new GitRevisionPlugin())
-        cfg.plugins.unshift(
-          new AddAssetPlugin(
-            swPath,
-            sw
-            // fs.readFileSync('./src-pwa/custom-service-worker.js', 'utf-8')
-            // 'console.log(`SW: ${process.env.VERSION}`)'
-            // sw
+        if (ctx.mode.pwa) {
+          let sw = fs.readFileSync(swPath, 'utf-8')
+          _.forEach(Object.entries(env), ([k, v]) => {
+            sw = sw.replace(new RegExp(`process.env.${k}`, 'g'), v)
+          })
+          cfg.plugins.unshift(
+            new AddAssetPlugin(
+              swPath,
+              sw
+              // fs.readFileSync('./src-pwa/custom-service-worker.js', 'utf-8')
+              // 'console.log(`SW: ${process.env.VERSION}`)'
+              // sw
+            )
           )
-        )
+        }
         // cfg.optimization.minimizer = cfg.optimization.minimizer || []
         // cfg.optimization.minimizer.push(new Terser({
         //   // Ensure .mjs files get included.
         //   test: /\.m?js$/
         // }))
-        cfg.node.__filename = true
+        // cfg.node.__filename = true
       },
       env
     },
@@ -177,6 +179,7 @@ module.exports = function (ctx) {
         // skipWaiting: true,
         // clientsClaim: true
         // importWorkboxFrom: 'local'
+        exclude: [swPath]
       },
       manifest: {
         name: '地熱發電監控系統',
@@ -219,6 +222,8 @@ module.exports = function (ctx) {
     cordova: {
       // id: 'in.hanl.scada',
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
+      iosStatusBarPadding: false, // add the dynamic top padding on iOS mobile devices
+      backButtonExit: true // Quasar handles app exit on mobile phone back button
     },
 
     electron: {

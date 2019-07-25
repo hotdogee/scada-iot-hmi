@@ -228,7 +228,7 @@ export async function signIn (
     //   aud: "api"
     //   exp: 1561308276
     //   iat: 1561306476
-    //   iss: "infans.io"
+    //   iss: "scada.hanl.in"
     //   jti: "f7b2e9f4-f727-4d1f-bbe7-69ab9aca5d28"
     //   sub: "5d0901810516e204e1aeadb2"
     // }
@@ -411,7 +411,7 @@ export async function verifyEmail (
     //   "iat": 1552767152,
     //   "exp": 1552768952,
     //   "aud": "users.patch",
-    //   "iss": "binflux.com",
+    //   "iss": "scada.hanl.in",
     //   "sub": "verify",
     //   "jti": "1214e3d8-686c-42db-a57e-3029d1e6a4b8"
     // }
@@ -492,7 +492,7 @@ export async function resetPassword (
     //   "iat": 1552767152,
     //   "exp": 1552768952,
     //   "aud": "users.patch",
-    //   "iss": "binflux.com",
+    //   "iss": "scada.hanl.in",
     //   "sub": "verify",
     //   "jti": "1214e3d8-686c-42db-a57e-3029d1e6a4b8"
     // }

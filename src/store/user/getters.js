@@ -117,12 +117,12 @@ export function authorization (state, getters) {
     } else if (isSignedIn(state)) {
       logger.log('2')
       return {
-        scope: { role: 'user', org: 'binflux' }
+        scope: { role: 'user', org: 'scada' }
       }
     } else {
       logger.log('3')
       return {
-        scope: { role: 'guest', org: 'binflux' }
+        scope: { role: 'guest', org: 'scada' }
       }
     }
   }

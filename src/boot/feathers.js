@@ -117,7 +117,7 @@ export default ({ app, store, router, Vue }) => {
         //       "iat": 1561830409,
         //       "exp": 1561832209,
         //       "aud": "public-keys",
-        //       "iss": "infans.io",
+        //       "iss": "scada.hanl.in",
         //       "sub": "5d166b06ada0c3004e2f2319",
         //       "jti": "c5c841d6-5e71-4f9c-b4af-209f330bebe0"
         //     }

@@ -18,7 +18,7 @@ const ignore = new Set([
   // 'system/setStatus'
 ])
 const vuexPersist = new VuexPersist({
-  key: 'infans-persist',
+  key: 'scada-persist',
   storage: localforage,
   asyncStorage: true,
   strictMode: true,

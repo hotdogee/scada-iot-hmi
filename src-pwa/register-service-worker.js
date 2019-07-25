@@ -45,6 +45,6 @@ const logger = new Logger('ServiceWorker.Client')
 
     wb.register()
     const swVersion = await wb.messageSW({ type: 'GET_VERSION' })
-    logger.info('1Service Worker version:', swVersion)
+    logger.info('Service Worker version:', swVersion)
   }
 })()

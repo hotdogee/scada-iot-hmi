@@ -126,24 +126,30 @@ export function addLog (state, { log }) {
   const m6c = state.chartData['M6-渦輪2後-溫度(℃)']
   let m1e = null
   if (m1bar && m1c) {
-    m1e = new IAPWS97_EoS().solve({
-      p: m1bar.slice(-1)[0].value * 100000,
-      t: 273.15 + m1c.slice(-1)[0].value
-    })
+    try {
+      m1e = new IAPWS97_EoS().solve({
+        p: m1bar.slice(-1)[0].value * 100000,
+        t: 273.15 + m1c.slice(-1)[0].value
+      })
+    } catch (error) {}
   }
   let m5e = null
   if (m5bar && m5c) {
-    m5e = new IAPWS97_EoS().solve({
-      p: m5bar.slice(-1)[0].value * 100000,
-      t: 273.15 + m5c.slice(-1)[0].value
-    })
+    try {
+      m5e = new IAPWS97_EoS().solve({
+        p: m5bar.slice(-1)[0].value * 100000,
+        t: 273.15 + m5c.slice(-1)[0].value
+      })
+    } catch (error) {}
   }
   let m6e = null
   if (m6bar && m6c) {
-    m6e = new IAPWS97_EoS().solve({
-      p: m6bar.slice(-1)[0].value * 100000,
-      t: 273.15 + m6c.slice(-1)[0].value
-    })
+    try {
+      m6e = new IAPWS97_EoS().solve({
+        p: m6bar.slice(-1)[0].value * 100000,
+        t: 273.15 + m6c.slice(-1)[0].value
+      })
+    } catch (error) {}
   }
   // const m25tph = state.chartData['M26-排水管2-流量(m3/h)']
   // const m64hz = state.chartData['M64-發電機1-頻率(Hz)']

@@ -6,7 +6,7 @@
 const SW_VERSION = process.env.VERSION
 
 workbox.core.setCacheNameDetails({
-  prefix: 'infans',
+  prefix: 'scada',
   suffix: SW_VERSION
 })
 
@@ -92,27 +92,16 @@ async function pushSW (event) {
     icon: '/statics/icons/icon-192x192.png',
     badge: '/statics/icons/icon-192x192.png',
     requireInteraction: true,
-    color: '#ef6f6c', // doesn't work
+    color: '#333333', // doesn't work
     vibrate: [300, 100, 400],
-    actions: [
-      {
-        action: 'yes',
-        title: '吃',
-        icon: '/statics/icons/icon-192x192.png'
-      },
-      {
-        action: 'no',
-        title: '不吃',
-        icon: '/statics/icons/icon-192x192.png'
-      }
-    ]
+    actions: []
   })
 }
 
 self.addEventListener('notificationclick', event => {
   const clickedNotification = event.notification
   clickedNotification.close()
-  const promiseChain = clients.openWindow('https://dev2.infans.io')
+  const promiseChain = clients.openWindow('https://scada.hanl.in')
   event.waitUntil(promiseChain)
 })
 

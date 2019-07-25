@@ -13,7 +13,11 @@
           "iconHash": "9786880ace9b98c78f67094a61147fad"
         }
       },
-      "build": {}
+      "build": {
+        "pwa": {
+          "iconHash": "9786880ace9b98c78f67094a61147fad"
+        }
+      }
     }
   },
   "@quasar/testing": {
