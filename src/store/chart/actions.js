@@ -43,47 +43,50 @@ export async function findLogsInRange (
   commit('setBucket', {
     bucket: chartLogs.bucket
   })
+  commit('setTotal', {
+    total: chartLogs.total
+  })
   payload.done(chartLogs)
 }
 
-export async function getLogsCountInRange (
-  { commit, dispatch, state, getters, rootState, rootGetters },
-  payload
-) {
-  // getChartData({from: from, to: to})
-  // console.log('store.dispatch - findLogs')
-  const params = {
-    query: {
-      $limit: 0,
-      logTime: {
-        $gt: new Date(payload.from).toISOString(),
-        $lt: new Date(payload.to).toISOString()
-      }
-    }
-  }
-  // params = {
-  //   query: {
-  //     $limit: 0,
-  //     logTime: {"$gt":"2017-08-07T20:39:30.088Z","$lt":"2019-07-23T21:24:59.216Z"}
-  //   }
-  // }
-  // > use scada-iot
-  // > db.logs.getIndexKeys()
-  // > db.logs.find({logTime:{"$gt":ISODate("2017-08-07T20:39:30.088Z"),"$lt":ISODate("2019-07-23T21:24:59.216Z")}}).count()
-  // > db.logs.find({logTime:{"$lt":ISODate("2019-07-23T21:24:59.216Z"),"$gt":ISODate("2017-08-07T20:39:30.088Z")}}).sort({logTime:-1}).count()
-  // > db.logs.find({logTime:{"$gt":ISODate("2017-08-07T20:39:30.088Z"),"$lt":ISODate("2019-07-23T21:24:59.216Z")}}).explain()
-  logger.info('getLogsCountInRange:', params)
-  commit('setTotal', {
-    total: -1
-  })
-  try {
-    // document.getElementById('q-app').__vue__.$feathers.api.service('logs').find(params)
-    const service = this.$feathers.api.service('logs')
-    const results = await service.find(params)
-    commit('setTotal', {
-      total: results.total
-    })
-  } catch (error) {
-    logger.error('getLogsCountInRange:', error)
-  }
-}
+// export async function getLogsCountInRange (
+//   { commit, dispatch, state, getters, rootState, rootGetters },
+//   payload
+// ) {
+//   // getChartData({from: from, to: to})
+//   // console.log('store.dispatch - findLogs')
+//   const params = {
+//     query: {
+//       $limit: 0,
+//       logTime: {
+//         $gt: new Date(payload.from).toISOString(),
+//         $lt: new Date(payload.to).toISOString()
+//       }
+//     }
+//   }
+//   // params = {
+//   //   query: {
+//   //     $limit: 0,
+//   //     logTime: {"$gt":"2017-08-07T20:39:30.088Z","$lt":"2019-07-23T21:24:59.216Z"}
+//   //   }
+//   // }
+//   // > use scada-iot
+//   // > db.logs.getIndexKeys()
+//   // > db.logs.find({logTime:{"$gt":ISODate("2017-08-07T20:39:30.088Z"),"$lt":ISODate("2019-07-23T21:24:59.216Z")}}).count()
+//   // > db.logs.find({logTime:{"$lt":ISODate("2019-07-23T21:24:59.216Z"),"$gt":ISODate("2017-08-07T20:39:30.088Z")}}).sort({logTime:-1}).count()
+//   // > db.logs.find({logTime:{"$gt":ISODate("2017-08-07T20:39:30.088Z"),"$lt":ISODate("2019-07-23T21:24:59.216Z")}}).explain()
+//   logger.info('getLogsCountInRange:', params)
+//   commit('setTotal', {
+//     total: -1
+//   })
+//   try {
+//     // document.getElementById('q-app').__vue__.$feathers.api.service('logs').find(params)
+//     const service = this.$feathers.api.service('logs')
+//     const results = await service.find(params)
+//     commit('setTotal', {
+//       total: results.total
+//     })
+//   } catch (error) {
+//     logger.error('getLogsCountInRange:', error)
+//   }
+// }

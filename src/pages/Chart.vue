@@ -1296,7 +1296,7 @@ export default {
         from: new Date(chartLogs.start),
         to: new Date(chartLogs.end)
       }
-      this.getLogsCountInRange(this.chartRange)
+      // this.getLogsCountInRange(this.chartRange)
       this.$nextTick(() => {
         // const t0 = performance.now()
         // draw charts
@@ -1384,7 +1384,7 @@ export default {
           function (val, oldVal) {
             // const t0 = performance.now()
             // console.log('chartRange', val.from.getTime(), val.to.getTime(), oldVal.from.getTime(), oldVal.to.getTime())
-            this.getLogsCountInRange(val)
+            // this.getLogsCountInRange(val)
             const updateCharts = chartLogs => {
               // console.log(`updateCharts start: ${performance.now() - t0}ms`)
               _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
@@ -1427,7 +1427,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions('chart', ['getLogsCountInRange', 'findLogsInRange']),
+    ...mapActions('chart', ['findLogsInRange']),
     afterSetExtremes (event) {
       // console.log('afterSetExtremes', event.min, event.max, this.chartRange.from.getTime(), this.chartRange.to.getTime())
       // set chartRange
