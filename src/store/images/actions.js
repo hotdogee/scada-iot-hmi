@@ -23,6 +23,7 @@ export async function setupRealtimeUpdates (
             name
           }
         })
+        if (result.total === 0) throw new Error(`${name} album not found`)
         return result.data[0]._id
       })
     )
@@ -40,7 +41,7 @@ export async function setupRealtimeUpdates (
         })
         return {
           albumId,
-          imageId: result.data[0]._id
+          imageId: result.total === 0 ? null : result.data[0]._id
         }
       })
     )

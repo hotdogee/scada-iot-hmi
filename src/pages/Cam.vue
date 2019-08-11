@@ -9,9 +9,7 @@
         <q-card-section>
           <!-- <canvas ref="camera-canvas" class="camera-canvas"></canvas> -->
           <q-img
-            :src="
-              `http://localhost:6001/images/${camImages[index].imageId}?$client[raw]=1&$client[height]=700&$client[format]=webp`
-            "
+            :src="camImagesSrc[index]"
             spinner-color="white"
           >
           </q-img>
@@ -44,7 +42,7 @@
 import Hls from 'hls.js'
 import flvjs from 'flv.js'
 // import { mapGetters, mapState } from 'vuex'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   name: 'pages.Cam',
   data: function () {
@@ -79,7 +77,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('images', ['camImages'])
+    // ...mapState('images', ['camImages'])
+    ...mapGetters('images', ['camImagesSrc'])
   },
   mounted () {
     // setup live view

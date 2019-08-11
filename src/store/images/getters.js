@@ -5,6 +5,10 @@
 export function someGetter (state) {
 }
 */
-export function albumToImage (state, getters) {
-  return state.camImages
+export function camImagesSrc (state, getters) {
+  return state.camImages.map(i => {
+    return i.imageId
+      ? `${process.env.API_URL}${process.env.API_PATH}/images/${i.imageId}?$client[raw]=1&$client[height]=700&$client[format]=jpg`
+      : ''
+  })
 }

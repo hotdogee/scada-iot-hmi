@@ -1,41 +1,26 @@
 import io from 'socket.io-client'
-// import feathers from '@feathersjs/feathers'
-// import socketio from '@feathersjs/socketio-client'
-import feathers from 'feathers/client'
-import socketio from 'feathers-socketio/client'
-// import auth, { AuthenticationClient } from '@feathersjs/authentication-client'
+import feathers from '@feathersjs/feathers'
+import socketio from '@feathersjs/socketio-client'
+import auth, { AuthenticationClient } from '@feathersjs/authentication-client'
 import Logger from 'assets/logger'
 const logger = new Logger('boot.feathers')
 
 const setupApiEvents = socket => {
   const app = feathers()
-  app.on('connection', connection => {
-    // 4.0
-    logger.info(`connection`, app, connection)
-  })
-  app.on('disconnect', connection => {
-    logger.error(`disconnect`, app, connection)
-  })
-  app.on('login', (authResult, params, context) => {
-    logger.info(`login`, authResult, params, context)
-  })
-  app.on('logout', (authResult, params, context) => {
-    logger.warn(`logout`, authResult, params, context)
-  })
   app.configure(socketio(socket, { timeout: 10000 }))
-  // app.configure(
-  //   auth({
-  //     header: 'Authorization',
-  //     scheme: 'Bearer',
-  //     storageKey: 'feathers-jwt',
-  //     locationKey: 'access_token',
-  //     locationErrorKey: 'error',
-  //     jwtStrategy: 'jwt',
-  //     path: '/authentication',
-  //     Authentication: AuthenticationClient,
-  //     storage: window.localStorage
-  //   })
-  // )
+  app.configure(
+    auth({
+      header: 'Authorization',
+      scheme: 'Bearer',
+      storageKey: 'feathers-jwt',
+      locationKey: 'access_token',
+      locationErrorKey: 'error',
+      jwtStrategy: 'jwt',
+      path: '/authentication',
+      Authentication: AuthenticationClient,
+      storage: window.localStorage
+    })
+  )
   return app
 }
 // leave the export, even if you don't use it
@@ -47,14 +32,12 @@ export default ({ app, store, router, Vue }) => {
     api: setupApiEvents(socket)
   }
   socket.on('connect', async () => {
-    // 2.0
     logger.info(`connect`, app)
     store.dispatch('images/setupRealtimeUpdates')
     await store.dispatch('logs/setupRealtimeUpdates')
     store.dispatch('logs/findStartDateTime')
   })
   socket.on('disconnect', () => {
-    // 2.0
     logger.info(`disconnect`, app)
   })
 
