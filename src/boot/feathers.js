@@ -49,8 +49,9 @@ export default ({ app, store, router, Vue }) => {
   socket.on('connect', async () => {
     // 2.0
     logger.info(`connect`, app)
+    store.dispatch('images/setupRealtimeUpdates')
     await store.dispatch('logs/setupRealtimeUpdates')
-    store.dispatch('logs/findStart')
+    store.dispatch('logs/findStartDateTime')
   })
   socket.on('disconnect', () => {
     // 2.0

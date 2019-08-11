@@ -6,6 +6,7 @@ import VuexPersist from 'vuex-persist'
 import user from './user'
 import logs from './logs'
 import chart from './chart'
+import images from './images'
 import system from './system'
 import notifications from './notifications'
 import localSettings from './local-settings'
@@ -54,6 +55,7 @@ export default function (/* { ssrContext } */) {
       user,
       logs,
       chart,
+      images,
       system,
       notifications,
       localSettings

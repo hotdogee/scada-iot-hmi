@@ -57,7 +57,7 @@ export async function setupRealtimeUpdates (
   }
 }
 
-export async function findStart (
+export async function findStartDateTime (
   { commit, dispatch, state, getters, rootState, rootGetters },
   payload
 ) {

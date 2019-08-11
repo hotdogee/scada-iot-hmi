@@ -102,7 +102,8 @@ module.exports = function (ctx) {
         'QDate',
         'QMenu',
         'QDialog',
-        'QPopupProxy'
+        'QPopupProxy',
+        'QImg'
       ],
 
       directives: ['Ripple', 'ClosePopup'],
@@ -161,7 +162,7 @@ module.exports = function (ctx) {
     devServer: {
       // https: true, // chrome://flags/#allow-insecure-localhost
       public: process.env.DEV_SERVER_PUBLIC || '',
-      port: process.env.DEV_SERVER_PORT || 8082,
+      port: process.env.DEV_SERVER_PORT || 8083,
       open: chromeName // opens browser window automatically
     },
 
