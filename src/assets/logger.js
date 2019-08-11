@@ -58,6 +58,7 @@ class Logger {
       `background: ${APP_COLOR}; color: white; padding: 2px 0.5em; border-radius: 0.5em 0em 0em 0.5em;`,
       `background: ${levelColor}; color: white; padding: 2px 0.5em; border-radius: 0em 0.5em 0.5em 0em;`
     ]
+    // eslint-disable-next-line no-console
     console[level](...logPrefix, ...logArgs)
   }
 }

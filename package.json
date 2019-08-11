@@ -9,7 +9,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production http-server ./dist/pwa -c 1 -p 8083 -d false --push-state",
     "dev": "quasar dev -m pwa",
-    "build": "quasar build -m pwa",
+    "build": "cross-env NODE_ENV=production quasar build -m pwa",
     "precommit": "lint-staged",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",

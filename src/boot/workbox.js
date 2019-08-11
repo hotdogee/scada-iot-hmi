@@ -154,7 +154,7 @@ export default async ({ app, router, store, Vue }) => {
       // PushManager
       if ('PushManager' in window) {
         addEventListener('pushsubscriptionchange', event => {
-          console.log(event)
+          logger.info(event)
         })
         const subscription = await reg.pushManager.getSubscription()
         logger.info('onload getSubscription:', subscription)
