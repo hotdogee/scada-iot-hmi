@@ -1,22 +1,14 @@
 # scada-iot-hmi
-
 > SCADA/IoT Human Machine Interface
 
-## Build Setup
-
-``` bash
-# install dependencies
-$ npm install
-
-# serve with hot reload at localhost:8081
-$ quasar dev
-
-# build for production with minification
-$ quasar build
-
-# lint code
-$ quasar lint
-```
+# Navigation
+* monitor
+* analysis
+* live
+* control
+* user
+* accounts
+* notifications
 
 # Setup server pm2
 npm i -g pm2 spa-http-server

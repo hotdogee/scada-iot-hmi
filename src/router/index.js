@@ -1,63 +1,26 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import routes from './routes'
+
 Vue.use(VueRouter)
 
-function load (component) {
-  // '@' is aliased to src/components
-  return () => import(`@/${component}.vue`)
-}
+/*
+ * If not building with SSR mode, you can
+ * directly export the Router instantiation
+ */
 
-export default new VueRouter({
-  /*
-   * NOTE! VueRouter "history" mode DOESN'T works for Cordova builds,
-   * it is only to be used only for websites.
-   *
-   * If you decide to go with "history" mode, please also open /config/index.js
-   * and set "build.publicPath" to something other than an empty string.
-   * Example: '/' instead of current ''
-   *
-   * If switching back to default "hash" mode, don't forget to set the
-   * build publicPath back to '' so Cordova builds work again.
-   */
-  mode: 'history',
-  routes: [
-    {
-      path: '/',
-      name: 'Index',
-      redirect: { name: 'PlcCard' },
-      component: load('Index'),
-      children: [
-        {
-          path: 'text',
-          name: 'PlcText',
-          component: load('PlcText')
-        },
-        {
-          path: 'card',
-          name: 'PlcCard',
-          component: load('PlcCard')
-        },
-        {
-          path: 'chart',
-          name: 'PlcChart',
-          component: load('PlcChart')
-        },
-        {
-          path: 'cam',
-          name: 'PlcCam',
-          component: load('PlcCam')
-        },
-        {
-          path: 'dcs',
-          name: 'PlcDcs',
-          component: load('PlcCard')
-        }
-      ]
-    },
-    {
-      path: '*',
-      component: load('Error404')
-    } // Not found
-  ]
-})
+export default function(/* { store, ssrContext } */) {
+  const Router = new VueRouter({
+    scrollBehavior: () => ({ x: 0, y: 0 }),
+    routes,
+
+    // Leave these as is and change from quasar.conf.js instead!
+    // quasar.conf.js -> build -> vueRouterMode
+    // quasar.conf.js -> build -> publicPath
+    mode: process.env.VUE_ROUTER_MODE,
+    base: process.env.VUE_ROUTER_BASE
+  })
+
+  return Router
+}
