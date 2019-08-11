@@ -185,7 +185,7 @@ module.exports = function (ctx) {
       manifest: {
         name: '地熱發電監控系統',
         short_name: '\u5730\u71b1\u767c\u96fb',
-        // description: 'SCADA/IoT Human Machine Interface',
+        description: 'SCADA/IoT Human Machine Interface',
         start_url: '/',
         theme_color: '#4caf50',
         background_color: '#4caf50',
