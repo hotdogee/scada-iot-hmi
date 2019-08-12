@@ -88,8 +88,10 @@ export function addLog (state, { log }) {
         value /= 1000
         exp += 3
       }
+      // max string length 5: '999.99', '9999.9', '-99.99', '-999.9', '-9999'
+      const digits = value >= 0 ? (value < 1000 ? 2 : 1) : value > -100 ? 2 : value > -1000 ? 1 : 0
       const prefix = expPrefix[exp] || ''
-      state.cardData[addrName][reg.name].value = value.toFixed(2)
+      state.cardData[addrName][reg.name].value = value.toFixed(digits)
       state.cardData[addrName][reg.name].unit = prefix + unit
       state.cardData[addrName][reg.name].trend.push(Math.round(reg.value * 10000) / 100)
       while (state.cardData[addrName][reg.name].trend.length > limit) {
@@ -265,8 +267,10 @@ export function addLog (state, { log }) {
       value /= 1000
       exp += 3
     }
+    // max string length 5: '999.99', '9999.9', '-99.99', '-999.9', '-9999'
+    const digits = value >= 0 ? (value < 1000 ? 2 : 1) : value > -100 ? 2 : value > -1000 ? 1 : 0
     const prefix = expPrefix[exp] || ''
-    state.cardData[addrName][regName].value = value.toFixed(2)
+    state.cardData[addrName][regName].value = value.toFixed(digits)
     state.cardData[addrName][regName].unit = prefix + unit
     state.cardData[addrName][regName].trend.push(Math.round(originalValue * 10000) / 100)
     while (state.cardData[addrName][regName].trend.length > limit) {

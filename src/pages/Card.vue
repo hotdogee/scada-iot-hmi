@@ -40,11 +40,13 @@
                     <span class="subheading reg-unit">{{ rtu[regName].unit }}</span>
                   </div>
                   <div class="q-pa-sm absolute fit">
-                    <span class="caption reg-avg text-grey">AVG {{ avg(rtuName, regName)[0] }}</span><br />
-                    <span class="caption reg-sd text-grey">SD {{ sd(rtuName, regName) }}</span><br />
-                    <span class="caption reg-max text-grey">{{ avg(rtuName, regName)[3] }}</span><br />
+                    <span
+                      class="caption reg-avg text-grey"
+                    >AVG {{ stat(rtuName, regName).avg }}</span><br />
+                    <span class="caption reg-sd text-grey">SD {{ stat(rtuName, regName).sd }}</span><br />
+                    <span class="caption reg-max text-grey">{{ stat(rtuName, regName).max }}</span><br />
                     <br /><br />
-                    <span class="caption reg-min text-grey">{{ avg(rtuName, regName)[2] }}</span>
+                    <span class="caption reg-min text-grey">{{ stat(rtuName, regName).min }}</span>
                   </div>
                   <div class="q-pa-sm fit">
                     <br /><br /><br />
@@ -233,37 +235,43 @@ export default {
         }
       }
     },
-    avg () {
+    stat () {
       return (rtuName, regName) => {
         const reg = this.cardData[rtuName][regName]
         const data = reg.trend || reg.bars || [0]
         if (!data.length) {
           // console.log(rtuName, regName, reg, data)
-          return ['N/A', 1, 'N/A', 'N/A']
+          return { avg: 'N/A', sd: 'N/A', max: 'N/A', min: 'N/A', fac: 1, digits: 2 }
         }
         const sum = data.reduce((acc, v) => acc + v, 0)
         let fac = reg.trend ? 100 : 1
         let avg = sum / data.length / fac
-        while (avg > 10000) {
+        while (avg > 10000 || avg < -10000) {
           avg /= 1000
           fac *= 1000
         }
-        const min = Math.min(...data) / fac
-        const max = Math.max(...data) / fac
-        return [avg.toFixed(2), fac, min.toFixed(2), max.toFixed(2)]
-      }
-    },
-    sd () {
-      return (rtuName, regName) => {
-        const reg = this.cardData[rtuName][regName]
-        const data = reg.trend || reg.bars || [0]
-        if (!data.length) return 'N/A'
-        const [avg, fac] = this.avg(rtuName, regName)
-        return Math.sqrt(
+        // max string length 5: '999.99', '9999.9', '-99.99', '-999.9', '-9999'
+        const digits = avg >= 0 ? (avg < 1000 ? 2 : 1) : avg > -100 ? 2 : avg > -1000 ? 1 : 0
+        avg = avg.toFixed(digits)
+        const min = (Math.min(...data) / fac).toFixed(digits)
+        const max = (Math.max(...data) / fac).toFixed(digits)
+        const sd = Math.sqrt(
           data.reduce((acc, v) => acc + (v / fac - avg) * (v / fac - avg), 0) / data.length
-        ).toFixed(2)
+        ).toFixed(digits)
+        return { avg, sd, max, min, fac, digits }
       }
     }
+    // sd () {
+    //   return (rtuName, regName) => {
+    //     const reg = this.cardData[rtuName][regName]
+    //     const data = reg.trend || reg.bars || [0]
+    //     if (!data.length) return 'N/A'
+    //     const { avg, fac, digits } = this.stat(rtuName, regName)
+    //     return Math.sqrt(
+    //       data.reduce((acc, v) => acc + (v / fac - avg) * (v / fac - avg), 0) / data.length
+    //     ).toFixed(digits)
+    //   }
+    // }
   }
 }
 </script>
