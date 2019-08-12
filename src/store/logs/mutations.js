@@ -84,7 +84,7 @@ export function addLog (state, { log }) {
       const unit = prefixExp[reg.unit[0]] ? reg.unit.slice(1) : reg.unit
       let exp = prefixExp[reg.unit[0]] || 0
       let value = reg.value
-      while (value > 10000) {
+      while (value > 10000 || value < 10000) {
         value /= 1000
         exp += 3
       }
