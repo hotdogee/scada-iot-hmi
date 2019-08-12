@@ -116,6 +116,7 @@ module.exports = function (ctx) {
     supportIE: true,
 
     build: {
+      productName: `${ctx.dev ? '[DEV] ' : ''}${this.pkg.productName}`,
       scopeHoisting: true,
       vueRouterMode: 'history',
       devtool: 'source-map',
