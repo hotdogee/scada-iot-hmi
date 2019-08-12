@@ -10,6 +10,20 @@
 * accounts
 * notifications
 
+# Release workflow
+
+```bash
+npm run release
+git describe
+git push --follow-tags origin master
+```
+
+* standard-version does the following:
+  * bumps the version in metadata files (package.json, composer.json, etc).
+  * uses conventional-changelog to update CHANGELOG.md
+  * commits package.json (et al.) and CHANGELOG.md
+  * tags a new release
+
 # Setup server pm2
 npm i -g pm2 spa-http-server
 
@@ -22,6 +36,7 @@ NODE_ENV=production pm2 start /usr/bin/http-server --name scada-iot-hmi -- ./dis
 
 pm2 save
 
+# Nginx config
 /etc/nginx/conf.d
 server {
     listen      80;
