@@ -14,5 +14,5 @@ export function setCamImages (state, { images }) {
 export function addCamImage (state, { image }) {
   state.camImages.find(i => {
     return i.albumId === image.albumId
-  }).imageId = image.imageId
+  }).imageId = image._id
 }
