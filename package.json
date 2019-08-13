@@ -1,6 +1,6 @@
 {
   "name": "scada-iot-hmi",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "SCADA/IoT Human Machine Interface",
   "productName": "地熱發電監控系統",
   "cordovaId": "in.hanl.scada",
