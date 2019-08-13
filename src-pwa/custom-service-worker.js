@@ -54,7 +54,15 @@ self.addEventListener('activate', async event => {
 self.__precacheManifest = [].concat(self.__precacheManifest || [])
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {})
 
-workbox.routing.registerRoute(/^http/, new workbox.strategies.NetworkFirst(), 'GET')
+workbox.routing.registerRoute(
+  /^http/,
+  new workbox.strategies.NetworkFirst({
+    fetchOptions: {
+      credentials: 'same-origin'
+    }
+  }),
+  'GET'
+)
 
 // console.log(`SW: ${JSON.stringify(workbox)}`)
 console.log(`test1`)
