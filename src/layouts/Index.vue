@@ -4,8 +4,14 @@
       <q-toolbar elevated>
         <img src="/statics/icons/favicon-32x32.png" />
         <q-toolbar-title class="title">
-          蘭陽地熱 SCADA/IoT
+          <!-- <div class="text-subtitle1">蘭陽地熱 SCADA/IoT</div>
+          <div class="text-subtitle2">{{ version.ui }}</div> -->
+          <q-item-label>蘭陽地熱 SCADA/IoT</q-item-label>
+          <q-item-label caption>
+            {{ version.ui }}
+          </q-item-label>
         </q-toolbar-title>
+        <div></div>
       </q-toolbar>
       <!-- Navigation -->
       <q-tabs class="bg-grey-9 text-white">
@@ -56,6 +62,8 @@
 
 <script>
 import { openURL } from 'quasar'
+// import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'layouts.Index',
@@ -63,6 +71,9 @@ export default {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
+  },
+  computed: {
+    ...mapState('system', ['version', 'status'])
   },
   created () {
     this.$info('created') //  ${__filename}
