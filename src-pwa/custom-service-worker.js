@@ -10,6 +10,12 @@ workbox.core.setCacheNameDetails({
   suffix: SW_VERSION
 })
 
+// Don't cache cam images
+workbox.routing.registerRoute(
+  new RegExp(`${process.env.API_URL}${process.env.API_PATH}/images/.+\\$client\\[raw\\]=1`),
+  new workbox.strategies.NetworkOnly()
+)
+
 // Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.
 workbox.routing.registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
