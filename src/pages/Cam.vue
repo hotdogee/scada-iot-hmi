@@ -13,11 +13,11 @@
             spinner-color="white"
           >
           </q-img>
-          <video
+          <!-- <video
             ref="camera-video"
             class="absolute-full q-pa-md camera-video"
             muted="muted"
-          ></video>
+          ></video> -->
         </q-card-section>
       </q-card>
     </div>
@@ -83,23 +83,23 @@ export default {
   mounted () {
     // setup live view
     // console.log(this.$refs)
-    this.cameras.forEach((cam, index) => {
-      // this.loadHls(this.$refs['camera-video'][index], cam.url)
-      this.loadFlv(this.$refs['camera-video'][index], cam.flvUrl)
-      // this.loadHls(this.$refs['camera-video'][index], cam.hlsUrl)
-      // cam.player = new JSMpeg.Player(cam.url, {canvas: this.$refs['camera-video'][index], preserveDrawingBuffer: true})
-      // cam.show = true
-      setTimeout(() => {
-        cam.show = true
-      }, 2000 + index * 500)
-    })
+    // this.cameras.forEach((cam, index) => {
+    //   // this.loadHls(this.$refs['camera-video'][index], cam.url)
+    //   this.loadFlv(this.$refs['camera-video'][index], cam.flvUrl)
+    //   // this.loadHls(this.$refs['camera-video'][index], cam.hlsUrl)
+    //   // cam.player = new JSMpeg.Player(cam.url, {canvas: this.$refs['camera-video'][index], preserveDrawingBuffer: true})
+    //   // cam.show = true
+    //   setTimeout(() => {
+    //     cam.show = true
+    //   }, 2000 + index * 500)
+    // })
   },
   beforeDestroy () {
     // console.log('plc-cam beforeDestroy called!')
-    this.cameras.forEach((cam, index) => {
-      // cam.player.destroy()
-      cam.show = false
-    })
+    // this.cameras.forEach((cam, index) => {
+    //   // cam.player.destroy()
+    //   cam.show = false
+    // })
   },
   methods: {
     loadHls (video, src) {
