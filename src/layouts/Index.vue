@@ -45,12 +45,14 @@
       class="bg-white text-grey-9 text-overline"
     >
       <q-toolbar>
-        <div>
+        <div class="ellipsis">
           Made with
           <span class="text-red-14">❤</span> by Han Lin (hotdogee)
         </div>
-        <q-toolbar-title />
-        <div>© {{ new Date().getFullYear() }} 蘭陽地熱</div>
+        <q-space></q-space>
+        <div class="copyright">
+          © {{ new Date().getFullYear() }} 蘭陽地熱
+        </div>
       </q-toolbar>
     </q-footer>
 
@@ -85,6 +87,11 @@ export default {
 </script>
 
 <style>
+.copyright {
+  min-width: 7.041rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
 .title {
   line-height: 2rem;
   font-size: 1.125rem;

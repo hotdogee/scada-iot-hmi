@@ -85,7 +85,7 @@ export async function signUp (
         }
       ],
       password: credentials.password,
-      recaptchaToken: credentials.recaptchaToken,
+      recaptcha: credentials.recaptchaToken,
       locale: rootGetters['localSettings/locale'],
       signature: btoa(String.fromCharCode(...new Uint8Array(signature))),
       document
