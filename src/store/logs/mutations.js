@@ -46,7 +46,7 @@ const expPrefix = Object.keys(prefixExp).reduce((o, p) => {
 }, {})
 
 export function addLog (state, { log }) {
-  logger.debug(log)
+  // logger.debug(log)
   // state.logs.unshift(log)
   // while (state.logs.length > limit) {
   //   state.logs.pop()
