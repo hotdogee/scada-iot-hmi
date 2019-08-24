@@ -293,6 +293,21 @@ Highcharts.setOptions({
     weekdays: ['週日', '週一', '週二', '週三', '週四', '週五', '週六'],
     rangeSelectorZoom: '縮放',
     viewFullscreen: '全螢幕'
+  },
+  exporting: {
+    buttons: {
+      contextButton: {
+        menuItems: [
+          'downloadPNG',
+          'downloadJPEG',
+          'downloadPDF',
+          'downloadSVG',
+          'downloadCSV',
+          'downloadXLS',
+          'viewData'
+        ]
+      }
+    }
   }
 })
 
@@ -1363,7 +1378,7 @@ export default {
           this.$refs.chartDiv[i].chart = Highcharts.stockChart(
             this.$refs.chartDiv[i],
             options,
-            () => {
+            chart => {
               // this.$refs.chartDiv[i].chart.reflow()
               i += 1
               if (i < this.figs.length) {
