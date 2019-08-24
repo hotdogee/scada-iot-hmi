@@ -61,7 +61,7 @@
                     </trend>
                     <bars
                       v-if="rtu[regName].bars"
-                      :key="rtu[regName].bars"
+                      :key="rtu[regName].time"
                       :data="rtu[regName].bars"
                       :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
                       :growDuration="0.01"

@@ -3,8 +3,8 @@ import _ from 'lodash'
 import util from 'util'
 // eslint-disable-next-line camelcase
 import { IAPWS97_EoS } from '@neutrium/thermo.eos.iapws97'
-// import Logger from 'assets/logger'
-// const logger = new Logger('logs.mutations')
+import Logger from 'assets/logger'
+const logger = new Logger('logs.mutations')
 /*
 export function someMutation (state, payload) {
 }
@@ -46,6 +46,7 @@ const expPrefix = Object.keys(prefixExp).reduce((o, p) => {
 }, {})
 
 export function addLog (state, { log }) {
+  logger.debug(log)
   // state.logs.unshift(log)
   // while (state.logs.length > limit) {
   //   state.logs.pop()
@@ -73,6 +74,7 @@ export function addLog (state, { log }) {
         state.cardData[addrName][name].value = thd.toFixed(2)
         state.cardData[addrName][name].unit = reg.unit
         state.cardData[addrName][name].bars = reg.value
+        state.cardData[addrName][name].time = reg.time
         return
       }
       // cardData
