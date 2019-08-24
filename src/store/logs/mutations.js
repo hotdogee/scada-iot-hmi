@@ -3,8 +3,10 @@ import _ from 'lodash'
 import util from 'util'
 // eslint-disable-next-line camelcase
 import { IAPWS97_EoS } from '@neutrium/thermo.eos.iapws97'
+/* eslint-disable no-unused-vars */
 import Logger from 'assets/logger'
 const logger = new Logger('logs.mutations')
+/* eslint-enables no-unused-vars */
 /*
 export function someMutation (state, payload) {
 }
