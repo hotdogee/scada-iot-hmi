@@ -31,7 +31,10 @@
                 :key="rtuName + regName"
                 class="col-xs-6 top-12"
               >
-                <q-card light>
+                <q-card
+                  light
+                  class="reg-card"
+                >
                   <div class="q-pa-sm absolute fit">
                     <span class="caption reg-name text-grey">{{ regName }}</span><br />
                     <span
@@ -49,11 +52,11 @@
                     <span class="caption reg-min text-grey">{{ stat(rtuName, regName).min }}</span>
                   </div>
                   <div class="q-pa-sm fit">
-                    <br /><br /><br />
                     <trend
                       v-if="rtu[regName].trend"
                       :data="rtu[regName].trend"
                       :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
+                      class="reg-trend"
                     >
                     </trend>
                     <bars
@@ -63,6 +66,7 @@
                       :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
                       :growDuration="0.01"
                       :padding="16"
+                      class="reg-trend"
                     >
                     </bars>
                   </div>
@@ -278,6 +282,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.reg-card {
+  height: 110px;
+}
+.reg-trend {
+  height: 100%;
+  top: 18px;
+  position: relative;
+}
 .reg-name {
   /* top: -6px; */
   position: relative;
@@ -291,25 +303,25 @@ export default {
   position: relative;
 }
 .reg-avg {
-  /* top: -4px; */
+  top: 2px;
   right: 0px;
   position: relative;
   float: right;
 }
 .reg-sd {
-  /* top: -4px; */
+  top: 2px;
   right: 0px;
   position: relative;
   float: right;
 }
 .reg-max {
-  top: 4px;
+  top: 2px;
   right: 0px;
   position: relative;
   float: right;
 }
 .reg-min {
-  bottom: -2px;
+  bottom: 4px;
   right: 0px;
   position: relative;
   float: right;
