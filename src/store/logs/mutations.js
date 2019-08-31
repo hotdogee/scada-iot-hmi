@@ -161,7 +161,7 @@ export function addLog (state, { log }) {
   // const m64hz = state.chartData['M64-發電機1-頻率(Hz)']
   const m71hz = state.chartData['M71-發電機300kVA-頻率(Hz)']
   const turbineRadius = 0.215 // m
-  const nozzleAngle = (30 / 180) * Math.PI // radians
+  const nozzleAngle = Math.cos((30 / 180) * Math.PI) // radians
   const formulas = {
     出噴嘴速度: {
       unit: 'm/s',
@@ -175,13 +175,16 @@ export function addLog (state, { log }) {
           m71hz.slice(-1)[0].value > 0
         ) {
           const omega = 2 * Math.PI * m71hz.slice(-1)[0].value
+          if (omega === 0) return -1
           const torque = m73VA.slice(-1)[0].value / omega
           const force = torque / turbineRadius
           const kgs = m25tph.slice(-1)[0].value / 3.6
+          if (kgs === 0) return -1
           const turbineSpeed = turbineRadius * omega
-          const v2 = (force / (2 * kgs) + turbineSpeed) / Math.cos(nozzleAngle)
+          const v2 = (force / (2 * kgs) + turbineSpeed) / nozzleAngle
           // const v2 = ((m63kW[stat] * 1000) / (m71hz * m25tph[stat] * 2 * Math.PI * 0.215 * 2  * 1000 / 3600) + 0.215 * 2 * Math.PI * m71hz) / Math.cos(30 / 180 * Math.PI)
           // m63kW[stat] / (m71hz * m25tph[stat]) + m71hz
+          if (isNaN(v2)) return -1
           return v2
         } else return -1
       }
@@ -217,6 +220,7 @@ export function addLog (state, { log }) {
           const kva = m73VA.slice(-1)[0].value / 1000
           const kgs = m25tph.slice(-1)[0].value / 3.6
           const hi = m5e.h
+          if (kgs === 0 || hi === 0) return -1
           return (kva / kgs / hi) * 100
         } else return -1
       }
@@ -229,6 +233,7 @@ export function addLog (state, { log }) {
           const kgs = m25tph.slice(-1)[0].value / 3.6
           const hi = m5e.h
           const ho = m6e.h
+          if (kgs === 0 || hi - ho === 0) return -1
           return (kva / kgs / (hi - ho)) * 100
         } else return -1
       }

@@ -31,8 +31,8 @@ cd scada-iot-supervisor
 NODE_ENV=production pm2 start npm --name scada-iot-supervisor -- run start
 
 cd ../scada-iot-hmi
-NODE_ENV=production pm2 start npm --name scada-iot-hmi -- run start
-NODE_ENV=production pm2 start /usr/bin/http-server --name scada-iot-hmi -- ./dist -c-1 -p 8083 -d false --push-state
+NODE_ENV=production pm2 start npm --name scada-iot-hmi2 -- run start
+NODE_ENV=production pm2 start /usr/bin/http-server --name scada-iot-hmi2 -- ./dist -c-1 -p 8083 -d false --push-state
 
 pm2 save
 
