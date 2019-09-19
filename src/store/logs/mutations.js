@@ -260,6 +260,18 @@ export function addLog (state, { log }) {
           return eff > 1 ? 100 : eff * 100
         } else return -1
       }
+    },
+    扭力: {
+      unit: 'Nm',
+      value: () => {
+        if (m73VA && m71hz && m73VA.slice(-1)[0].value > 0 && m71hz.slice(-1)[0].value > 0) {
+          const omega = 2 * Math.PI * m71hz.slice(-1)[0].value
+          if (omega === 0) return -1
+          const torque = m73VA.slice(-1)[0].value / omega
+          if (isNaN(torque)) return -1
+          return torque
+        } else return -1
+      }
     }
   }
   _.forEach(Object.entries(formulas), ([regName, reg]) => {
