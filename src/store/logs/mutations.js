@@ -261,6 +261,54 @@ export function addLog (state, { log }) {
         } else return -1
       }
     },
+    M1過壓: {
+      unit: 'bar',
+      value: () => {
+        if (m1bar && m1c) {
+          const p = m1bar.slice(-1)[0].value
+          const t = m1c.slice(-1)[0].value
+          const vp = (0.61121 * Math.exp((18.678 - t / 234.5) * (t / (257.14 + t)))) / 100
+          if (isNaN(vp)) return -1
+          return p - vp
+        } else return -1
+      }
+    },
+    M1過壓比: {
+      unit: '%',
+      value: () => {
+        if (m1bar && m1c) {
+          const p = m1bar.slice(-1)[0].value
+          const t = m1c.slice(-1)[0].value
+          const vp = (0.61121 * Math.exp((18.678 - t / 234.5) * (t / (257.14 + t)))) / 100
+          if (isNaN(vp)) return -1
+          return (p / vp - 1) * 100
+        } else return -1
+      }
+    },
+    M5過壓: {
+      unit: 'bar',
+      value: () => {
+        if (m5bar && m5c) {
+          const p = m5bar.slice(-1)[0].value
+          const t = m5c.slice(-1)[0].value
+          const vp = (0.61121 * Math.exp((18.678 - t / 234.5) * (t / (257.14 + t)))) / 100
+          if (isNaN(vp)) return -1
+          return p - vp
+        } else return -1
+      }
+    },
+    M5過壓比: {
+      unit: '%',
+      value: () => {
+        if (m5bar && m5c) {
+          const p = m5bar.slice(-1)[0].value
+          const t = m5c.slice(-1)[0].value
+          const vp = (0.61121 * Math.exp((18.678 - t / 234.5) * (t / (257.14 + t)))) / 100
+          if (isNaN(vp)) return -1
+          return (p / vp - 1) * 100
+        } else return -1
+      }
+    },
     扭力: {
       unit: 'Nm',
       value: () => {
@@ -273,6 +321,30 @@ export function addLog (state, { log }) {
         } else return -1
       }
     }
+    // M6過壓: {
+    //   unit: 'bar',
+    //   value: () => {
+    //     if (m6bar && m6c) {
+    //       const p = m6bar.slice(-1)[0].value
+    //       const t = m6c.slice(-1)[0].value
+    //       const vp = (0.61121 * Math.exp((18.678 - t / 234.5) * (t / (257.14 + t)))) / 100
+    //       if (isNaN(vp)) return -1
+    //       return p - vp
+    //     } else return -1
+    //   }
+    // },
+    // M6過壓比: {
+    //   unit: '%',
+    //   value: () => {
+    //     if (m6bar && m6c) {
+    //       const p = m6bar.slice(-1)[0].value
+    //       const t = m6c.slice(-1)[0].value
+    //       const vp = (0.61121 * Math.exp((18.678 - t / 234.5) * (t / (257.14 + t)))) / 100
+    //       if (isNaN(vp)) return -1
+    //       return (p / vp - 1) * 100
+    //     } else return -1
+    //   }
+    // }
   }
   _.forEach(Object.entries(formulas), ([regName, reg]) => {
     if (!state.cardData[addrName][regName]) {
