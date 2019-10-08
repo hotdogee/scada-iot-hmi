@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/hotdogee/scada-iot-hmi/compare/v2.0.7...v2.1.0) (2019-10-08)
+
+
+### Bug Fixes
+
+* range selector now works before all charts have finished loading ([0c22348](https://github.com/hotdogee/scada-iot-hmi/commit/0c22348))
+
+
+### Features
+
+* added tooltip ([eb142d3](https://github.com/hotdogee/scada-iot-hmi/commit/eb142d3))
+* added user menu ([ec07677](https://github.com/hotdogee/scada-iot-hmi/commit/ec07677))
+* notifications menu ([37a4aa6](https://github.com/hotdogee/scada-iot-hmi/commit/37a4aa6))
+
 ### [2.0.7](https://github.com/hotdogee/scada-iot-hmi/compare/v2.0.6...v2.0.7) (2019-09-19)
 
 ### [2.0.6](https://github.com/hotdogee/scada-iot-hmi/compare/v2.0.5...v2.0.6) (2019-09-19)
