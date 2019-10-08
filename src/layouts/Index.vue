@@ -36,7 +36,17 @@
           icon="videogame_asset"
           to="/dcs"
           label="電廠控制"
-        />
+        >
+          <q-tooltip
+            transition-show="flip-right"
+            transition-hide="flip-left"
+            anchor="top middle"
+            self="bottom middle"
+            :offset="[10, 5]"
+          >
+            無權限
+          </q-tooltip>
+        </q-route-tab>
       </q-tabs>
     </q-header>
 
