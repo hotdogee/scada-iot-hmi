@@ -11,7 +11,28 @@
             {{ version.ui }}
           </q-item-label>
         </q-toolbar-title>
-        <div></div>
+        <q-space></q-space>
+        <q-btn
+          flat
+          round
+          dense
+          icon="notifications"
+          class="q-mr-xs"
+        >
+          <q-menu max-height="130px">
+            <q-list style="min-width: 100px">
+              <q-item>
+                <q-item-section>無推播通知</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
+        <q-btn
+          flat
+          round
+          dense
+          icon="person"
+        />
       </q-toolbar>
       <!-- Navigation -->
       <q-tabs class="bg-grey-9 text-white">
