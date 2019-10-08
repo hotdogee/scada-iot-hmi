@@ -689,6 +689,8 @@ export default {
         to: new Date()
       },
       showChart: false,
+      chartsLoaded: false,
+      delayedChartUpdate: false,
       animatedTotal: 0,
       traceTemplates: {
         timeSeriesTrace: {
@@ -855,6 +857,7 @@ export default {
                   text: 'All'
                 }
               ],
+              // enabled: false,
               inputEnabled: false, // it supports only days
               selected: -1 // all
             },
@@ -1374,6 +1377,7 @@ export default {
           options.navigator.xAxis.max = new Date(chartLogs.end).getTime()
           options.xAxis.events.afterSetExtremes = this.afterSetExtremes
           options.series = series
+          // options.rangeSelector.enabled = this.chartsLoaded
           // console.log(this.$refs.chartDiv[i])
           this.$refs.chartDiv[i].chart = Highcharts.stockChart(
             this.$refs.chartDiv[i],
@@ -1387,6 +1391,16 @@ export default {
                   initFig()
                   // console.log('draw time:', ((performance.now() - t0) / 1000).toFixed(2))
                 }, 10)
+              } else {
+                this.chartsLoaded = true
+                this.$debug('chartsLoaded')
+                if (this.delayedChartUpdate) {
+                  this.$debug('chartRangeChanged', this.delayedChartUpdate)
+                  this.$nextTick(() => {
+                    this.chartRange = this.delayedChartUpdate
+                    // this.chartRangeChanged(this.delayedChartUpdate)
+                  })
+                }
               }
             }
           )
@@ -1400,36 +1414,7 @@ export default {
             // const t0 = performance.now()
             // console.log('chartRange', val.from.getTime(), val.to.getTime(), oldVal.from.getTime(), oldVal.to.getTime())
             // this.getLogsCountInRange(val)
-            const updateCharts = chartLogs => {
-              // console.log(`updateCharts start: ${performance.now() - t0}ms`)
-              _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
-                // set navigator
-                chartDiv.chart.xAxis[0].setExtremes(
-                  new Date(val.from).getTime(),
-                  new Date(val.to).getTime(),
-                  false
-                )
-                _.forEach(chartDiv.chart.series, (series, j) => {
-                  if (!series.hasOwnProperty('baseSeries')) {
-                    series.setData(chartLogs.data[series.userOptions.description] || [], false)
-                  }
-                })
-                // console.log(`+++setData done: ${performance.now() - t0}ms`)
-                chartDiv.chart.redraw(false)
-                // console.log(`***redraw done: ${performance.now() - t0}ms`)
-                chartDiv.chart.hideLoading()
-              })
-              // console.log(`--updateCharts done: ${performance.now() - t0}ms`)
-            }
-            _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
-              chartDiv.chart.showLoading('讀取資料中...')
-            })
-            this.findLogsInRange({
-              from: val.from.getTime(),
-              to: val.to.getTime(),
-              done: updateCharts
-            })
-            // console.log(`chartRange done: ${performance.now() - t0}ms`)
+            this.chartRangeChanged(val)
           },
           {
             deep: true
@@ -1460,8 +1445,45 @@ export default {
         chartRange.to = new Date(event.max)
       }
       if (changed) {
+        if (!this.chartsLoaded) {
+          this.delayedChartUpdate = chartRange
+          this.$debug('delayedChartUpdate', chartRange)
+          return
+        }
         this.chartRange = chartRange
       }
+    },
+    chartRangeChanged (val) {
+      const updateCharts = chartLogs => {
+        // console.log(`updateCharts start: ${performance.now() - t0}ms`)
+        _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+          // set navigator
+          chartDiv.chart.xAxis[0].setExtremes(
+            new Date(val.from).getTime(),
+            new Date(val.to).getTime(),
+            false
+          )
+          _.forEach(chartDiv.chart.series, (series, j) => {
+            if (!series.hasOwnProperty('baseSeries')) {
+              series.setData(chartLogs.data[series.userOptions.description] || [], false)
+            }
+          })
+          // console.log(`+++setData done: ${performance.now() - t0}ms`)
+          chartDiv.chart.redraw(false)
+          // console.log(`***redraw done: ${performance.now() - t0}ms`)
+          chartDiv.chart.hideLoading()
+        })
+        // console.log(`--updateCharts done: ${performance.now() - t0}ms`)
+      }
+      _.forEach(this.$refs.chartDiv, (chartDiv, i) => {
+        chartDiv.chart.showLoading('讀取資料中...')
+      })
+      this.findLogsInRange({
+        from: val.from.getTime(),
+        to: val.to.getTime(),
+        done: updateCharts
+      })
+      // console.log(`chartRange done: ${performance.now() - t0}ms`)
     }
   }
 }
