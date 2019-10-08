@@ -32,7 +32,67 @@
           round
           dense
           icon="person"
-        />
+        >
+          <q-menu fit>
+            <q-card class="user-form">
+              <q-item>
+                <q-item-section avatar>
+                  <q-avatar>
+                    <img src="assets/avatar-640.png" />
+                  </q-avatar>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>訪客權限</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-card>
+            <!-- <sign-out
+              v-if="isSignedIn"
+              v-bind="displayInfo"
+              @sign-out="signOut()"
+              :errors="errors"
+              :pending="pending"
+            />
+            <transition
+              v-if="!isSignedIn"
+              :name="
+                showUserForm === 'sign-in'
+                  ? 'fade-slide-left'
+                  : 'fade-slide-right'
+              "
+            >
+              <sign-in
+                v-if="showUserForm === 'sign-in'"
+                @show-sign-up="showUserForm = 'sign-up'"
+                @show-reset-password="showUserForm = 'reset-password'"
+                @sign-in="signIn(credentials)"
+                @google="google()"
+                @facebook="facebook()"
+                @twitter="twitter()"
+                @line="line()"
+                v-bind.sync="credentials"
+                :errors="errors"
+                :pending="pending"
+              />
+              <sign-up
+                v-if="showUserForm === 'sign-up'"
+                @show-sign-in="showUserForm = 'sign-in'"
+                @sign-up="signUp(credentials)"
+                v-bind.sync="credentials"
+                :errors="errors"
+                :pending="pending"
+              />
+              <reset-password
+                v-if="showUserForm === 'reset-password'"
+                @show-sign-in="showUserForm = 'sign-in'"
+                @reset-password="requestPasswordReset(credentials)"
+                v-bind.sync="credentials"
+                :errors="errors"
+                :pending="pending"
+              />
+            </transition> -->
+          </q-menu>
+        </q-btn>
       </q-toolbar>
       <!-- Navigation -->
       <q-tabs class="bg-grey-9 text-white">
@@ -94,15 +154,32 @@
 </template>
 
 <script>
+// import SignIn from 'components/user/SignIn.vue'
+// import SignUp from 'components/user/SignUp.vue'
+// import SignOut from 'components/user/SignOut.vue'
+// import ResetPassword from 'components/user/ResetPassword.vue'
 import { openURL } from 'quasar'
 // import { mapState, mapActions, mapGetters } from 'vuex'
 import { mapState } from 'vuex'
 
 export default {
   name: 'layouts.Index',
+  // components: {
+  //   SignIn,
+  //   SignUp,
+  //   SignOut,
+  //   ResetPassword
+  // },
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      credentials: {
+        email: '',
+        password: '',
+        recaptchaToken: '',
+        disableGoogle: false,
+        disableFacebook: false,
+        disableTwitter: false
+      }
     }
   },
   computed: {

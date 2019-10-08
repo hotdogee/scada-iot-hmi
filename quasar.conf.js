@@ -105,7 +105,8 @@ module.exports = function (ctx) {
         'QDialog',
         'QPopupProxy',
         'QImg',
-        'QTooltip'
+        'QTooltip',
+        'QAvatar'
       ],
 
       directives: ['Ripple', 'ClosePopup'],
