@@ -1,14 +1,25 @@
 # scada-iot-hmi
+
 > SCADA/IoT Human Machine Interface
 
 # Navigation
-* monitor
-* analysis
-* live
-* control
-* user
-* accounts
-* notifications
+
+- monitor
+- analysis
+- live
+- control
+- user
+- accounts
+- notifications
+
+# Development workflow
+
+```bash
+# Debug server
+npm run dev
+# build
+npm run build
+```
 
 # Release workflow
 
@@ -18,13 +29,14 @@ git describe
 git push --follow-tags origin master
 ```
 
-* standard-version does the following:
-  * bumps the version in metadata files (package.json, composer.json, etc).
-  * uses conventional-changelog to update CHANGELOG.md
-  * commits package.json (et al.) and CHANGELOG.md
-  * tags a new release
+- standard-version does the following:
+  - bumps the version in metadata files (package.json, composer.json, etc).
+  - uses conventional-changelog to update CHANGELOG.md
+  - commits package.json (et al.) and CHANGELOG.md
+  - tags a new release
 
 # Setup server pm2
+
 npm i -g pm2 spa-http-server
 
 cd scada-iot-supervisor
@@ -37,13 +49,13 @@ NODE_ENV=production pm2 start /usr/bin/http-server --name scada-iot-hmi2 -- ./di
 pm2 save
 
 # Nginx config
+
 /etc/nginx/conf.d
 server {
-    listen      80;
-    listen      [::]:80;
-    listen      443 ssl http2;
-    listen      [::]:443 ssl http2;
-
+listen 80;
+listen [::]:80;
+listen 443 ssl http2;
+listen [::]:443 ssl http2;
 
     server_name scada.hanl.in;
     client_max_body_size 0;
@@ -101,4 +113,5 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
     }
+
 }
