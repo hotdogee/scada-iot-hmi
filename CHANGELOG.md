@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/hotdogee/scada-iot-hmi/compare/v2.1.1...v2.2.0) (2020-03-23)
+
+
+### Features
+
+* added og meta ([fe71f86](https://github.com/hotdogee/scada-iot-hmi/commit/fe71f86))
+
 ### [2.1.1](https://github.com/hotdogee/scada-iot-hmi/compare/v2.1.0...v2.1.1) (2019-10-08)
 
 
