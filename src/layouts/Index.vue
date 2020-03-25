@@ -19,10 +19,20 @@
           icon="notifications"
           class="q-mr-xs"
         >
+          <q-badge
+            v-show="!isLive"
+            color="red"
+            floating
+          >
+            !
+          </q-badge>
           <q-menu max-height="130px">
             <q-list style="min-width: 100px">
-              <q-item>
-                <q-item-section>無推播通知</q-item-section>
+              <q-item
+                v-for="n in notifications"
+                :key="n.message"
+              >
+                <q-item-section>{{ n.message }}</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -183,7 +193,27 @@ export default {
     }
   },
   computed: {
-    ...mapState('system', ['version', 'status'])
+    ...mapState('system', ['version', 'status']),
+    ...mapState('logs', ['end']),
+    isLive () {
+      let status = true
+      if (this.end) {
+        let elapsed = new Date() - new Date(this.end) // ms
+        // this.$debug(elapsed)
+        if (elapsed > 60 * 1000) {
+          // down for 60 secs
+          status = false
+        }
+      }
+      return status
+    },
+    notifications () {
+      let messages = [{ message: '無推播通知' }]
+      if (!this.isLive) {
+        messages = [{ message: '系統維護中' }]
+      }
+      return messages
+    }
   },
   created () {
     this.$info('created') //  ${__filename}

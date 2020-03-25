@@ -2,6 +2,11 @@
 
 > SCADA/IoT Human Machine Interface
 
+Cross platform real-time monitor and statistics of Well enthalpy, Thermal efficiency, Fluid Temperature, Pipe Pressure, Mass Flow Rate, Three Phase Power, Voltage, Current, Harmonics.
+Fast historic data viewer and analysis of more than 1 billion data points.
+Live camera feed from the plant.
+Front end PWA built with VueJS, real-time communication with NodeJS back end with WebSockets, Historical data storage with MongoDB, on-site software defined PLC using multiple Raspberry Pi.
+
 # Navigation
 
 - monitor
@@ -34,6 +39,14 @@ git push --follow-tags origin master
   - uses conventional-changelog to update CHANGELOG.md
   - commits package.json (et al.) and CHANGELOG.md
   - tags a new release
+
+```bash
+# 2650v1
+cd /opt/scada-iot/scada-iot-hmi/
+git stash
+git pull
+npm run build
+```
 
 # Setup server pm2
 
