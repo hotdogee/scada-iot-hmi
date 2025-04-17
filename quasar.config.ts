@@ -12,7 +12,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['analytics', 'feathers', 'i18n', 'axios'],
+    boot: ['analytics', 'feathers', 'i18n', 'axios', 'axios', 'logger'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ['app.scss'],
@@ -54,7 +54,7 @@ export default defineConfig((ctx) => {
       // publicPath: '/',
       // analyze: true,
       env: {
-        API_URL: ctx.dev ? 'http://localhost:3030' : 'https://api-scada.hanl.in:8086',
+        API_URL: ctx.dev ? 'http://localhost:8086' : 'https://api-scada.hanl.in:8086',
         API_PATH: ctx.dev ? '' : '',
         GA_MEASUREMENT_ID: ctx.dev ? '' : 'G-4XW3P4CCBQ'
       },
