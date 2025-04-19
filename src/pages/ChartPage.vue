@@ -870,8 +870,8 @@ const initCharts = (chartLogs: ChartLogs) => {
         // Attach event listener
         options.xAxis.events = { ...options.xAxis.events, afterSetExtremes: afterSetExtremes }
       }
-      if (options.navigator?.xAxis) {
-        // Optional chaining for safety
+      // Ensure navigator.xAxis is a single object before setting min/max
+      if (options.navigator?.xAxis && !Array.isArray(options.navigator.xAxis)) {
         options.navigator.xAxis.min = startTime
         options.navigator.xAxis.max = endTime
       }
@@ -1069,7 +1069,7 @@ const updateCharts = async (chartLogs: ChartLogs) => {
       // )
       // Update series data
       // This takes 5 secs
-      type SeriesWithOptions = Highcharts.Series & { userOptions?: SeriesWithOptions }
+      // type SeriesWithOptions = Highcharts.Series & { userOptions?: SeriesWithOptions }
       type SeriesOptionsTypeWithDescription = Highcharts.SeriesOptionsType & {
         description?: string
       }
@@ -1099,7 +1099,7 @@ const updateCharts = async (chartLogs: ChartLogs) => {
         const batch = series.slice(i, i + BATCH_SIZE)
 
         await Promise.all(
-          batch.map(async (series: SeriesWithOptions) => {
+          batch.map(async (series: Highcharts.Series) => {
             const description = (series.userOptions as unknown as SeriesOptionsTypeWithDescription)
               ?.description
             if (description && chartLogs.data[description]) {
