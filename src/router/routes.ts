@@ -3,23 +3,23 @@ import type { RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'Index',
-    redirect: { name: 'PlcCard' },
+    name: 'index',
+    redirect: { name: 'card' },
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: 'card',
-        name: 'PlcCard',
+        name: 'card',
         component: () => import('pages/CardPage.vue')
+      },
+      {
+        path: 'chart',
+        name: 'chart',
+        component: () => import('pages/ChartPage.vue')
       }
       // {
-      //   path: 'chart',
-      //   name: 'PlcChart',
-      //   component: () => import('pages/ChartPage.vue')
-      // },
-      // {
       //   path: 'cam',
-      //   name: 'PlcCam',
+      //   name: 'cam',
       //   component: () => import('pages/CamPage.vue')
       // }
     ]
