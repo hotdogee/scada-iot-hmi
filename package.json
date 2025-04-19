@@ -4,7 +4,7 @@
   "description": "SCADA/IoT Human Machine Interface",
   "productName": "SCADA/IoT",
   "cordovaId": "in.hanl.scada",
-  "author": "Han Lin <hotdogee@gmail.com>",
+  "author": "Han Lin <hotdogee@gmail.com> (https://github.com/hotdogee)",
   "type": "module",
   "private": true,
   "scripts": {
