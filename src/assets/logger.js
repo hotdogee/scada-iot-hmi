@@ -36,9 +36,9 @@ const APP_COLOR = `#0f6a3e`
 // VUE_ROUTER_MODE: "history"
 
 class Logger {
-  constructor (prefix) {
+  constructor(prefix = null) {
     this.prefix = prefix
-    Object.keys(levelToColor).forEach(level => {
+    Object.keys(levelToColor).forEach((level) => {
       this[level] = (...args) => {
         if (process.env.NODE_ENV !== `development`) {
           return
@@ -52,13 +52,13 @@ class Logger {
       }
     })
   }
-  _print (prefix, level, logArgs, levelColor) {
+  _print(prefix, level, logArgs, levelColor) {
     const logPrefix = [
       `%c${APP_NAME}` + `%c${prefix}`,
       `background: ${APP_COLOR}; color: white; padding: 2px 0.5em; border-radius: 0.5em 0em 0em 0.5em;`,
       `background: ${levelColor}; color: white; padding: 2px 0.5em; border-radius: 0em 0.5em 0.5em 0em;`
     ]
-    // eslint-disable-next-line no-console
+
     console[level](...logPrefix, ...logArgs)
   }
 }
