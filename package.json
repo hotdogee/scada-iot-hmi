@@ -23,7 +23,7 @@
     "@tailwindcss/postcss": "^4.1.3",
     "@tweenjs/tween.js": "^25.0.0",
     "axios": "^1.2.1",
-    "highcharts": "^8.0.0",
+    "highcharts": "^12.2.0",
     "lodash": "^4.17.21",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.2.0",

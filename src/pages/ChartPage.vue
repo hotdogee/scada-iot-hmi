@@ -177,13 +177,13 @@
 
 <script setup lang="ts">
 import { Easing, Tween } from '@tweenjs/tween.js'
-import HighchartsMore from 'highcharts/highcharts-more'
-import Highcharts from 'highcharts/highstock'
-import Boost from 'highcharts/modules/boost'
-import BoostCanvas from 'highcharts/modules/boost-canvas'
-import ExportData from 'highcharts/modules/export-data'
-import Exporting from 'highcharts/modules/exporting'
-import OfflineExporting from 'highcharts/modules/offline-exporting'
+import * as Highcharts from 'highcharts/highstock' // this needs to be imported before the modules
+import 'highcharts/highcharts-more'
+// import 'highcharts/modules/boost'
+// import 'highcharts/modules/boost-canvas'
+import 'highcharts/modules/export-data'
+import 'highcharts/modules/exporting'
+import 'highcharts/modules/offline-exporting'
 import _ from 'lodash'
 import { storeToRefs } from 'pinia'
 import { date } from 'quasar'
@@ -201,13 +201,7 @@ const logsStore = useLogsStore()
 const { total: chartTotal } = storeToRefs(chartStore)
 
 // --- Highcharts Setup ---
-globalThis.Highcharts = Highcharts // Still potentially needed if modules expect global Highcharts
-HighchartsMore(Highcharts)
-Exporting(Highcharts)
-ExportData(Highcharts)
-OfflineExporting(Highcharts)
-Boost(Highcharts)
-BoostCanvas(Highcharts)
+globalThis.Highcharts = Highcharts
 
 Highcharts.setOptions({
   // boost: {
@@ -552,7 +546,12 @@ const figTemplates: Record<string, () => HighchartsOptions> = {
   highStockChart: () => ({
     chart: {
       zoomType: 'x',
-      height: 600
+      height: 600,
+      zooming: {
+        mouseWheel: {
+          enabled: false
+        }
+      }
     },
     colors: _.map(chartColors, 'color'),
     navigator: {
@@ -593,6 +592,8 @@ const figTemplates: Record<string, () => HighchartsOptions> = {
     },
     subtitle: { text: '' },
     rangeSelector: {
+      floating: true,
+      y: -35,
       buttons: [
         { count: 15, type: 'minute', text: '15m' },
         { count: 1, type: 'hour', text: '1h' },
@@ -1150,6 +1151,7 @@ const updateCharts = async (chartLogs: ChartLogs) => {
         chartInstance.options.rangeSelector.enabled = true
       }
       // Re-enable navigator handles if they were disabled
+      // chartInstance.reflow()
     })
     isUpdating.value = false // <-- Set flag back to false
   }
