@@ -3,11 +3,8 @@
     <q-header class="text-grey-9 bg-white">
       <q-toolbar elevated>
         <img src="/icons/favicon-32x32.png" />
-        <q-toolbar-title class="title">
-          <q-item-label>蘭陽地熱 SCADA/IoT</q-item-label>
-          <q-item-label caption>
-            {{ systemStore.version.ui }}
-          </q-item-label>
+        <q-toolbar-title class="nav-title">
+          <q-item-label>SCADA/IoT</q-item-label>
         </q-toolbar-title>
         <q-space></q-space>
         <q-btn flat round dense icon="notifications" class="q-mr-xs">
@@ -40,9 +37,9 @@
       <!-- Navigation -->
       <q-tabs class="bg-grey-9 text-white">
         <!-- <q-route-tab icon="subject" to="/text" label="文字" /> -->
-        <q-route-tab icon="dashboard" to="/card" label="即時數據" />
-        <q-route-tab icon="timeline" to="/chart" label="歷史統計" />
-        <q-route-tab icon="videocam" to="/cam" label="現場直播" />
+        <q-route-tab icon="dashboard" :to="{ name: 'card' }" label="即時數據" />
+        <q-route-tab icon="timeline" :to="{ name: 'chart' }" label="歷史統計" />
+        <q-route-tab icon="videocam" :to="{ name: 'card' }" label="現場直播" />
         <q-route-tab disable icon="videogame_asset" to="/dcs" label="電廠控制">
           <q-tooltip
             transition-show="flip-right"
@@ -64,7 +61,7 @@
           <span class="text-red-14">❤</span> by Han Lin (hotdogee)
         </div>
         <q-space></q-space>
-        <div class="copyright">© {{ currentYear }} 蘭陽地熱</div>
+        <div class="copyright">© {{ currentYear }}</div>
       </q-toolbar>
     </q-footer>
 
@@ -77,12 +74,10 @@
 <script setup lang="ts">
 // Import dependencies
 import { useLogsStore } from 'src/stores/logs'
-import { useSystemStore } from 'src/stores/system'
 import { computed } from 'vue'
 import { loggers } from '../boot/logger'
 
 // Setup stores
-const systemStore = useSystemStore()
 const logsStore = useLogsStore()
 
 // Computed properties
@@ -122,14 +117,12 @@ loggers.info?.('created') // Component initialized
 
 <style>
 .copyright {
-  min-width: 7.041rem;
+  min-width: 5rem;
   white-space: nowrap;
   overflow: hidden;
+  text-align: end;
 }
-.title {
-  line-height: 2rem;
-  font-size: 1.125rem;
-}
+
 .q-tab__label {
   font-size: 1rem;
 }
