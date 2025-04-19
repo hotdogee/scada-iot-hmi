@@ -176,7 +176,7 @@
 </template>
 
 <script setup lang="ts">
-import TWEEN from '@tweenjs/tween.js'
+import { Easing, Tween } from '@tweenjs/tween.js'
 import HighchartsMore from 'highcharts/highcharts-more'
 import Highcharts from 'highcharts/highstock'
 import Boost from 'highcharts/modules/boost'
@@ -1184,25 +1184,22 @@ watch(chartTotal, (newTotal, oldTotal) => {
   console.log('chartTotal watcher triggered', newTotal, oldTotal)
   const currentVal = oldTotal ?? 0
   const targetVal = newTotal ?? 0
-
   if (targetVal === currentVal) return
-
   chartRangeHasError.value = !newTotal || newTotal <= 0
   const tweenData = { val: currentVal }
+  const tween = new Tween(tweenData)
+    .to({ val: targetVal }, 1000)
+    .easing(Easing.Quadratic.Out)
+    .onUpdate((obj) => {
+      animatedTotal.value = parseInt(obj.val.toFixed(0))
+    })
+    .start()
+  // Setup the animation loop
   const animate = (time?: number) => {
-    if (TWEEN.update(time)) {
+    if (tween.update(time)) {
       requestAnimationFrame(animate)
     }
   }
-
-  new TWEEN.Tween(tweenData)
-    .easing(TWEEN.Easing.Quadratic.Out)
-    .to({ val: targetVal }, 1000)
-    .onUpdate((obj) => {
-      animatedTotal.value = parseInt((obj.val as number).toFixed(0))
-    })
-    .start()
-
   requestAnimationFrame(animate)
 })
 
@@ -1238,7 +1235,7 @@ onBeforeUnmount(() => {
   // })
   highchartsInstances.value = []
   // Cancel TWEEN animations if any are running
-  TWEEN.removeAll()
+  // TWEEN.removeAll()
 })
 </script>
 
