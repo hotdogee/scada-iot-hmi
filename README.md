@@ -1,130 +1,76 @@
-# scada-iot-hmi
+# SCADA/IoT Human Machine Interface (HMI)
 
-> SCADA/IoT Human Machine Interface
+> A modern cross-platform, responsive Human-Machine Interface (HMI) designed for real-time monitoring, historical data analysis, and control of a research-grade geothermal power plant in Taiwan. It leverages the Total Flow cycle to extract energy directly from the two-phase geothermal fluid.
 
-Cross platform real-time monitor and statistics of Well enthalpy, Thermal efficiency, Fluid Temperature, Pipe Pressure, Mass Flow Rate, Three Phase Power, Voltage, Current, Harmonics.
-Fast historic data viewer and analysis of more than 1 billion data points.
-Live camera feed from the plant.
-Front end PWA built with VueJS, real-time communication with NodeJS back end with WebSockets, Historical data storage with MongoDB, on-site software defined PLC using multiple Raspberry Pi.
+## Table of Contents
 
-# Navigation
+- [SCADA/IoT Human Machine Interface (HMI)](#scadaiot-human-machine-interface-hmi)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Key Features](#key-features)
+  - [Development Workflow](#development-workflow)
+  - [License](#license)
+  - [Contact](#contact)
 
-- monitor
-- analysis
-- live
-- control
-- user
-- accounts
-- notifications
+## Overview
 
-# Development workflow
+The system facilitates:
 
-```bash
-# Debug server
-npm run dev
-# build
-npm run build
-```
+- Real-time monitoring and statistics of key geothermal parameters: Well enthalpy, Thermal efficiency, Fluid Temperature, Pipe Pressure, Mass Flow Rate.
+- Real-time monitoring of electrical parameters: Three Phase Power, Voltage, Current, Frequency, Harmonics.
+- Fast historic data viewing and analysis capabilities for large datasets (>1 billion points).
 
-# Release workflow
+This system was developed as part of Taiwan's Total Flow Geothermal Power System project, demonstrating the integration of modern web technologies with a PWA frontend (VueJS), a real-time backend (NodeJS with WebSockets) and NoSQL databases (MongoDB) with on-site software-defined PLCs (Raspberry Pi) for interfacing with sensors and actuators for advanced SCADA/IoT applications.
 
-```bash
-npm run release
-git describe
-git push --follow-tags origin master
-```
+## Key Features
 
-- standard-version does the following:
-  - bumps the version in metadata files (package.json, composer.json, etc).
-  - uses conventional-changelog to update CHANGELOG.md
-  - commits package.json (et al.) and CHANGELOG.md
-  - tags a new release
+- **Real-time Data Display:**
+  - Fluid Temperature (°C)
+  - Pipe Pressure (bar)
+  - Mass Flow Rate (ton/hr, LPM)
+  - Well Enthalpy (kJ/kg)
+  - Overall Thermal Efficiency (%)
+  - Three Phase Power (kW, kVA, kVAR)
+  - Voltage (V) & Current (A) per phase
+  - Frequency (Hz)
+  - Power Factor (PF)
+  - Power Harmonics Analysis
+  - RPM
+- **Historical Data Analysis:** Fast, interactive charts for exploring trends and diagnosing past events.
+- **Progressive Web App (PWA):** Installable on various devices for a native-like experience.
 
-```bash
-# 2650v1
-cd /opt/scada-iot/scada-iot-hmi/
-git stash
-git pull
-npm run build
-```
+## Development Workflow
 
-# Setup server pm2
+1.  **Clone the repository:**
 
-npm i -g pm2 spa-http-server
+    ```bash
+    git clone https://github.com/hotdogee/scada-iot-hmi.git
+    cd scada-iot-hmi
+    ```
 
-cd scada-iot-supervisor
-NODE_ENV=production pm2 start npm --name scada-iot-supervisor -- run start
+2.  **Install dependencies:**
 
-cd ../scada-iot-hmi
-NODE_ENV=production pm2 start npm --name scada-iot-hmi2 -- run start
-NODE_ENV=production pm2 start /usr/bin/http-server --name scada-iot-hmi2 -- ./dist -c-1 -p 8083 -d false --push-state
+    ```bash
+    npm install
+    ```
 
-pm2 save
+3.  **Run the development server:** (with hot-reloading)
 
-# Nginx config
+    ```bash
+    npm run dev
+    ```
 
-/etc/nginx/conf.d
-server {
-listen 80;
-listen [::]:80;
-listen 443 ssl http2;
-listen [::]:443 ssl http2;
+4.  **Build for production:**
+    ```bash
+    npm run build
+    ```
+    This creates an optimized build in the `dist/` directory.
 
-    server_name scada.hanl.in;
-    client_max_body_size 0;
+## License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-    ssl_certificate /etc/nginx/ssl/hanl.in/hanl.in.crt;
-    ssl_certificate_key /etc/nginx/ssl/hanl.in/hanl.in.key;
-    ssl_trusted_certificate /etc/nginx/ssl/hanl.in/ggssl_trusted.crt;
+## Contact
 
-
-    location /api {
-        return 302 /api/;
-    }
-
-
-    location /api/ {
-        proxy_pass http://127.0.0.1:8081/; # with trailing slash
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-    }
-
-
-    location /media {
-        return 302 /media/;
-    }
-
-
-    location /media/ {
-        proxy_pass http://127.0.0.1:8085/; # with trailing slash
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-    }
-
-
-    location / {
-        proxy_pass http://127.0.0.1:8083; # no trailing slash
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-    }
-
-}
+- **Lanyang Geothermal Corp.**
+- **Lead Developer:** Han Lin <hotdogee@gmail.com> (https://github.com/hotdogee)
