@@ -593,7 +593,7 @@ const figTemplates: Record<string, () => HighchartsOptions> = {
     subtitle: { text: '' },
     rangeSelector: {
       floating: true,
-      y: -35,
+      y: -15,
       buttons: [
         { count: 15, type: 'minute', text: '15m' },
         { count: 1, type: 'hour', text: '1h' },
