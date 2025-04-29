@@ -48,8 +48,8 @@
         <q-route-tab icon="timeline" :to="{ name: 'chart' }" label="歷史統計" />
         <q-route-tab icon="article" :to="{ name: 'about' }" label="關於" />
         <q-route-tab icon="mail" :to="{ name: 'contact' }" label="聯絡" />
-        <!-- <q-route-tab disable icon="videocam" :to="{ name: 'card' }" label="現場直播" />
-        <q-route-tab disable icon="videogame_asset" to="/dcs" label="電廠控制">
+        <!-- <q-route-tab disable icon="videocam" :to="{ name: 'cam' }" label="現場直播" />
+        <q-route-tab disable icon="videogame_asset" :to="{ name: 'dcs' }" label="電廠控制">
           <q-tooltip
             transition-show="flip-right"
             transition-hide="flip-left"
