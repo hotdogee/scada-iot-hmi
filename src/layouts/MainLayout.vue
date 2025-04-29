@@ -4,10 +4,10 @@
       <q-toolbar elevated>
         <img src="/icons/favicon-32x32.png" />
         <q-toolbar-title class="nav-title">
-          <q-item-label class="font-medium">
+          <q-item-label class="flex items-center justify-start font-medium">
             <div class="mr-2 inline-flex py-[2px]">SCADA/IoT</div>
             <div
-              class="inline-flex items-center rounded-lg bg-emerald-100 px-2 py-[2px] text-base font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
+              class="inline-flex items-center justify-center rounded-lg bg-emerald-100 px-2 py-[2px] text-sm font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
             >
               demo mode
             </div>
