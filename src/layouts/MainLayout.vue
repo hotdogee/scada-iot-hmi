@@ -4,7 +4,14 @@
       <q-toolbar elevated>
         <img src="/icons/favicon-32x32.png" />
         <q-toolbar-title class="nav-title">
-          <q-item-label class="font-medium">SCADA/IoT</q-item-label>
+          <q-item-label class="font-medium">
+            <div class="mr-2 inline-flex py-[2px]">SCADA/IoT</div>
+            <div
+              class="inline-flex items-center rounded-lg bg-emerald-100 px-2 py-[2px] text-base font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
+            >
+              demo mode
+            </div>
+          </q-item-label>
         </q-toolbar-title>
         <q-space></q-space>
         <q-btn flat round dense icon="notifications" class="q-mr-xs">
