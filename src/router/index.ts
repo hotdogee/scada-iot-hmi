@@ -25,7 +25,18 @@ export default defineRouter(function (/* { store, ssrContext } */) {
 
   const Router = createRouter({
     // always scroll to top left when navigating
-    scrollBehavior: () => ({ left: 0, top: 0 }),
+    scrollBehavior: (to, from) => {
+      // console.log('scrollBehavior', to, from)
+      if (to.hash) {
+        return {
+          el: to.hash,
+          // don't smooth scroll if reloading the same page
+          behavior: to.name === from.name ? 'smooth' : 'instant'
+        }
+      } else {
+        return { left: 0, top: 0 }
+      }
+    },
     routes,
 
     // Leave this as is and make changes in quasar.conf.js instead!

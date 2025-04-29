@@ -16,6 +16,16 @@ const routes: RouteRecordRaw[] = [
         path: 'chart',
         name: 'chart',
         component: () => import('pages/ChartPage.vue')
+      },
+      {
+        path: 'about',
+        name: 'about',
+        component: () => import('pages/AboutPage.vue')
+      },
+      {
+        path: 'contact',
+        name: 'contact',
+        component: () => import('pages/ContactPage.vue')
       }
       // {
       //   path: 'cam',

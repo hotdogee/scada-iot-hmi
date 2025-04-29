@@ -4,7 +4,7 @@
       <q-toolbar elevated>
         <img src="/icons/favicon-32x32.png" />
         <q-toolbar-title class="nav-title">
-          <q-item-label>SCADA/IoT</q-item-label>
+          <q-item-label class="font-medium">SCADA/IoT</q-item-label>
         </q-toolbar-title>
         <q-space></q-space>
         <q-btn flat round dense icon="notifications" class="q-mr-xs">
@@ -19,7 +19,7 @@
         </q-btn>
         <q-btn flat round dense icon="person">
           <q-menu fit>
-            <q-card class="user-form">
+            <q-card flat>
               <q-item>
                 <q-item-section avatar>
                   <q-avatar>
@@ -39,7 +39,9 @@
         <!-- <q-route-tab icon="subject" to="/text" label="文字" /> -->
         <q-route-tab icon="dashboard" :to="{ name: 'card' }" label="即時數據" />
         <q-route-tab icon="timeline" :to="{ name: 'chart' }" label="歷史統計" />
-        <q-route-tab icon="videocam" :to="{ name: 'card' }" label="現場直播" />
+        <q-route-tab icon="article" :to="{ name: 'about' }" label="關於" />
+        <q-route-tab icon="mail" :to="{ name: 'contact' }" label="聯絡" />
+        <!-- <q-route-tab disable icon="videocam" :to="{ name: 'card' }" label="現場直播" />
         <q-route-tab disable icon="videogame_asset" to="/dcs" label="電廠控制">
           <q-tooltip
             transition-show="flip-right"
@@ -50,11 +52,11 @@
           >
             無權限
           </q-tooltip>
-        </q-route-tab>
+        </q-route-tab> -->
       </q-tabs>
     </q-header>
 
-    <q-footer elevated class="text-grey-9 text-overline bg-white">
+    <q-footer class="text-grey-9 text-overline bg-white">
       <q-toolbar>
         <div class="ellipsis">
           Made with
@@ -105,7 +107,7 @@ interface Notification {
 
 const notifications = computed<Notification[]>(() => {
   if (!isLive.value) {
-    return [{ message: '系統維護中' }]
+    return [{ message: '系統展示中' }]
   }
   return [{ message: '無推播通知' }]
 })
