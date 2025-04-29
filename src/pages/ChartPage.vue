@@ -3,7 +3,7 @@
     <div class="col-12">
       <q-card class="q-ma-xs bg-white">
         <q-card-section class="q-pb-sm">
-          <div class="text-h6">
+          <div class="text-xl">
             圖表顯示 {{ totalFormat(animatedTotal) }} 時間點資料
             <span v-show="chartStore.bucket"
               >(統計區間：{{ bucketFormat(chartStore.bucket) }})</span
