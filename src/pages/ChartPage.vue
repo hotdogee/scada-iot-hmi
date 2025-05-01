@@ -23,7 +23,7 @@
                     <q-item-section>
                       <q-item-label> 總資料時間點數 </q-item-label>
                       <q-item-label caption>
-                        {{ totalFormat(chartStore.total) }}
+                        {{ totalFormat(chartStore.navigatorData.total) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -34,7 +34,7 @@
                     <q-item-section>
                       <q-item-label> 總資料點數 </q-item-label>
                       <q-item-label caption>
-                        {{ totalFormat((chartStore.total ?? 0) * 26) }}
+                        {{ totalFormat((chartStore.navigatorData.total ?? 0) * 26) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -45,7 +45,7 @@
                     <q-item-section>
                       <q-item-label> 總資料起始時間 </q-item-label>
                       <q-item-label caption>
-                        {{ dateFormat(chartStore.start) }}
+                        {{ dateFormat(chartStore.navigatorData.start) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -56,7 +56,7 @@
                     <q-item-section>
                       <q-item-label> 總資料最後時間 </q-item-label>
                       <q-item-label caption>
-                        {{ dateFormat(chartStore.end) }}
+                        {{ dateFormat(chartStore.navigatorData.end) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -374,14 +374,6 @@ if (Highcharts.SVGRenderer) {
   }
 }
 
-// VML Renderer might be deprecated or removed in newer Highcharts versions
-// if (Highcharts.VMLRenderer) {
-//   Highcharts.VMLRenderer.prototype.symbols['navigator-handle-left'] =
-//     Highcharts.SVGRenderer.prototype.symbols['navigator-handle-left'];
-//   Highcharts.VMLRenderer.prototype.symbols['navigator-handle-right'] =
-//     Highcharts.SVGRenderer.prototype.symbols['navigator-handle-right'];
-// }
-
 // --- Types ---
 interface ChartRange {
   from: Date
@@ -655,41 +647,6 @@ const figs: FigConfig[] = [
   {
     figTemplate: 'highStockChart',
     traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['三相功率', '有功功率'],
-    plotTitle: '有功功率',
-    yaxisTitle: '有功功率(kW)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['無功功率'],
-    plotTitle: '無功功率',
-    yaxisTitle: '無功功率(kvar)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['視在功率'],
-    plotTitle: '視在功率',
-    yaxisTitle: '視在功率(kVA)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['頻率'],
-    plotTitle: '頻率',
-    yaxisTitle: '頻率(Hz)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['A相電壓', 'B相電壓', 'C相電壓', 'AB線電壓', 'BC線電壓', 'CA線電壓'],
-    plotTitle: '三相電壓',
-    yaxisTitle: '電壓(V)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
     regs: ['A相電流', 'B相電流', 'C相電流'],
     plotTitle: '三相電流',
     yaxisTitle: '電流(A)'
@@ -725,6 +682,41 @@ const figs: FigConfig[] = [
   {
     figTemplate: 'highStockChart',
     traceTemplates: ['highStockLine', 'highStockLineRange'],
+    regs: ['三相功率', '有功功率'],
+    plotTitle: '有功功率',
+    yaxisTitle: '有功功率(kW)'
+  },
+  {
+    figTemplate: 'highStockChart',
+    traceTemplates: ['highStockLine', 'highStockLineRange'],
+    regs: ['無功功率'],
+    plotTitle: '無功功率',
+    yaxisTitle: '無功功率(kvar)'
+  },
+  {
+    figTemplate: 'highStockChart',
+    traceTemplates: ['highStockLine', 'highStockLineRange'],
+    regs: ['視在功率'],
+    plotTitle: '視在功率',
+    yaxisTitle: '視在功率(kVA)'
+  },
+  {
+    figTemplate: 'highStockChart',
+    traceTemplates: ['highStockLine', 'highStockLineRange'],
+    regs: ['頻率'],
+    plotTitle: '頻率',
+    yaxisTitle: '頻率(Hz)'
+  },
+  {
+    figTemplate: 'highStockChart',
+    traceTemplates: ['highStockLine', 'highStockLineRange'],
+    regs: ['A相電壓', 'B相電壓', 'C相電壓', 'AB線電壓', 'BC線電壓', 'CA線電壓'],
+    plotTitle: '三相電壓',
+    yaxisTitle: '電壓(V)'
+  },
+  {
+    figTemplate: 'highStockChart',
+    traceTemplates: ['highStockLine', 'highStockLineRange'],
     regs: ['流量'],
     plotTitle: '體積流率-電磁流量計',
     yaxisTitle: '體積流率(m3/h)'
@@ -744,6 +736,8 @@ const figs: FigConfig[] = [
     yaxisTitle: '溫度(℃)'
   }
 ]
+
+const addrToHide = new Set([10, 11, 13, 14, 21, 26, 60, 63, 64])
 
 // --- Methods / Functions ---
 
@@ -843,9 +837,49 @@ const initCharts = (chartLogs: ChartLogs) => {
                   }
                   trace.color = chartColors[currentTraceColorId]?.lighter ?? '#CCCCCC' // Default to light gray if undefined
                 }
+                if (addrToHide.has(Number(rtuAddr))) {
+                  trace.visible = false // Hide series for specific addresses
+                }
                 series.push(trace as HighchartsSeriesOptions) // Add to series array
               }
             })
+          }
+        }
+      })
+
+      // Build navigator series
+      const navSeries: HighchartsSeriesOptions[] = []
+      _.forEach(chartLogs.navigatorData.data, (data, header) => {
+        const parsed = headerRe.exec(header)
+        if (parsed) {
+          const [, rtuAddr, rtuName, regName, unit] = parsed
+          const yaxisTitle = figConfig?.yaxisTitle || ''
+          let regNameRest = `${regName}(${unit})`.replace(yaxisTitle, '')
+          if (regNameRest.length > 0) {
+            regNameRest = '-' + regNameRest
+          }
+
+          if (_.some(figConfig?.regs, (reg) => reg === regName)) {
+            const templateName = figConfig?.traceTemplates[0]
+            // Ensure templateName is a valid string before using it as an index
+            if (templateName) {
+              const traceGenerator = traceTemplates[templateName]
+              if (traceGenerator) {
+                const trace = traceGenerator() as Highcharts.SeriesLineOptions // Cast to specific type with data
+                trace.id = `chart-${chartIndex}-series-${header}-${templateName}-nav`
+                trace.description = header
+                const seriesName = `M${rtuAddr}-${rtuName}${regNameRest}`
+                trace.name = seriesName
+                if (!Object.prototype.hasOwnProperty.call(traceToColorId, seriesName)) {
+                  traceToColorId[seriesName] = colorId++
+                }
+                // Ensure data format matches line series expectations ([x, y] or {x, y})
+                // ignore typescript error
+                // @ts-expect-error test
+                trace.data = data
+                navSeries.push(trace as HighchartsSeriesOptions) // Push with the broader type if needed
+              }
+            }
           }
         }
       })
@@ -873,10 +907,11 @@ const initCharts = (chartLogs: ChartLogs) => {
       }
       // Ensure navigator.xAxis is a single object before setting min/max
       if (options.navigator?.xAxis && !Array.isArray(options.navigator.xAxis)) {
-        options.navigator.xAxis.min = startTime
-        options.navigator.xAxis.max = endTime
+        options.navigator.xAxis.min = new Date(chartLogs.navigatorData.start).getTime()
+        options.navigator.xAxis.max = new Date(chartLogs.navigatorData.end).getTime()
       }
-
+      // @ts-expect-error test
+      options.navigator.series = navSeries
       options.series = series
 
       // Create chart instance
@@ -1223,9 +1258,10 @@ watch(
 )
 
 // --- Lifecycle Hooks ---
-onMounted(() => {
+onMounted(async () => {
   // Initial data fetch
-  void fetchAndLoadChartData()
+  // await fetchAndLoadChartData()
+  await fetchAndLoadChartData(new Date('2025-01-16T14:10:00Z'), new Date('2025-02-03T07:35:00Z'))
 })
 
 onBeforeUnmount(() => {

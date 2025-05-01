@@ -44,15 +44,34 @@ export interface ChartLogs {
       high: number
     }>
   >
+  navigatorData: {
+    bucket: string
+    start: string
+    end: string
+    total: number
+    data: Record<
+      string,
+      Array<{
+        x: number
+        y: number | null
+        low: number | null
+        high: number | null
+      }>
+    >
+  }
 }
 
+import logsChartFull from './logs-chart-full-demo.json'
+// Chart load times
+// 36 - 38 - 42
 export const useChartStore = defineStore('chart', {
   state: (): ChartLogs => ({
     bucket: '',
     start: '',
     end: '',
     total: 0,
-    data: {}
+    data: {},
+    navigatorData: logsChartFull
   }),
   getters: {},
   actions: {
