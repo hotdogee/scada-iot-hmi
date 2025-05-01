@@ -62,8 +62,7 @@ export interface ChartLogs {
 }
 
 import logsChartFull from './logs-chart-full-demo.json'
-// Chart load times
-// 36 - 38 - 42
+
 export const useChartStore = defineStore('chart', {
   state: (): ChartLogs => ({
     bucket: '',

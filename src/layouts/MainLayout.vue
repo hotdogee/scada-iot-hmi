@@ -14,6 +14,7 @@
           </q-item-label>
         </q-toolbar-title>
         <q-space></q-space>
+        <LocaleSelect />
         <q-btn flat round dense icon="notifications" class="q-mr-xs">
           <q-badge v-show="!isLive" color="red" floating> ! </q-badge>
           <q-menu max-height="130px">
@@ -85,6 +86,7 @@
 import { useLogsStore } from 'src/stores/logs'
 import { computed } from 'vue'
 import { loggers } from '../boot/logger'
+import LocaleSelect from 'src/components/LocaleSelect.vue'
 
 // Setup stores
 const logsStore = useLogsStore()
