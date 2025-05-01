@@ -31,7 +31,7 @@ import { useI18n } from 'vue-i18n'
 // import { useQuasar } from 'quasar'
 
 // const $q = useQuasar()
-const { locale } = useI18n({ useScope: 'global' })
+const { locale } = useI18n()
 
 const localeOptions = [
   { value: 'en', label: 'English', flag: '🇺🇸' },

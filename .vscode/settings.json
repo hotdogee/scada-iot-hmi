@@ -6,5 +6,20 @@
   "editor.codeActionsOnSave": ["source.fixAll.eslint"],
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["feathersjs", "hotdogee", "iapws", "IAPWS", "neutrium", "socketio", "videogame"]
+  "cSpell.words": [
+    "feathersjs",
+    "gtag",
+    "hanl",
+    "hotdogee",
+    "iapws",
+    "IAPWS",
+    "intlify",
+    "neutrium",
+    "persistedstate",
+    "qmarkdown",
+    "socketio",
+    "unplugin",
+    "videogame",
+    "vueuse"
+  ]
 }
