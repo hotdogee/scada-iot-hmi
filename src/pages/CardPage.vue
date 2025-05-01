@@ -61,7 +61,7 @@
                     </VueTrend>
                     <VueBars
                       v-if="rtu[regName]?.bars"
-                      :key="String(rtu[regName].time || '')"
+                      :key="currentLogTime"
                       :data="rtu[regName].bars"
                       :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
                       :growDuration="0.01"
@@ -86,10 +86,12 @@ import _ from 'lodash'
 import { computed } from 'vue'
 import VueBars from 'vue3-bars'
 import isotope from 'vue3-isotope'
-import { useLogsStore } from '../stores/logs'
+// import { useLogsStore } from '../stores/logs'
+import { useLogsDemoStore } from '../stores/logs-demo'
 
 // Initialize Pinia store
-const logsStore = useLogsStore()
+// const logsStore = useLogsStore()
+const logsStore = useLogsDemoStore()
 
 // Define interfaces for stat results
 interface StatResult {

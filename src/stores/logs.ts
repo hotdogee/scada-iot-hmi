@@ -453,7 +453,7 @@ export const useLogsStore: StoreDefinition<'logs', State, Getters, Actions> = de
       try {
         const params = {
           query: {
-            $limit: 200,
+            $limit: LIMIT,
             $sort: {
               logTime: -1
             }

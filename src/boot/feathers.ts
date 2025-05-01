@@ -3,7 +3,8 @@ import { feathers } from '@feathersjs/feathers'
 import socketio from '@feathersjs/socketio-client'
 import Logger from 'assets/logger'
 import { io } from 'socket.io-client'
-import { useLogsStore } from '../stores/logs'
+// import { useLogsStore } from '../stores/logs'
+import { useLogsDemoStore } from '../stores/logs-demo'
 const logger = new Logger('boot.feathers')
 
 // Setup the Feathers client
@@ -26,9 +27,10 @@ export default defineBoot(({ app, store }) => {
   app.config.globalProperties.$logs = logs
   app.config.globalProperties.$images = images
   socket.on('connect', async () => {
-    const logsStore = useLogsStore(store)
+    const logsStore = useLogsDemoStore(store)
     logger.info(`socket connected`, logsStore)
-    await logsStore.setupRealtimeUpdates()
+    // await logsStore.setupRealtimeUpdates()
+    logsStore.setupRealtimeUpdates()
     await logsStore.findStartDateTime()
   })
   socket.connect()
