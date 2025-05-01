@@ -23,7 +23,7 @@
                     <q-item-section>
                       <q-item-label> 總資料時間點數 </q-item-label>
                       <q-item-label caption>
-                        {{ totalFormat(logsStore.total) }}
+                        {{ totalFormat(chartStore.total) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -34,7 +34,7 @@
                     <q-item-section>
                       <q-item-label> 總資料點數 </q-item-label>
                       <q-item-label caption>
-                        {{ totalFormat((logsStore.total ?? 0) * 26) }}
+                        {{ totalFormat((chartStore.total ?? 0) * 26) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -45,7 +45,7 @@
                     <q-item-section>
                       <q-item-label> 總資料起始時間 </q-item-label>
                       <q-item-label caption>
-                        {{ dateFormat(logsStore.start) }}
+                        {{ dateFormat(chartStore.start) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -56,7 +56,7 @@
                     <q-item-section>
                       <q-item-label> 總資料最後時間 </q-item-label>
                       <q-item-label caption>
-                        {{ dateFormat(logsStore.end) }}
+                        {{ dateFormat(chartStore.end) }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -188,7 +188,7 @@ import _ from 'lodash'
 import { storeToRefs } from 'pinia'
 import { date } from 'quasar'
 import { useChartStore, type ChartLogs } from 'stores/chart'
-import { useLogsStore } from 'stores/logs'
+// import { useLogsStore } from 'stores/logs'
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 
 // Define component options if necessary (e.g., name)
@@ -196,7 +196,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } 
 
 // --- Pinia Stores ---
 const chartStore = useChartStore()
-const logsStore = useLogsStore()
+// const logsStore = useLogsStore()
 // Use storeToRefs for reactive access to state properties in the template
 const { total: chartTotal } = storeToRefs(chartStore)
 
@@ -978,7 +978,7 @@ const updateCharts = async (chartLogs: ChartLogs) => {
   })
 
   const jobs = highchartsInstances.value.map(async (chartInstance, index) => {
-    // stagger the updatess to avoid overwhelming the browser
+    // stagger the updates to avoid overwhelming the browser
     await sleep(STAGGER_DELAY_MS * index)
     // console.debug(`Updating chart ${index} with new data`)
     if (chartInstance) {
