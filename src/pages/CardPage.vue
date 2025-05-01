@@ -17,8 +17,8 @@
           class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2"
         >
           <q-card class="bg-white">
-            <div class="title">
-              {{ rtuName }}
+            <div class="title leading-[0.7]">
+              {{ t(rtuName) }}
             </div>
             <div class="row wrap reg-list">
               <div
@@ -28,7 +28,7 @@
               >
                 <q-card flat class="reg-card">
                   <div class="q-pa-sm fit absolute">
-                    <span class="caption reg-name text-grey">{{ regName }}</span
+                    <span class="caption reg-name text-grey">{{ t(regName) }}</span
                     ><br />
                     <span class="headline reg-value"
                       ><strong>{{ rtu[regName]?.value ?? 'N/A' }} </strong></span
@@ -88,6 +88,8 @@ import VueBars from 'vue3-bars'
 import isotope from 'vue3-isotope'
 // import { useLogsStore } from '../stores/logs'
 import { useLogsDemoStore } from '../stores/logs-demo'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 // Initialize Pinia store
 // const logsStore = useLogsStore()
@@ -226,6 +228,21 @@ const rtus = computed(() => {
     }
   ])
 })
+// console.log(
+//   'rtus',
+//   // flatten into a Set
+//   _.flatten(rtus.value.map(([k, v]) => Object.entries(v).map(([regName]) => regName))).reduce(
+//     (acc, regName) => {
+//       acc.add(regName)
+//       return acc
+//     },
+//     new Set<string>()
+//   )
+// )
+// console.log(
+//   'rtus',
+//   rtus.value.map(([k]) => k)
+// )
 
 // Sort registers for each RTU based on defaultOrder
 const regs = (rtuName: string) => {
@@ -285,6 +302,133 @@ const getStat = (rtuName: string, regName: string): StatResult => {
   return { avg: avgFormatted, sd, max, min, fac, digits }
 }
 </script>
+
+<i18n>
+{
+  "en": {
+    'M1-九號井口': 'M1 - Wellhead',
+    'M2-手動閘閥前': 'M2 - Pre Valve',
+    'M5-渦輪2前': 'M5 - Pre Turbine',
+    'M6-渦輪2後': 'M6 - Post Turbine',
+    'M7-大穩壓桶1': 'M7 - Surge Tank',
+    'M13-渦輪1前': 'M13 - Pre Turbine',
+    'M14-渦輪1後': 'M14 - Post Turbine',
+    'M25-主排水管': 'M25 - Drain',
+    'M50-軸心2': 'M50 - Shaft',
+    'M51-軸心2': 'M51 - Shaft',
+    'M52-變速齒輪箱2': 'M52 - Gearbox',
+    'M61-軸心1': 'M61 - Shaft',
+    'M71-發電機300kVA': 'M71 - Generator',
+    'M73-發電機300kVA': 'M73 - Generator',
+    'M72-併接點': 'M72 - Grid Connection',
+    'M200-計算': 'M200 - Computed',
+    "頻率": "Frequency",
+    "AB線電壓": "AB Line Voltage",
+    "BC線電壓": "BC Line Voltage",
+    "CA線電壓": "CA Line Voltage",
+    "A相電流": "Phase A Current",
+    "B相電流": "Phase B Current",
+    "C相電流": "Phase C Current",
+    "有功功率": "Active Power",
+    "無功功率": "Reactive Power",
+    "視在功率": "Apparent Power",
+    "功率因數": "Power Factor",
+    "正有功電量": "+Active Energy",
+    "負有功電量": "-Active Energy",
+    "正無功電量": "+Reactive Energy",
+    "負無功電量": "-Reactive Energy",
+    "有功電量": "Active Energy",
+    "無功電量": "Reactive Energy",
+    "視在電量": "Apparent Energy",
+    "A相電流總諧波失真": "Current A THD",
+    "B相電流總諧波失真": "Current B THD",
+    "C相電流總諧波失真": "Current C THD",
+    "A相電壓總諧波失真": "Voltage A THD",
+    "B相電壓總諧波失真": "Voltage B THD",
+    "C相電壓總諧波失真": "Voltage C THD",
+    "壓力": "Pressure",
+    "溫度": "Temperature",
+    "質量流率": "Mass Flow Rate",
+    "密度": "Density",
+    "出噴嘴速度": "Exit Velocity",
+    "井口質量焓": "Wellhead Enthalpy",
+    "入口質量焓": "Inlet Enthalpy",
+    "出口質量焓": "Outlet Enthalpy",
+    "熱效率(入)": "Thermal Eff. (In)",
+    "熱效率(入-出)": "Thermal Eff. (Diff)",
+    "常數": "Constant",
+    "併網效率": "Grid Efficiency",
+    "M1過壓": "M1 Overpressure",
+    "M1過壓比": "M1 OP Ratio",
+    "M5過壓": "M5 Overpressure",
+    "M5過壓比": "M5 OP Ratio",
+    "扭力": "Torque",
+    "入水測溫度": "Water Inlet Temp",
+    "發電機測溫度": "Generator Temp",
+  },
+  "tw": {
+    'M1-九號井口': 'M1-九號井口',
+    'M2-手動閘閥前': 'M2-手動閘閥前',
+    'M5-渦輪2前': 'M5-渦輪2前',
+    'M6-渦輪2後': 'M6-渦輪2後',
+    'M7-大穩壓桶1': 'M7-大穩壓桶1',
+    'M13-渦輪1前': 'M13-渦輪1前',
+    'M14-渦輪1後': 'M14-渦輪1後',
+    'M25-主排水管': 'M25-主排水管',
+    'M50-軸心2': 'M50-軸心2',
+    'M51-軸心2': 'M51-軸心2',
+    'M52-變速齒輪箱2': 'M52-變速齒輪箱2',
+    'M61-軸心1': 'M61-軸心1',
+    'M71-發電機300kVA': 'M71-發電機300kVA',
+    'M73-發電機300kVA': 'M73-發電機300kVA',
+    'M72-併接點': 'M72-併接點',
+    'M200-計算': 'M200-計算',
+    "頻率": "頻率",
+    "AB線電壓": "AB線電壓",
+    "BC線電壓": "BC線電壓",
+    "CA線電壓": "CA線電壓",
+    "A相電流": "A相電流",
+    "B相電流": "B相電流",
+    "C相電流": "C相電流",
+    "有功功率": "有功功率",
+    "無功功率": "無功功率",
+    "視在功率": "視在功率",
+    "功率因數": "功率因數",
+    "正有功電量": "正有功電量",
+    "負有功電量": "負有功電量",
+    "正無功電量": "正無功電量",
+    "負無功電量": "負無功電量",
+    "有功電量": "有功電量",
+    "無功電量": "無功電量",
+    "視在電量": "視在電量",
+    "A相電流總諧波失真": "A相電流總諧波失真",
+    "B相電流總諧波失真": "B相電流總諧波失真",
+    "C相電流總諧波失真": "C相電流總諧波失真",
+    "A相電壓總諧波失真": "A相電壓總諧波失真",
+    "B相電壓總諧波失真": "B相電壓總諧波失真",
+    "C相電壓總諧波失真": "C相電壓總諧波失真",
+    "壓力": "壓力",
+    "溫度": "溫度",
+    "質量流率": "質量流率",
+    "密度": "密度",
+    "出噴嘴速度": "出噴嘴速度",
+    "井口質量焓": "井口質量焓",
+    "入口質量焓": "入口質量焓",
+    "出口質量焓": "出口質量焓",
+    "熱效率(入)": "熱效率(入)",
+    "熱效率(入-出)": "熱效率(入-出)",
+    "常數": "常數",
+    "併網效率": "併網效率",
+    "M1過壓": "M1過壓",
+    "M1過壓比": "M1過壓比",
+    "M5過壓": "M5過壓",
+    "M5過壓比": "M5過壓比",
+    "扭力": "扭力",
+    "入水測溫度": "入水測溫度",
+    "發電機測溫度": "發電機測溫度",
+  }
+}
+</i18n>
 
 <style>
 .reg-card {
@@ -348,7 +492,7 @@ const getStat = (rtuName: string, regName: string): StatResult => {
   line-height: normal;
 }
 .reg-list {
-  padding: 4px;
+  padding: 0 4px;
 }
 div.row.wrap.container {
   padding: 4px;
@@ -358,7 +502,7 @@ div.time {
 }
 div.title {
   font-size: 20px;
-  padding: 8px 12px 0px 12px;
+  padding: 16px 12px 0px 12px;
 }
 span.caption {
   font-size: 12px !important;
