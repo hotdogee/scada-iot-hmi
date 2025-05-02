@@ -27,10 +27,12 @@
 
 <script setup lang="ts">
 import { watch } from 'vue'
+import { useStorage } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 // import { useQuasar } from 'quasar'
 
 // const $q = useQuasar()
+const localeStorage = useStorage('locale', 'en')
 const { locale } = useI18n()
 
 const localeOptions = [
@@ -42,6 +44,7 @@ const localeOptions = [
 watch(locale, (newLocale) => {
   if (newLocale) {
     locale.value = newLocale
+    localeStorage.value = newLocale
     // $q.localStorage.set(LOCALE_STORAGE_KEY, newLocale)
     console.log(`Locale changed to: ${newLocale}.`)
   }
