@@ -139,7 +139,7 @@ Let’s build something groundbreaking together! 🚀
                       <div class="mt-1 text-base">
                         <div class="mt-8 flex space-x-4 lg:mt-0 lg:flex-shrink-0">
                           <a
-                            href="https://github.com/hotdogee/annotate-ui"
+                            href="https://github.com/hotdogee/scada-iot-hmi"
                             target="_blank"
                             rel="noopener noreferrer"
                             class="inline-flex items-center justify-center rounded-full p-3 text-gray-500 transition-colors duration-200 hover:bg-amber-100 hover:text-amber-600 dark:bg-amber-900 dark:hover:bg-amber-950"
