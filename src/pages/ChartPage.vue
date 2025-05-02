@@ -2,17 +2,21 @@
   <q-page class="row wrap q-pa-xs content-start">
     <div class="col-12">
       <q-card class="q-ma-xs bg-white">
-        <q-card-section class="q-pb-sm">
-          <div class="text-xl">
-            圖表顯示 {{ totalFormat(animatedTotal) }} 時間點資料
-            <span v-show="chartStore.bucket"
-              >(統計區間：{{ bucketFormat(chartStore.bucket) }})</span
-            >
-          </div>
+        <q-card-section class="q-py-md">
+          <i18n-t keypath="statsHeader" tag="div" class="text-xl">
+            <template v-slot:total>
+              {{ totalFormat(animatedTotal) }}
+            </template>
+            <template v-slot:bucket>
+              <span v-show="chartStore.bucket">
+                {{ t('bucketHeader', { bucket: bucketFormat(chartStore.bucket) }) }}
+              </span>
+            </template>
+          </i18n-t>
         </q-card-section>
         <q-card-section class="q-pt-none">
           <q-list bordered separator>
-            <q-item-label header class="q-pb-none"> 資料庫 </q-item-label>
+            <q-item-label header class="q-pb-none"> {{ t('databaseHeader') }} </q-item-label>
             <q-item class="full-width row">
               <q-item-section class="top q-gutter-sm">
                 <div class="row">
@@ -21,7 +25,7 @@
                       <q-icon name="timeline" />
                     </q-item-section>
                     <q-item-section>
-                      <q-item-label> 總資料時間點數 </q-item-label>
+                      <q-item-label> {{ t('numberTimestamps') }} </q-item-label>
                       <q-item-label caption>
                         {{ totalFormat(chartStore.navigatorData.total) }}
                       </q-item-label>
@@ -32,7 +36,7 @@
                       <q-icon name="bubble_chart" />
                     </q-item-section>
                     <q-item-section>
-                      <q-item-label> 總資料點數 </q-item-label>
+                      <q-item-label> {{ t('numberReadings') }} </q-item-label>
                       <q-item-label caption>
                         {{ totalFormat((chartStore.navigatorData.total ?? 0) * 26) }}
                       </q-item-label>
@@ -43,7 +47,7 @@
                       <q-icon name="skip_previous" />
                     </q-item-section>
                     <q-item-section>
-                      <q-item-label> 總資料起始時間 </q-item-label>
+                      <q-item-label> {{ t('databaseStartTime') }} </q-item-label>
                       <q-item-label caption>
                         {{ dateFormat(chartStore.navigatorData.start) }}
                       </q-item-label>
@@ -54,7 +58,7 @@
                       <q-icon name="skip_next" />
                     </q-item-section>
                     <q-item-section>
-                      <q-item-label> 總資料最後時間 </q-item-label>
+                      <q-item-label> {{ t('databaseEndTime') }} </q-item-label>
                       <q-item-label caption>
                         {{ dateFormat(chartStore.navigatorData.end) }}
                       </q-item-label>
@@ -64,7 +68,7 @@
               </q-item-section>
             </q-item>
             <q-separator />
-            <q-item-label header class="q-pb-none"> 自訂圖表 </q-item-label>
+            <q-item-label header class="q-pb-none"> {{ t('chartSettings') }} </q-item-label>
             <q-item class="full-width row">
               <q-item-section class="top">
                 <div class="row">
@@ -72,8 +76,8 @@
                     <q-input
                       v-model="fromModel"
                       class="full-width"
-                      label="起始時間"
-                      error-message="所選時間範圍查無資料"
+                      :label="t('startTime')"
+                      :error-message="t('noDataInRange')"
                       :error="chartRangeHasError"
                       mask="####/##/## ##:##"
                       filled
@@ -110,8 +114,8 @@
                     <q-input
                       v-model="toModel"
                       class="full-width"
-                      label="結束時間"
-                      error-message="所選時間範圍查無資料"
+                      :label="t('endTime')"
+                      :error-message="t('noDataInRange')"
                       :error="chartRangeHasError"
                       mask="####/##/## ##:##"
                       filled
@@ -190,6 +194,8 @@ import { date } from 'quasar'
 import { useChartStore, type ChartLogs } from 'stores/chart'
 // import { useLogsStore } from 'stores/logs'
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+const { t, locale } = useI18n()
 
 // Define component options if necessary (e.g., name)
 // defineOptions({ name: 'ChartPage' });
@@ -203,74 +209,78 @@ const { total: chartTotal } = storeToRefs(chartStore)
 // --- Highcharts Setup ---
 globalThis.Highcharts = Highcharts
 
-Highcharts.setOptions({
-  // boost: {
-  //   enabled: true,
-  //   seriesThreshold: 1
-  // },
-  time: {
-    timezone: 'undefined' // Set timezone to undefined to use local time
-  },
-  lang: {
-    contextButtonTitle: '匯出選項',
-    downloadCSV: '下載 CSV 檔',
-    downloadJPEG: '下載 JPG 檔',
-    downloadPDF: '下載 PDF 檔',
-    downloadPNG: '下載 PNG 檔',
-    downloadSVG: '下載 SVG 檔',
-    downloadXLS: '下載 XLS 檔',
-    loading: '載入中',
-    months: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ],
-    printChart: '列印',
-    resetZoom: '重設縮放',
-    shortMonths: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ],
-    viewData: '顯示資料表格',
-    weekdays: ['週日', '週一', '週二', '週三', '週四', '週五', '週六'],
-    rangeSelectorZoom: '縮放',
-    viewFullscreen: '全螢幕'
-  },
-  exporting: {
-    buttons: {
-      contextButton: {
-        menuItems: [
-          'downloadPNG',
-          'downloadJPEG',
-          'downloadPDF',
-          'downloadSVG',
-          'downloadCSV',
-          'downloadXLS',
-          'viewData'
-        ]
+function getHighchartOptions() {
+  return {
+    // boost: {
+    //   enabled: true,
+    //   seriesThreshold: 1
+    // },
+    time: {
+      timezone: 'undefined' // Set timezone to undefined to use local time
+    },
+    lang: {
+      contextButtonTitle: t('contextButtonTitle'),
+      downloadCSV: t('downloadCSV'),
+      downloadJPEG: t('downloadJPEG'),
+      downloadPDF: t('downloadPDF'),
+      downloadPNG: t('downloadPNG'),
+      downloadSVG: t('downloadSVG'),
+      downloadXLS: t('downloadXLS'),
+      loading: t('loading'),
+      months: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ],
+      printChart: t('printChart'),
+      resetZoom: t('resetZoom'),
+      shortMonths: [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+      ],
+      viewData: t('viewData'),
+      weekdays: [t('Sun'), t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat')],
+      rangeSelectorZoom: t('rangeSelectorZoom'),
+      viewFullscreen: t('viewFullscreen')
+    },
+    exporting: {
+      buttons: {
+        contextButton: {
+          menuItems: [
+            'downloadPNG',
+            'downloadJPEG',
+            'downloadPDF',
+            'downloadSVG',
+            'downloadCSV',
+            'downloadXLS',
+            'viewData'
+          ]
+        }
       }
     }
   }
-})
+}
+
+Highcharts.setOptions(getHighchartOptions())
 
 // fix pdf export - Check if Highcharts.wrap still works as expected in v10+
 Highcharts.wrap(
@@ -380,13 +390,19 @@ interface ChartRange {
   to: Date
 }
 
-interface FigConfig {
-  figTemplate: string
-  traceTemplates: string[]
-  regs: string[]
-  plotTitle: string
-  yaxisTitle: string
+// Define a type for series user options that might include 'group' or 'description'
+type SeriesUserOptionsWithExtras = Highcharts.SeriesOptionsType & {
+  group?: string
+  description?: string
 }
+
+// interface FigConfig {
+//   figTemplate: string
+//   traceTemplates: string[]
+//   regs: string[]
+//   plotTitle: string
+//   yaxisTitle: string
+// }
 
 // Define types for Highcharts options and series more specifically if needed
 type HighchartsOptions = Highcharts.Options
@@ -409,7 +425,7 @@ const isUpdating = ref(false)
 // --- Formatting Helpers (Replaces Filters) ---
 const totalFormat = (value: number | null | undefined): string => {
   const num = value ?? 0
-  return ` ${num.toLocaleString()} 筆`
+  return `${num.toLocaleString()}`
 }
 
 const dateFormat = (value: string | null | undefined): string => {
@@ -419,7 +435,7 @@ const dateFormat = (value: string | null | undefined): string => {
 
 const bucketFormat = (value: string | null): string => {
   if (!value) return ''
-  if (value === '1ms') return '無'
+  if (value === '1ms') return t('none')
   return value
 }
 
@@ -605,7 +621,7 @@ const figTemplates: Record<string, () => HighchartsOptions> = {
       events: {},
       minRange: 60 * 1000, // one minute
       ordinal: false,
-      title: { text: '時間' },
+      title: { text: t('Time') },
       type: 'datetime', // Ensure xAxis type is datetime for stockChart
       dateTimeLabelFormats: {
         millisecond: '%H:%M:%S.%L',
@@ -643,112 +659,133 @@ const figTemplates: Record<string, () => HighchartsOptions> = {
   })
 }
 
-const figs: FigConfig[] = [
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['A相電流', 'B相電流', 'C相電流'],
-    plotTitle: '三相電流',
-    yaxisTitle: '電流(A)'
-  },
-  // {
-  //   figTemplate: 'highStockChart',
-  //   traceTemplates: ['highStockLine', 'highStockLineRange'],
-  //   regs: ['有功電量', '無功電量', '視在電量'],
-  //   plotTitle: '發電量',
-  //   yaxisTitle: '發電量(kWh/kvarh/kVAh)'
-  // },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['溫度'],
-    plotTitle: '管線溫度',
-    yaxisTitle: '溫度(℃)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['壓力'],
-    plotTitle: '管線壓力',
-    yaxisTitle: '壓力(bar)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['質量流率'],
-    plotTitle: '質量流率-科氏力流量計',
-    yaxisTitle: '質量流率(t/h)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['三相功率', '有功功率'],
-    plotTitle: '有功功率',
-    yaxisTitle: '有功功率(kW)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['無功功率'],
-    plotTitle: '無功功率',
-    yaxisTitle: '無功功率(kvar)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['視在功率'],
-    plotTitle: '視在功率',
-    yaxisTitle: '視在功率(kVA)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['頻率'],
-    plotTitle: '頻率',
-    yaxisTitle: '頻率(Hz)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['A相電壓', 'B相電壓', 'C相電壓', 'AB線電壓', 'BC線電壓', 'CA線電壓'],
-    plotTitle: '三相電壓',
-    yaxisTitle: '電壓(V)'
-  },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['流量'],
-    plotTitle: '體積流率-電磁流量計',
-    yaxisTitle: '體積流率(m3/h)'
-  },
-  // {
-  //   figTemplate: 'highStockChart',
-  //   traceTemplates: ['highStockLine', 'highStockLineRange'],
-  //   regs: ['計算'],
-  //   plotTitle: '計算',
-  //   yaxisTitle: '計算'
-  // },
-  {
-    figTemplate: 'highStockChart',
-    traceTemplates: ['highStockLine', 'highStockLineRange'],
-    regs: ['入水測溫度', '發電機測溫度'],
-    plotTitle: '軸心溫度',
-    yaxisTitle: '溫度(℃)'
-  }
-]
+const getFigs = () => {
+  return [
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['A相電流', 'B相電流', 'C相電流'],
+      plotTitle: t('plotTitleCurrent'),
+      yaxisTitle: t('yaxisTitleCurrentA')
+    },
+    // {
+    //   figTemplate: 'highStockChart',
+    //   traceTemplates: ['highStockLine', 'highStockLineRange'],
+    //   regs: ['有功電量', '無功電量', '視在電量'],
+    //   plotTitle: t('plotTitleEnergy'),
+    //   yaxisTitle: t('yaxisTitleEnergyUnits')
+    // },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['溫度'],
+      plotTitle: t('plotTitlePipeTemp'),
+      yaxisTitle: t('yaxisTitleTempC')
+    },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['壓力'],
+      plotTitle: t('plotTitlePipePressure'),
+      yaxisTitle: t('yaxisTitlePressureBar')
+    },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['質量流率'],
+      plotTitle: t('plotTitleMassFlow'),
+      yaxisTitle: t('yaxisTitleMassFlowRate')
+    },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['三相功率', '有功功率'],
+      plotTitle: t('plotTitleActivePower'),
+      yaxisTitle: t('yaxisTitleActivePowerKW')
+    },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['無功功率'],
+      plotTitle: t('plotTitleReactivePower'),
+      yaxisTitle: t('yaxisTitleReactivePowerKvar')
+    },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['視在功率'],
+      plotTitle: t('plotTitleApparentPower'),
+      yaxisTitle: t('yaxisTitleApparentPowerKVA')
+    },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['頻率'],
+      plotTitle: t('plotTitleFrequency'),
+      yaxisTitle: t('yaxisTitleFrequencyHz')
+    },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['A相電壓', 'B相電壓', 'C相電壓', 'AB線電壓', 'BC線電壓', 'CA線電壓'],
+      plotTitle: t('plotTitleVoltage'),
+      yaxisTitle: t('yaxisTitleVoltageV')
+    },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['流量'],
+      plotTitle: t('plotTitleVolumeFlow'),
+      yaxisTitle: t('yaxisTitleVolumeFlowRate')
+    },
+    // {
+    //   figTemplate: 'highStockChart',
+    //   traceTemplates: ['highStockLine', 'highStockLineRange'],
+    //   regs: ['計算'],
+    //   plotTitle: t('plotTitleCalculation'),
+    //   yaxisTitle: t('yaxisTitleCalculation')
+    // },
+    {
+      figTemplate: 'highStockChart',
+      traceTemplates: ['highStockLine', 'highStockLineRange'],
+      regs: ['入水測溫度', '發電機測溫度'],
+      plotTitle: t('plotTitleBearingTemp'),
+      yaxisTitle: t('yaxisTitleTempC') // Re-use existing key
+    }
+  ]
+}
+let figs = getFigs()
 
-const addrToHide = new Set([10, 11, 13, 14, 21, 26, 60, 63, 64])
-
+const addrToHide = new Set([10, 11, 13, 14, 21, 60, 63, 64])
+// _.forEach(chartStore.data, (data, header) => {
+//   console.log(`'${header}': '${header}',`)
+// })
+// const oldSet = new Set(
+//   Object.entries(chartStore.data).map(([header]) => {
+//     return header
+//   })
+// )
+// console.log('oldSet', oldSet)
+// _.forEach(chartStore.navigatorData.data, (data, header) => {
+//   if (oldSet.has(header)) {
+//     return
+//   }
+//   console.log(`'${header}': '${header}',`)
+// })
+// console.log(chartStore.data)
 // --- Methods / Functions ---
 
 // Regex to parse header strings like M1-RTUName-RegName(Unit)
 const headerRe = /^M(\d+)-([^-]+)-([^-]+)\(([^()]+)\)$/
 
 const initCharts = (chartLogs: ChartLogs) => {
-  showChart.value = true
-  // set chartRange based on loaded data
-  chartRange.from = new Date(chartLogs.start)
-  chartRange.to = new Date(chartLogs.end)
+  if (!showChart.value) {
+    showChart.value = true
+    // set chartRange based on loaded data
+    chartRange.from = new Date(chartLogs.start)
+    chartRange.to = new Date(chartLogs.end)
+  }
+  figs = getFigs()
 
   void nextTick(() => {
     const traceToColorId: Record<string, number> = {}
@@ -791,18 +828,19 @@ const initCharts = (chartLogs: ChartLogs) => {
 
       // Build series
       const series: HighchartsSeriesOptions[] = []
-      _.forEach(chartLogs.data, (data, header) => {
+      _.forEach(chartLogs.navigatorData.data, (_, header) => {
+        const data = chartLogs.data[header] || []
         const parsed = headerRe.exec(header)
         if (parsed) {
-          const [, rtuAddr, rtuName, regName, unit] = parsed
+          const [, rtuAddr, , regName, unit] = parsed
           const yaxisTitle = figConfig?.yaxisTitle || ''
           let regNameRest = `${regName}(${unit})`.replace(yaxisTitle, '')
           if (regNameRest.length > 0) {
             regNameRest = '-' + regNameRest
           }
 
-          if (_.some(figConfig?.regs, (reg) => reg === regName)) {
-            _.forEach(figConfig?.traceTemplates, (templateName, traceIndex) => {
+          if (figConfig?.regs.some((reg) => reg === regName)) {
+            figConfig?.traceTemplates.forEach((templateName, traceIndex) => {
               const traceGenerator = traceTemplates[templateName]
               if (traceGenerator) {
                 const trace = traceGenerator() as
@@ -810,7 +848,7 @@ const initCharts = (chartLogs: ChartLogs) => {
                   | Highcharts.SeriesArearangeOptions // Type assertion
                 trace.id = `chart-${chartIndex}-series-${header}-${templateName}`
                 trace.description = header
-                const seriesName = `M${rtuAddr}-${rtuName}${regNameRest}`
+                const seriesName = t(header)
                 trace.name = seriesName
 
                 if (!Object.prototype.hasOwnProperty.call(traceToColorId, seriesName)) {
@@ -852,14 +890,14 @@ const initCharts = (chartLogs: ChartLogs) => {
       _.forEach(chartLogs.navigatorData.data, (data, header) => {
         const parsed = headerRe.exec(header)
         if (parsed) {
-          const [, rtuAddr, rtuName, regName, unit] = parsed
+          const [, , , regName, unit] = parsed
           const yaxisTitle = figConfig?.yaxisTitle || ''
           let regNameRest = `${regName}(${unit})`.replace(yaxisTitle, '')
           if (regNameRest.length > 0) {
             regNameRest = '-' + regNameRest
           }
 
-          if (_.some(figConfig?.regs, (reg) => reg === regName)) {
+          if (figConfig?.regs.some((reg) => reg === regName)) {
             const templateName = figConfig?.traceTemplates[0]
             // Ensure templateName is a valid string before using it as an index
             if (templateName) {
@@ -868,7 +906,7 @@ const initCharts = (chartLogs: ChartLogs) => {
                 const trace = traceGenerator() as Highcharts.SeriesLineOptions // Cast to specific type with data
                 trace.id = `chart-${chartIndex}-series-${header}-${templateName}-nav`
                 trace.description = header
-                const seriesName = `M${rtuAddr}-${rtuName}${regNameRest}`
+                const seriesName = t(header)
                 trace.name = seriesName
                 if (!Object.prototype.hasOwnProperty.call(traceToColorId, seriesName)) {
                   traceToColorId[seriesName] = colorId++
@@ -1106,9 +1144,9 @@ const updateCharts = async (chartLogs: ChartLogs) => {
       // Update series data
       // This takes 5 secs
       // type SeriesWithOptions = Highcharts.Series & { userOptions?: SeriesWithOptions }
-      type SeriesOptionsTypeWithDescription = Highcharts.SeriesOptionsType & {
-        description?: string
-      }
+      // type SeriesOptionsTypeWithDescription = Highcharts.SeriesOptionsType & {
+      //   description?: string
+      // }
       // _.forEach(chartInstance.series, (series: SeriesWithOptions) => {
       //   const description = (series.userOptions as unknown as SeriesOptionsTypeWithDescription)
       //     ?.description
@@ -1119,25 +1157,21 @@ const updateCharts = async (chartLogs: ChartLogs) => {
       //     // Provide type hint for setData
       //     series.setData(
       //       chartLogs.data[description] as Highcharts.PointOptionsType[],
-      //       false,
-      //       false,
-      //       false
-      //     ) // Use SeriesDataOptions[]
-      //   }
-      // })
-      // Update series data, parallelized updates
       // This takes 3 secs
       const BATCH_SIZE = 50
-      // eslint-disable-next-line no-prototype-builtins
-      const series = chartInstance.series.filter((s) => !s.hasOwnProperty('baseSeries'))
-
+      // don't clear the navigator
+      const series = chartInstance.series.filter(
+        (s) => !((s.userOptions as SeriesUserOptionsWithExtras)?.group === 'nav')
+      )
+      // console.log(
+      //   `chart ${index}`,
+      //   chartInstance.series.map((s) => s.userOptions)
+      // )
       for (let i = 0; i < series.length; i += BATCH_SIZE) {
         const batch = series.slice(i, i + BATCH_SIZE)
-
         await Promise.all(
           batch.map(async (series: Highcharts.Series) => {
-            const description = (series.userOptions as unknown as SeriesOptionsTypeWithDescription)
-              ?.description
+            const description = (series.userOptions as SeriesUserOptionsWithExtras)?.description
             if (description && chartLogs.data[description]) {
               return new Promise<void>((resolve) => {
                 requestAnimationFrame(() => {
@@ -1154,6 +1188,7 @@ const updateCharts = async (chartLogs: ChartLogs) => {
           })
         )
       }
+
       // Update axis extremes without triggering afterSetExtremes again
       if (chartInstance.xAxis && chartInstance.xAxis[0]) {
         chartInstance.xAxis[0].setExtremes(newFromTime, newToTime, false, false)
@@ -1264,6 +1299,13 @@ onMounted(async () => {
   await fetchAndLoadChartData(new Date('2025-01-16T14:10:00Z'), new Date('2025-02-03T07:35:00Z'))
 })
 
+watch(locale, (newLocale) => {
+  if (newLocale) {
+    Highcharts.setOptions(getHighchartOptions())
+    initCharts(chartStore)
+  }
+})
+
 onBeforeUnmount(() => {
   // Destroy Highcharts instances
   // highchartsInstances.value.forEach((chart) => {
@@ -1276,6 +1318,303 @@ onBeforeUnmount(() => {
   // TWEEN.removeAll()
 })
 </script>
+
+<i18n>
+{
+  "en": {
+    'statsHeader': 'Visualizing {total} time points {bucket}',
+    'bucketHeader': '({bucket} Buckets)',
+    'none': 'No',
+    'databaseHeader': 'Database Stats',
+    'numberTimestamps': 'Number of Timestamps',
+    'numberReadings': 'Number of Sensor Readings',
+    'databaseStartTime': 'Database Start Time',
+    'databaseEndTime': 'Database End Time',
+    'chartSettings': 'Chart Settings',
+    'startTime': 'Start Time',
+    'endTime': 'End Time',
+    'noDataInRange': 'No data in selected range',
+    'loadingChartData': 'Loading data...',
+    'contextButtonTitle': 'Export Options',
+    'downloadCSV': 'Download CSV',
+    'downloadJPEG': 'Download JPG',
+    'downloadPDF': 'Download PDF',
+    'downloadPNG': 'Download PNG',
+    'downloadSVG': 'Download SVG',
+    'downloadXLS': 'Download XLS',
+    'loading': 'Loading',
+    'printChart': 'Print',
+    'resetZoom': 'Reset Zoom',
+    'viewData': 'Show Data Table',
+    'rangeSelectorZoom': 'Zoom',
+    'viewFullscreen': 'Fullscreen',
+    'Sun': 'Sun',
+    'Mon': 'Mon',
+    'Tue': 'Tue',
+    'Wed': 'Wed',
+    'Thu': 'Thu',
+    'Fri': 'Fri',
+    'Sat': 'Sat',
+    'Time': 'Time',
+    'plotTitleCurrent': 'Phase Current',
+    'yaxisTitleCurrentA': 'Current (A)',
+    'plotTitleEnergy': 'Energy Generation',
+    'yaxisTitleEnergyUnits': 'Energy (kWh/kvarh/kVAh)',
+    'plotTitlePipeTemp': 'Pipe Temperature',
+    'yaxisTitleTempC': 'Temperature (°C)',
+    'plotTitlePipePressure': 'Pipe Pressure',
+    'yaxisTitlePressureBar': 'Pressure (bar)',
+    'plotTitleMassFlow': 'Mass Flow Rate - Coriolis',
+    'yaxisTitleMassFlowRate': 'Mass Flow Rate (t/h)',
+    'plotTitleActivePower': 'Active Power',
+    'yaxisTitleActivePowerKW': 'Active Power (kW)',
+    'plotTitleReactivePower': 'Reactive Power',
+    'yaxisTitleReactivePowerKvar': 'Reactive Power (kvar)',
+    'plotTitleApparentPower': 'Apparent Power',
+    'yaxisTitleApparentPowerKVA': 'Apparent Power (kVA)',
+    'plotTitleFrequency': 'Generator Frequency',
+    'yaxisTitleFrequencyHz': 'Frequency (Hz)',
+    'plotTitleVoltage': 'Phase Voltage',
+    'yaxisTitleVoltageV': 'Voltage (V)',
+    'plotTitleVolumeFlow': 'Volume Flow Rate - Electromagnetic',
+    'yaxisTitleVolumeFlowRate': 'Volume Flow Rate (m3/h)',
+    'plotTitleCalculation': 'Calculation',
+    'yaxisTitleCalculation': 'Calculation',
+    'plotTitleBearingTemp': 'Bearing Temperature',
+    'M1-九號井口-壓力(bar)': 'M1 - Wellhead',
+    'M1-九號井口-溫度(℃)': 'M1 - Wellhead',
+    'M2-手動閘閥前-壓力(bar)': 'M2 - Pre Valve',
+    'M2-手動閘閥前-溫度(℃)': 'M2 - Pre Valve',
+    'M5-渦輪2前-壓力(bar)': 'M5 - Pre Turbine',
+    'M5-渦輪2前-溫度(℃)': 'M5 - Pre Turbine',
+    'M6-渦輪2後-壓力(bar)': 'M6 - Post Turbine',
+    'M6-渦輪2後-溫度(℃)': 'M6 - Post Turbine',
+    'M7-大穩壓桶1-壓力(bar)': 'M7 - Surge Tank',
+    'M7-大穩壓桶1-溫度(℃)': 'M7 - Surge Tank',
+    'M13-渦輪1前-壓力(bar)': 'M13 - Pre Turbine',
+    'M13-渦輪1前-溫度(℃)': 'M13 - Pre Turbine',
+    'M14-渦輪1後-壓力(bar)': 'M14 - Post Turbine',
+    'M14-渦輪1後-溫度(℃)': 'M14 - Post Turbine',
+    'M21-尾水箱-壓力(bar)': 'M21 - Drain Tank',
+    'M25-主排水管-密度(g/cm3)': 'M25 - Drain',
+    'M25-主排水管-溫度(℃)': 'M25 - Drain',
+    'M25-主排水管-質量流率(t/h)': 'M25 - Drain',
+    'M26-排水管2-流量(m3/h)': 'M26 - Drain Pipe 2',
+    'M50-軸心2-入水測溫度(℃)': 'M50 - Shaft - Water Inlet',
+    'M51-軸心2-發電機測溫度(℃)': 'M51 - Shaft - Generator',
+    'M52-變速齒輪箱2-溫度(℃)': 'M52 - Gearbox',
+    'M61-軸心1-發電機測溫度(℃)': 'M61 - Shaft - Generator',
+    'M63-發電機1-A相電壓(V)': 'M63 - Generator 1 - Phase A',
+    'M63-發電機1-A相電流(A)': 'M63 - Generator 1 - Phase A',
+    'M63-發電機1-B相電壓(V)': 'M63 - Generator 1 - Phase B',
+    'M63-發電機1-B相電流(A)': 'M63 - Generator 1 - Phase B',
+    'M63-發電機1-C相電壓(V)': 'M63 - Generator 1 - Phase C',
+    'M63-發電機1-C相電流(A)': 'M63 - Generator 1 - Phase C',
+    'M63-發電機1-三相功率(kW)': 'M63 - Generator 1',
+    'M63-發電機1-發電量(kWh)': 'M63 - Generator 1',
+    'M64-發電機1-頻率(Hz)': 'M64 - Generator 1',
+    'M71-發電機300kVA-頻率(Hz)': 'M71 - Generator',
+    'M72-併接點-AB線電壓(V)': 'M72 - Grid Connection - AB Line',
+    'M72-併接點-A相電流(A)': 'M72 - Grid Connection - Phase A',
+    'M72-併接點-BC線電壓(V)': 'M72 - Grid Connection - BC Line',
+    'M72-併接點-B相電流(A)': 'M72 - Grid Connection - Phase B',
+    'M72-併接點-CA線電壓(V)': 'M72 - Grid Connection - CA Line',
+    'M72-併接點-C相電流(A)': 'M72 - Grid Connection - Phase C',
+    'M72-併接點-功率因數(%)': 'M72 - Grid Connection',
+    'M72-併接點-有功功率(kW)': 'M72 - Grid Connection',
+    'M72-併接點-有功電量(kWh)': 'M72 - Grid Connection',
+    'M72-併接點-正有功電量(kWh)': 'M72 - Grid Connection',
+    'M72-併接點-正無功電量(kvarh)': 'M72 - Grid Connection',
+    'M72-併接點-無功功率(kvar)': 'M72 - Grid Connection',
+    'M72-併接點-無功電量(kvarh)': 'M72 - Grid Connection',
+    'M72-併接點-視在功率(kVA)': 'M72 - Grid Connection',
+    'M72-併接點-視在電量(kVAh)': 'M72 - Grid Connection',
+    'M72-併接點-負有功電量(kWh)': 'M72 - Grid Connection',
+    'M72-併接點-負無功電量(kvarh)': 'M72 - Grid Connection',
+    'M72-併接點-頻率(Hz)': 'M72 - Grid Connection',
+    'M73-發電機300kVA-AB線電壓(V)': 'M73 - Generator - AB Line',
+    'M73-發電機300kVA-A相電流(A)': 'M73 - Generator - Phase A',
+    'M73-發電機300kVA-BC線電壓(V)': 'M73 - Generator - BC Line',
+    'M73-發電機300kVA-B相電流(A)': 'M73 - Generator - Phase B',
+    'M73-發電機300kVA-CA線電壓(V)': 'M73 - Generator - CA Line',
+    'M73-發電機300kVA-C相電流(A)': 'M73 - Generator - Phase C',
+    'M73-發電機300kVA-功率因數(%)': 'M73 - Generator',
+    'M73-發電機300kVA-有功功率(kW)': 'M73 - Generator',
+    'M73-發電機300kVA-有功電量(kWh)': 'M73 - Generator',
+    'M73-發電機300kVA-正有功電量(kWh)': 'M73 - Generator',
+    'M73-發電機300kVA-正無功電量(kvarh)': 'M73 - Generator',
+    'M73-發電機300kVA-無功功率(kvar)': 'M73 - Generator',
+    'M73-發電機300kVA-無功電量(kvarh)': 'M73 - Generator',
+    'M73-發電機300kVA-視在功率(kVA)': 'M73 - Generator',
+    'M73-發電機300kVA-視在電量(kVAh)': 'M73 - Generator',
+    'M73-發電機300kVA-負有功電量(kWh)': 'M73 - Generator',
+    'M73-發電機300kVA-負無功電量(kvarh)': 'M73 - Generator',
+    'M101-功率/壓力平方-計算(kW/bar2)': 'M101 - Computed - Power/Pressure^2',
+    'M103-流量/壓力根-計算(tph/bar0.5)': 'M103 - Computed - Flow/sqrt(Pressure)',
+    'M104-出噴嘴速度-計算(m/s)': 'M104 - Computed - Exit Velocity',
+    'M105-速度壓力根-計算(ms/bar0.5)': 'M105 - Computed - Velocity*sqrt(Pressure)',
+    'M10-上貨櫃前-壓力(bar)': 'M10 - Pre Container',
+    'M10-上貨櫃前-溫度(℃)': 'M10 - Pre Container',
+    'M11-三桶前-壓力(bar)': 'M11 - Pre Tank',
+    'M11-三桶前-溫度(℃)': 'M11 - Pre Tank',
+    'M21-尾水箱-溫度(℃)': 'M21 - Drain Tank',
+    'M22-主排水管-流量(m3/h)': 'M22 - Main Drain',
+    'M25-大桶後-密度(g/cm3)': 'M25 - Post Tank',
+    'M25-大桶後-溫度()': 'M25 - Post Tank',
+    'M25-大桶後-累積質量(kg)': 'M25 - Post Tank',
+    'M25-大桶後-累積體積(m3)': 'M25 - Post Tank',
+    'M60-軸心1-入水測溫度(℃)': 'M60 - Shaft 1 - Inlet',
+    'M62-軸心1-轉速(Hz)': 'M62 - Shaft 1',
+    'M63-發電機1-三相功因()': 'M63 - Generator 1',
+  },
+  "tw": {
+    'statsHeader': '圖表顯示 {total} 筆時間點資料{bucket}',
+    'bucketHeader': '（統計區間：{bucket}）',
+    'none': '無',
+    'databaseHeader': '資料庫',
+    'numberTimestamps': '總資料時間點數',
+    'numberReadings': '總資料點數',
+    'databaseStartTime': '總資料起始時間',
+    'databaseEndTime': '總資料最後時間',
+    'chartSettings': '自訂圖表',
+    'startTime': '起始時間',
+    'endTime': '結束時間',
+    'noDataInRange': '所選時間範圍查無資料',
+    'loadingChartData': '圖表資料載入中...',
+    'contextButtonTitle': '匯出選項',
+    'downloadCSV': '下載 CSV 檔',
+    'downloadJPEG': '下載 JPG 檔',
+    'downloadPDF': '下載 PDF 檔',
+    'downloadPNG': '下載 PNG 檔',
+    'downloadSVG': '下載 SVG 檔',
+    'downloadXLS': '下載 XLS 檔',
+    'loading': '載入中',
+    'printChart': '列印',
+    'resetZoom': '重設縮放',
+    'viewData': '顯示資料表格',
+    'rangeSelectorZoom': '縮放',
+    'viewFullscreen': '全螢幕',
+    'Sun': '週日',
+    'Mon': '週一',
+    'Tue': '週二',
+    'Wed': '週三',
+    'Thu': '週四',
+    'Fri': '週五',
+    'Sat': '週六',
+    'Time': '時間',
+    'plotTitleCurrent': '三相電流',
+    'yaxisTitleCurrentA': '電流(A)',
+    'plotTitleEnergy': '發電量',
+    'yaxisTitleEnergyUnits': '發電量(kWh/kvarh/kVAh)',
+    'plotTitlePipeTemp': '管線溫度',
+    'yaxisTitleTempC': '溫度(℃)',
+    'plotTitlePipePressure': '管線壓力',
+    'yaxisTitlePressureBar': '壓力(bar)',
+    'plotTitleMassFlow': '質量流率-科氏力流量計',
+    'yaxisTitleMassFlowRate': '質量流率(t/h)',
+    'plotTitleActivePower': '有功功率',
+    'yaxisTitleActivePowerKW': '有功功率(kW)',
+    'plotTitleReactivePower': '無功功率',
+    'yaxisTitleReactivePowerKvar': '無功功率(kvar)',
+    'plotTitleApparentPower': '視在功率',
+    'yaxisTitleApparentPowerKVA': '視在功率(kVA)',
+    'plotTitleFrequency': '頻率',
+    'yaxisTitleFrequencyHz': '頻率(Hz)',
+    'plotTitleVoltage': '三相電壓',
+    'yaxisTitleVoltageV': '電壓(V)',
+    'plotTitleVolumeFlow': '體積流率-電磁流量計',
+    'yaxisTitleVolumeFlowRate': '體積流率(m3/h)',
+    'plotTitleCalculation': '計算',
+    'yaxisTitleCalculation': '計算',
+    'plotTitleBearingTemp': '軸心溫度',
+    'M1-九號井口-壓力(bar)': 'M1-九號井口',
+    'M1-九號井口-溫度(℃)': 'M1-九號井口',
+    'M2-手動閘閥前-壓力(bar)': 'M2-手動閘閥前',
+    'M2-手動閘閥前-溫度(℃)': 'M2-手動閘閥前',
+    'M5-渦輪2前-壓力(bar)': 'M5-渦輪2前',
+    'M5-渦輪2前-溫度(℃)': 'M5-渦輪2前',
+    'M6-渦輪2後-壓力(bar)': 'M6-渦輪2後',
+    'M6-渦輪2後-溫度(℃)': 'M6-渦輪2後',
+    'M7-大穩壓桶1-壓力(bar)': 'M7-大穩壓桶1',
+    'M7-大穩壓桶1-溫度(℃)': 'M7-大穩壓桶1',
+    'M13-渦輪1前-壓力(bar)': 'M13-渦輪1前',
+    'M13-渦輪1前-溫度(℃)': 'M13-渦輪1前',
+    'M14-渦輪1後-壓力(bar)': 'M14-渦輪1後',
+    'M14-渦輪1後-溫度(℃)': 'M14-渦輪1後',
+    'M21-尾水箱-壓力(bar)': 'M21-尾水箱',
+    'M25-主排水管-密度(g/cm3)': 'M25-主排水管',
+    'M25-主排水管-溫度(℃)': 'M25-主排水管',
+    'M25-主排水管-質量流率(t/h)': 'M25-主排水管',
+    'M26-排水管2-流量(m3/h)': 'M26-排水管2',
+    'M50-軸心2-入水測溫度(℃)': 'M50-軸心2-入水測',
+    'M51-軸心2-發電機測溫度(℃)': 'M51-軸心2-發電機測',
+    'M52-變速齒輪箱2-溫度(℃)': 'M52-變速齒輪箱2',
+    'M61-軸心1-發電機測溫度(℃)': 'M61-軸心1-發電機測',
+    'M63-發電機1-A相電壓(V)': 'M63-發電機1-A相',
+    'M63-發電機1-A相電流(A)': 'M63-發電機1-A相',
+    'M63-發電機1-B相電壓(V)': 'M63-發電機1-B相',
+    'M63-發電機1-B相電流(A)': 'M63-發電機1-B相',
+    'M63-發電機1-C相電壓(V)': 'M63-發電機1-C相',
+    'M63-發電機1-C相電流(A)': 'M63-發電機1-C相',
+    'M63-發電機1-三相功率(kW)': 'M63-發電機1',
+    'M63-發電機1-發電量(kWh)': 'M63-發電機1',
+    'M64-發電機1-頻率(Hz)': 'M64-發電機1',
+    'M71-發電機300kVA-頻率(Hz)': 'M71-發電機300kVA',
+    'M72-併接點-AB線電壓(V)': 'M72-併接點-AB線',
+    'M72-併接點-A相電流(A)': 'M72-併接點-A相',
+    'M72-併接點-BC線電壓(V)': 'M72-併接點-BC線',
+    'M72-併接點-B相電流(A)': 'M72-併接點-B相',
+    'M72-併接點-CA線電壓(V)': 'M72-併接點-CA線',
+    'M72-併接點-C相電流(A)': 'M72-併接點-C相',
+    'M72-併接點-功率因數(%)': 'M72-併接點',
+    'M72-併接點-有功功率(kW)': 'M72-併接點',
+    'M72-併接點-有功電量(kWh)': 'M72-併接點',
+    'M72-併接點-正有功電量(kWh)': 'M72-併接點',
+    'M72-併接點-正無功電量(kvarh)': 'M72-併接點',
+    'M72-併接點-無功功率(kvar)': 'M72-併接點',
+    'M72-併接點-無功電量(kvarh)': 'M72-併接點',
+    'M72-併接點-視在功率(kVA)': 'M72-併接點',
+    'M72-併接點-視在電量(kVAh)': 'M72-併接點',
+    'M72-併接點-負有功電量(kWh)': 'M72-併接點',
+    'M72-併接點-負無功電量(kvarh)': 'M72-併接點',
+    'M72-併接點-頻率(Hz)': 'M72-併接點',
+    'M73-發電機300kVA-AB線電壓(V)': 'M73-發電機300kVA-AB線',
+    'M73-發電機300kVA-A相電流(A)': 'M73-發電機300kVA-A相',
+    'M73-發電機300kVA-BC線電壓(V)': 'M73-發電機300kVA-BC線',
+    'M73-發電機300kVA-B相電流(A)': 'M73-發電機300kVA-B相',
+    'M73-發電機300kVA-CA線電壓(V)': 'M73-發電機300kVA-CA線',
+    'M73-發電機300kVA-C相電流(A)': 'M73-發電機300kVA-C相',
+    'M73-發電機300kVA-功率因數(%)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-有功功率(kW)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-有功電量(kWh)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-正有功電量(kWh)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-正無功電量(kvarh)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-無功功率(kvar)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-無功電量(kvarh)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-視在功率(kVA)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-視在電量(kVAh)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-負有功電量(kWh)': 'M73-發電機300kVA',
+    'M73-發電機300kVA-負無功電量(kvarh)': 'M73-發電機300kVA',
+    'M101-功率/壓力平方-計算(kW/bar2)': 'M101-功率/壓力平方-計算',
+    'M103-流量/壓力根-計算(tph/bar0.5)': 'M103-流量/壓力根-計算',
+    'M104-出噴嘴速度-計算(m/s)': 'M104-出噴嘴速度-計算',
+    'M105-速度壓力根-計算(ms/bar0.5)': 'M105-速度壓力根-計算',
+    'M10-上貨櫃前-壓力(bar)': 'M10-上貨櫃前',
+    'M10-上貨櫃前-溫度(℃)': 'M10-上貨櫃前',
+    'M11-三桶前-壓力(bar)': 'M11-三桶前',
+    'M11-三桶前-溫度(℃)': 'M11-三桶前',
+    'M21-尾水箱-溫度(℃)': 'M21-尾水箱',
+    'M22-主排水管-流量(m3/h)': 'M22-主排水管',
+    'M25-大桶後-密度(g/cm3)': 'M25-大桶後',
+    'M25-大桶後-溫度()': 'M25-大桶後',
+    'M25-大桶後-累積質量(kg)': 'M25-大桶後',
+    'M25-大桶後-累積體積(m3)': 'M25-大桶後',
+    'M60-軸心1-入水測溫度(℃)': 'M60-軸心1-入水測',
+    'M62-軸心1-轉速(Hz)': 'M62-軸心1',
+    'M63-發電機1-三相功因()': 'M63-發電機1',
+  }
+}
+</i18n>
 
 <style scoped>
 /* Scoped styles remain largely the same */
