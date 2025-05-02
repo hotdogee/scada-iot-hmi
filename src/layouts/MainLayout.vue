@@ -46,28 +46,28 @@
         <!-- <q-route-tab icon="subject" to="/text" :label="t('text')" /> -->
         <q-route-tab
           class="max-w-38"
-          content-class="align-center flex justify-center"
+          content-class="align-center flex justify-center mt-3"
           icon="dashboard"
           :to="{ name: 'card' }"
           :label="t('card')"
         />
         <q-route-tab
           class="max-w-38"
-          content-class="align-center flex justify-center"
+          content-class="align-center flex justify-center mt-3"
           icon="timeline"
           :to="{ name: 'chart' }"
           :label="t('chart')"
         />
         <q-route-tab
           class="max-w-38"
-          content-class="align-center flex justify-center"
+          content-class="align-center flex justify-center mt-3"
           icon="article"
           :to="{ name: 'about' }"
           :label="t('about')"
         />
         <q-route-tab
           class="max-w-38"
-          content-class="align-center flex justify-center"
+          content-class="align-center flex justify-center mt-3"
           icon="mail"
           :to="{ name: 'contact' }"
           :label="t('contact')"
