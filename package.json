@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@feathersjs/socketio-client": "^5.0.33",
+    "@formatjs/intl-localematcher": "^0.6.1",
     "@heroicons/vue": "^2.2.0",
     "@hotdogee/vue3-trend": "^2.0.2",
     "@neutrium/thermo.eos.iapws97": "^2.0.2",

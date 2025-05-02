@@ -1,6 +1,7 @@
 import { defineBoot } from '#q-app/wrappers'
 import { createI18n } from 'vue-i18n'
 import { useStorage } from '@vueuse/core'
+import { match } from '@formatjs/intl-localematcher'
 
 import messages from 'src/i18n'
 
@@ -22,8 +23,16 @@ declare module 'vue-i18n' {
 }
 /* eslint-enable @typescript-eslint/no-empty-object-type */
 
+function getDetectedLocale(): string {
+  const languages = navigator.languages.map((language) => {
+    return language.replace('zh', 'tw')
+  })
+  const locale = match(languages, ['en', 'tw'], 'en')
+  return locale
+}
+
 export default defineBoot(({ app }) => {
-  const locale = useStorage('locale', 'en')
+  const locale = useStorage('locale', getDetectedLocale())
   const i18n = createI18n<{ message: MessageSchema }, MessageLanguages>({
     locale: locale.value,
     fallbackLocale: 'en',
