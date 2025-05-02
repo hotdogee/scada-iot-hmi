@@ -171,7 +171,7 @@
                 if (el) chartDivRefs[index] = el as HTMLDivElement
               }
             "
-            class="margin-8"
+            class="rounded-sm sm:m-2"
           ></div>
         </q-card-section>
       </q-card>
@@ -1647,6 +1647,11 @@ onBeforeUnmount(() => {
 .pad-t-16 {
   padding-top: 16px;
 } /* q-pt-md */
+@media (width < 40rem) {
+  .q-card__section--vert {
+    padding: 0px;
+  }
+}
 </style>
 
 <style scoped>

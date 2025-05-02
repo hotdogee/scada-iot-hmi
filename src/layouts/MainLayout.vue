@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hhh lpr fff">
     <q-header class="text-grey-9 bg-white">
-      <q-toolbar elevated>
+      <q-toolbar elevated class="max-sm:px-2">
         <img src="/icons/favicon-32x32.png" />
         <q-toolbar-title class="nav-title">
           <q-item-label class="flex items-center justify-start font-medium">
@@ -9,7 +9,8 @@
             <div
               class="inline-flex items-center justify-center rounded-lg bg-emerald-100 px-2 py-[2px] text-sm font-medium text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
             >
-              {{ t('demo_mode') }}
+              <span class="md:hidden">{{ t('demo') }}</span>
+              <span class="max-md:hidden">{{ t('demo_mode') }}</span>
             </div>
           </q-item-label>
         </q-toolbar-title>
@@ -45,29 +46,29 @@
       <q-tabs class="bg-grey-9 text-white">
         <!-- <q-route-tab icon="subject" to="/text" :label="t('text')" /> -->
         <q-route-tab
-          class="max-w-38"
-          content-class="align-center flex justify-center mt-3"
+          class="max-w-38 min-w-10"
+          content-class="align-center flex justify-center mt-3 min-w-10"
           icon="dashboard"
           :to="{ name: 'card' }"
           :label="t('card')"
         />
         <q-route-tab
-          class="max-w-38"
-          content-class="align-center flex justify-center mt-3"
+          class="max-w-38 min-w-10"
+          content-class="align-center flex justify-center mt-3 min-w-10"
           icon="timeline"
           :to="{ name: 'chart' }"
           :label="t('chart')"
         />
         <q-route-tab
-          class="max-w-38"
-          content-class="align-center flex justify-center mt-3"
+          class="max-w-38 min-w-10"
+          content-class="align-center flex justify-center mt-3 min-w-10"
           icon="article"
           :to="{ name: 'about' }"
           :label="t('about')"
         />
         <q-route-tab
-          class="max-w-38"
-          content-class="align-center flex justify-center mt-3"
+          class="max-w-38 min-w-10"
+          content-class="align-center flex justify-center mt-3 min-w-10"
           icon="mail"
           :to="{ name: 'contact' }"
           :label="t('contact')"
@@ -164,6 +165,7 @@ loggers.info?.('created')
     "unauthorized": "Unauthorized",
     "guest": "Guest",
     "demo_mode": "Demo Mode",
+    "demo": "Demo",
     "demo_notification": "Connected to Demo Data Stream",
     "no_notification": "No Notifications",
   },
@@ -178,13 +180,25 @@ loggers.info?.('created')
     "unauthorized": "無權限",
     "guest": "訪客權限",
     "demo_mode": "展示模式",
+    "demo": "展示",
     "demo_notification": "系統展示中",
     "no_notification": "無推播通知",
   }
 }
 </i18n>
 
-<style>
+<style scoped>
+@media (width < 40rem) {
+  .q-toolbar {
+    padding: 0 6px;
+  }
+  .q-toolbar__title {
+    padding: 0 6px;
+  }
+  .q-tab {
+    padding: 0 8px;
+  }
+}
 .copyright {
   min-width: 5rem;
   white-space: nowrap;

@@ -15,8 +15,8 @@
       </div>
     </template>
     <template #option="scope">
-      <q-item v-bind="scope.itemProps">
-        <q-item-label>
+      <q-item v-bind="scope.itemProps" dense="false">
+        <q-item-label class="flex items-center justify-center">
           <span class="flags text-base">{{ scope.opt.flag }}</span>
           <span class="ml-2">{{ scope.opt.label }}</span>
         </q-item-label>
