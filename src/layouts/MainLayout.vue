@@ -30,7 +30,7 @@
               <q-item>
                 <q-item-section avatar>
                   <q-avatar>
-                    <img src="~assets/avatar-640.png" />
+                    <q-icon name="account_circle" size="42px" class="text-[#95bbdf]" />
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
