@@ -1652,7 +1652,7 @@ onBeforeUnmount(() => {
 } /* q-pt-md */
 </style>
 
-<style>
+<style scoped>
 /* Global styles for Highcharts data table remain the same */
 .highcharts-data-table {
   height: 500px;

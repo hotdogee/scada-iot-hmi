@@ -430,7 +430,7 @@ const getStat = (rtuName: string, regName: string): StatResult => {
 }
 </i18n>
 
-<style>
+<style scoped>
 .reg-card {
   height: 110px;
 }
@@ -444,11 +444,11 @@ const getStat = (rtuName: string, regName: string): StatResult => {
   position: relative;
 }
 .reg-value {
-  top: -6px;
+  top: -3px;
   position: relative;
 }
 .reg-unit {
-  top: -6px;
+  top: -3px;
   position: relative;
 }
 .reg-avg {
@@ -520,7 +520,7 @@ span.subheading {
 }
 </style>
 
-<style lang="scss">
+<style scoped lang="scss">
 .grid {
   @each $size, $width in $sizes {
     @media all and (min-width: $width) {
