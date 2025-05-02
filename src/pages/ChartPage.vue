@@ -1641,9 +1641,6 @@ onBeforeUnmount(() => {
 .margin-8 {
   margin: 8px;
 } /* q-ma-sm */
-.lh-normal {
-  line-height: normal;
-}
 .pad-t-8 {
   padding-top: 8px;
 } /* q-pt-sm */

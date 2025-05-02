@@ -489,7 +489,7 @@ const getStat = (rtuName: string, regName: string): StatResult => {
 } */
 .q-card {
   margin: 4px;
-  line-height: normal;
+  line-height: 1.22;
 }
 .reg-list {
   padding: 0 4px;
