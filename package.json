@@ -28,7 +28,7 @@
     "axios": "^1.2.1",
     "highcharts": "^12.2.0",
     "lodash": "^4.17.21",
-    "lucide-vue-next": "^0.503.0",
+    "lucide-vue-next": "^0.507.0",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.2.0",
     "quasar": "^2.16.0",

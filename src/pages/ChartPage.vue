@@ -158,7 +158,7 @@
     <div v-show="!showChart" class="col-12">
       <q-card class="q-ma-xs bg-white">
         <q-card-section>
-          <div class="text-h6 text-center">圖表資料載入中...</div>
+          <div class="text-h6 text-center">{{ t('loadingChartData') }}</div>
         </q-card-section>
       </q-card>
     </div>
