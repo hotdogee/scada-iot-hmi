@@ -4,7 +4,7 @@
       <div class="m-1 min-h-screen rounded-sm bg-white dark:bg-gray-950">
         <!-- Hero Section -->
         <section
-          class="relative rounded-sm bg-gradient-to-b from-amber-50 to-background py-16 pt-20 md:py-24 dark:from-amber-950 dark:to-background"
+          class="relative rounded-sm bg-gradient-to-b from-amber-50 to-background py-16 pt-10 md:pt-15 dark:from-amber-950 dark:to-background"
         >
           <div class="container mx-auto px-4 md:px-6">
             <div class="grid items-center gap-6 max-lg:text-center lg:grid-cols-2 xl:px-24">
