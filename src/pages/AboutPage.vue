@@ -505,7 +505,7 @@
                               :name="`photo-${i}`"
                               class="column no-wrap overflow-hidden bg-white"
                               fit="contain"
-                              :img-src="`src/assets/about-photo-${i}.jpg`"
+                              :img-src="`images/about-photo-${i}.jpg`"
                             >
                               <div
                                 class="row fit no-wrap flex items-center justify-start max-md:mb-17 max-md:min-h-(--breakpoint-md) max-sm:min-h-(--breakpoint-sm) md:px-12 md:pt-24 md:pb-17"
@@ -513,7 +513,7 @@
                                 <q-img
                                   fit="contain"
                                   class="rounded-borders fit"
-                                  :src="`src/assets/about-photo-${i}.jpg`"
+                                  :src="`images/about-photo-${i}.jpg`"
                                 />
                                 <div
                                   class="absolute top-4 right-0 left-0 bg-white/50 text-center text-slate-700 md:px-12"
