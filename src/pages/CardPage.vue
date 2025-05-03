@@ -107,7 +107,7 @@ interface StatResult {
 
 // Default order configuration for RTU display
 const defaultOrder = [
-  { sid: 71, regOrder: [] },
+  { sid: 1, regOrder: [] },
   {
     sid: 73,
     regOrder: [
@@ -165,11 +165,11 @@ const defaultOrder = [
       { name: '頻率', show: true }
     ]
   },
-  { sid: 1, regOrder: [] },
   { sid: 2, regOrder: [] },
   { sid: 5, regOrder: [] },
   { sid: 6, regOrder: [] },
   { sid: 25, regOrder: [] },
+  { sid: 71, regOrder: [] },
   // { sid: 26, regOrder: [] },
   { sid: 200, regOrder: [] },
   { sid: 50, regOrder: [] },
