@@ -2,7 +2,7 @@
 
 > A modern cross-platform, responsive Human-Machine Interface (HMI) designed for real-time monitoring, historical data analysis, and control of a research-grade geothermal power plant in Taiwan. It leverages the Total Flow cycle to extract energy directly from the two-phase geothermal fluid.
 
-![Real-time Monitor](https://github.com/user-attachments/assets/9ab500e9-50ea-4284-bd3c-93f55b6d03ce)
+![Real-time Monitor](https://github.com/user-attachments/assets/b178e905-4e73-49ac-8b37-0e820c9cf8fe)
 
 ## Table of Contents
 
