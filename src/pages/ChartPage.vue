@@ -164,7 +164,7 @@
     </div>
     <div v-for="(fig, index) in figs" v-show="showChart" :key="index" class="col-12">
       <q-card class="q-ma-xs bg-white">
-        <q-card-section>
+        <q-card-section class="chart-section">
           <div
             :ref="
               (el) => {
@@ -655,6 +655,37 @@ const figTemplates: Record<string, () => HighchartsOptions> = {
         month: '%Y/%m',
         year: '%Y'
       }
+    },
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 640
+          },
+          // Make the labels less space demanding on mobile
+          chartOptions: {
+            navigator: {
+              enabled: false
+            },
+            rangeSelector: {
+              enabled: false
+            },
+            scrollbar: {
+              enabled: false
+            },
+            yAxis: {
+              labels: {
+                align: 'left',
+                x: 0,
+                y: -2
+              },
+              title: {
+                text: ''
+              }
+            }
+          }
+        }
+      ]
     }
   })
 }
@@ -1648,8 +1679,8 @@ onBeforeUnmount(() => {
   padding-top: 16px;
 } /* q-pt-md */
 @media (width < 40rem) {
-  .q-card__section--vert {
-    padding: 0px;
+  .chart-section.q-card__section--vert {
+    padding: 8px;
   }
 }
 </style>
