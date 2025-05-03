@@ -2,6 +2,8 @@
 
 > A modern cross-platform, responsive Human-Machine Interface (HMI) designed for real-time monitoring, historical data analysis, and control of a research-grade geothermal power plant in Taiwan. It leverages the Total Flow cycle to extract energy directly from the two-phase geothermal fluid.
 
+![Real-time Monitor](https://github.com/user-attachments/assets/36e684fa-612b-4ace-9f6c-84f1f6b8b0e5)
+
 ## Table of Contents
 
 - [SCADA/IoT Human Machine Interface (HMI)](#scadaiot-human-machine-interface-hmi)
@@ -38,6 +40,8 @@ This system was developed as part of Taiwan's Total Flow Geothermal Power System
   - RPM
 - **Historical Data Analysis:** Fast, interactive charts for exploring trends and diagnosing past events.
 - **Progressive Web App (PWA):** Installable on various devices for a native-like experience.
+
+![architecture-diagram](https://github.com/user-attachments/assets/dbdecedd-dfca-4188-955a-7ce15d3ccca2)
 
 ## Development Workflow
 
