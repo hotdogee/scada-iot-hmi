@@ -4,7 +4,7 @@
 
 ## Live Demo
 
-- Frontend deployed on Cloudflare Pages: https://ann.hanl.in/
+- Frontend deployed on Cloudflare Pages: https://scada.hanl.in/
 - Backend deployed on Oracle Cloud Infrastructure
 
 ![Real-time Monitor](https://github.com/user-attachments/assets/b178e905-4e73-49ac-8b37-0e820c9cf8fe)
